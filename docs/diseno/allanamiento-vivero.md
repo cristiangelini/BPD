@@ -150,6 +150,13 @@ los extras suman 500.
    va a contarlas 20 s mirando al portón, sin ver nada. Funciona una vez cada 45 s; la tercera vez dice "¿Otro camión?
    ¡Si no pedí nada!" y suma 10. Capturas: `/mnt/project-files/vivero/paso4-*.png`.
 5. Brotecito y la regadera llena.
+   **Hecho así:** Brotecito (`NurseryKid`, modelo `npc_brotecito` achicado al 75 %) está junto a la puerta del
+   invernadero; la regadera vacía (`WateringCan`, 1,5 kg) está a 1,7 m de él. El botón de la canilla, al fondo, la
+   llena si está a menos de 1,6 m. Para traerla hay que pasar por el pasillo sur, justo afuera del alcance de la
+   Dentuda. Se vuelca si se inclina más de 60°, si el policía que la lleva cae (resbalón, empujón, mordida), si la
+   Dentuda muerde al que la lleva o si la tiran y pega fuerte. Llena a menos de 1,5 m de él, la usa para regar y le
+   cuenta lo que vio al policía que la trajo (una vez por policía; la pista la pone la historia en el paso 6).
+   Capturas: `/mnt/project-files/vivero/paso5-*.png`.
 6. El caso con la primera historia, la orquídea robada.
 7. Las otras 5 historias, una por PR.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.

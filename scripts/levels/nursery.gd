@@ -84,6 +84,11 @@ const SAW_SLIP := 5.0
 const SAW_BITE := 10.0
 ## The third honk: she knows what's going on.
 const CAUGHT_ON := 10.0
+## Brotecito by the greenhouse door, facing in, his empty can a little past his reach; the tap fills a can this close
+## to it.
+const KID_AT := Vector3(3.0, FLOOR_TOP, -1.6)
+const CAN_AT := Vector3(4.7, FLOOR_TOP + 0.2, -1.4)
+const FILL_RANGE := 1.6
 const FOOD_SIZE := Vector3(0.4, 0.15, 0.6)
 ## By the front: the counter with the till, the seed basket, the shelf of ceramic pots (each one a fine), the row of
 ## gnomes and the tool hut.
@@ -168,6 +173,10 @@ var valve: PushButton
 var dentuda: NurseryDentuda
 var dentuda_plant: Node3D
 var food: Array[Grabbable] = []
+## Brotecito, his watering can and the tap's button (step 5).
+var kid: NurseryKid
+var can: WateringCan
+var tap: PushButton
 ## The soil truck's horn (her distraction), Doña Hortensia and her complaint bar.
 var horn: SoilTruckHorn
 var owner_npc: FloorBoss
@@ -211,6 +220,7 @@ func _ready() -> void:
 		bag.position = at
 		food.append(bag)
 	_place_owner()
+	_place_kid()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("nursery")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -493,6 +503,42 @@ func _place_owner() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Brotecito by the greenhouse door with his empty can, and the tap at the far end that fills it.
+func _place_kid() -> void:
+	kid = NurseryKid.new()
+	kid.name = "Brotecito"
+	kid.position = KID_AT
+	kid.rotation.y = PI / 2
+	add_child(kid)
+	can = WateringCan.new()
+	can.name = "WateringCan"
+	can.position = CAN_AT
+	add_child(can)
+	can.spilled.connect(func() -> void:
+		for cop in can.handling_cops(2.0):
+			cop.show_hint("HINT_NURSERY_CAN_SPILLED"))
+	tap = PushButton.new()
+	tap.prompt = "PROMPT_NURSERY_TAP"
+	tap.color = Color(0.2, 0.45, 0.9)
+	tap.position = TAP_AT + Vector3(-0.2, 1.0, 0.25)
+	tap.rotation.y = -PI / 2
+	add_child(tap)
+	tap.pressed.connect(fill_at_tap)
+	dentuda.bitten.connect(func(target: Node3D) -> void:
+		if target == can or (target is Cop and (target as Cop).get_node("Grabber").held == can):
+			can.spill())
+
+
+## The tap's button: fills the watering can if it's close enough.
+func fill_at_tap(cop: Cop = null) -> void:
+	if can.global_position.distance_to(to_global(TAP_AT + Vector3.UP * 0.8)) <= FILL_RANGE:
+		can.fill()
+		if cop:
+			cop.show_hint("HINT_NURSERY_CAN_FULL")
+	elif cop:
+		cop.show_hint("HINT_NURSERY_TAP_NO_CAN")
 
 
 ## A cop slipped in the mud: "¡No me pisen los canteros!", once per cop, if she sees it.

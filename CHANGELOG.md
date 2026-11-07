@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Plant nursery raid, step 5: Brotecito, the watering kid by the greenhouse door, and his watering can: the tap at the far end fills it, it spills if it tips, if its cop falls or if the Dentuda bites, and Brotecito tells what he saw to whoever brings it to him full, once per cop.
 - Plant nursery raid, step 4: Doña Hortensia walks between the yard and the greenhouse talking to her plants and fills her complaint (+5 for each cop she sees slip in the mud, once per cop, and +10 each time she sees the Dentuda bite); the soil truck's horn at the back gate brings the truck and sends her to count the bags for 20 s with her back to everything, once every 45 s, and the third time she catches on (+10).
 - Plant nursery raid, step 3: the Dentuda bites once every 3 s whatever moves within 1.5 m of her mouth: she swallows a thing and spits it far toward the door 5 s later, takes what a cop is holding or pushes a cop with empty hands back, and calms down for 10 s after eating one of the three fertilizer bags.
 - Plant nursery raid, step 2: the watering: every 40 s, or with the valve in the shed, the yard's four sprinklers come on for 15 s; their turning jets throw light things (up to 3 kg), give cops a little push and soak them; then the yard is mud for 20 s and a cop running on it slips.

@@ -5630,3 +5630,15 @@ HORTENSIA_CAUGHT_ON,"¿Otro camión? ¡Si no pedí nada!","Another truck? I didn
 HORTENSIA_FLOWERBEDS,"¡No me pisen los canteros!","Don't step on my flowerbeds!","Não pisem nos meus canteiros!"
 HORTENSIA_DENTUDA,"¡Dentudita, escupe eso! ¿Qué le hicieron a mi nena?","Dentudita, spit that out! What did they do to my baby?","Dentudinha, cospe isso! O que fizeram com a minha menina?"
 PROMPT_NURSERY_HORN,E: tocar la bocina del camión de tierra,E: honk the soil truck's horn,E: buzinar o caminhão de terra
+PROMPT_BROTECITO,E: hablar con Brotecito,E: talk to Brotecito,E: falar com o Brotecito
+PROMPT_NURSERY_TAP,E: abrir la canilla,E: turn on the tap,E: abrir a torneira
+BROTECITO_ASK,"¿Me traes la regadera llena? La canilla está al fondo del invernadero. ¡Sin volcarla, eh!","Can you bring me the watering can full? The tap is at the back of the greenhouse. Don't spill it!","Você me traz o regador cheio? A torneira fica no fundo da estufa. Sem derramar, hein!"
+BROTECITO_AGAIN,"¡Ya te conté todo! Pero si me traes más agua, no me quejo.","I already told you everything! But if you bring more water, I won't complain.","Já te contei tudo! Mas se você trouxer mais água, eu não reclamo."
+BROTECITO_THANKS,"¡Gracias! Las plantas te lo agradecen.","Thanks! The plants thank you too.","Obrigado! As plantas agradecem."
+BROTECITO_NOTHING,"¡Gracias! Pero no vi nada raro. Bueno, la Dentuda, pero ella siempre es rara.","Thanks! But I didn't see anything weird. Well, the Dentuda, but she's always weird.","Obrigado! Mas não vi nada estranho. Bom, a Dentuda, mas ela é sempre estranha."
+BROTECITO_IDLE_1,"Se me acabó el agua otra vez...","I ran out of water again...","Acabou a água de novo..."
+BROTECITO_IDLE_2,"Para ir a la canilla hay que pasar al lado de la Dentuda. Yo no paso.","To get to the tap you have to walk past the Dentuda. I'm not going.","Para chegar na torneira tem que passar do lado da Dentuda. Eu não passo."
+BROTECITO_IDLE_3,"Psst, oficial... ¿no tiene sed? Yo sí. Mis plantas también.","Psst, officer... aren't you thirsty? I am. So are my plants.","Psiu, policial... não está com sede? Eu estou. Minhas plantas também."
+HINT_NURSERY_CAN_FULL,"¡Regadera llena! Llévasela a Brotecito sin volcarla.","Watering can full! Take it to Brotecito without spilling it.","Regador cheio! Leve para o Brotecito sem derramar."
+HINT_NURSERY_TAP_NO_CAN,Acerca la regadera a la canilla para llenarla.,Bring the watering can to the tap to fill it.,Aproxime o regador da torneira para enchê-lo.
+HINT_NURSERY_CAN_SPILLED,¡Se volcó la regadera! Vuelve a llenarla en la canilla.,The watering can spilled! Fill it again at the tap.,O regador derramou! Encha de novo na torneira.

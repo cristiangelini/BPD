@@ -201,11 +201,44 @@ export function buildDonaHortensia() {
 	return b.build();
 }
 
+// Brotecito, the watering kid: a small pear in green overalls with a cap and a little sprout growing out of it. Faces
+// +Z, about 1.6 m before the game scales him down.
+export function buildBrotecito() {
+	const b = new Builder('npc_brotecito');
+	const overalls = mat('brotecito_overalls', 0x4caf50), shirt = mat('brotecito_shirt', 0xf2d040);
+	const skin = mat('brotecito_skin', 0xf0c4a0), cap = mat('brotecito_cap', 0x2e7d32);
+	pearBody(b, skin, { shirt, pants: overalls, shoes: mat('brotecito_boots', 0xf2c84b), belted: false });
+	b.add('body', overalls, new THREE.BoxGeometry(0.36, 0.3, 0.04), { pos: V(0, 0.68, 0.36), rot: [-0.25, 0, 0] });
+	eyes(b, 1.33, 0.19, 0.08, 0.055);
+	b.add('face', mat('brotecito_freckles', 0xc8783a), ellipsoid(0.03, 0.02, 0.01, 6, 4), { pos: V(-0.1, 1.24, 0.19) });
+	b.add('face', mat('brotecito_freckles', 0xc8783a), ellipsoid(0.03, 0.02, 0.01, 6, 4), { pos: V(0.1, 1.24, 0.19) });
+	b.add('hat', cap, new THREE.CylinderGeometry(0.19, 0.2, 0.12, 12), { pos: V(0, 1.47, 0.02) });
+	b.add('hat', cap, new THREE.CylinderGeometry(0.15, 0.15, 0.02, 12, 1, false, -Math.PI / 2, Math.PI), { pos: V(0, 1.42, 0.12) });
+	b.add('hat', mat('brotecito_stem', 0x3f9a3a), new THREE.CylinderGeometry(0.015, 0.015, 0.16, 6), { pos: V(0, 1.6, 0.02) });
+	for (const s of [-1, 1]) {
+		b.add('hat', leaf(), ellipsoid(0.08, 0.015, 0.04), { pos: V(s * 0.07, 1.68, 0.02), rot: [0, 0, s * 0.4] });
+	}
+	return b.build();
+}
+
+// The watering can, 0.55 m long and 0.35 m tall: a green tank, a handle over it and a long spout toward +X with its
+// rose. Origin at the floor in the middle of the tank.
+export function buildWateringCan() {
+	const b = new Builder('watering_can');
+	const green = mat('can_green', 0x3fa04a, { metalness: 0.4, roughness: 0.4 }), grey = mat('can_rose', 0xb8bec6, { metalness: 0.6 });
+	b.add('tank', green, new THREE.CylinderGeometry(0.13, 0.14, 0.26, 14), { pos: V(0, 0.13, 0) });
+	b.add('handle', green, new THREE.TorusGeometry(0.11, 0.02, 6, 12, Math.PI), { pos: V(0, 0.26, 0), rot: [0, 0, 0] });
+	b.add('spout', green, new THREE.CylinderGeometry(0.02, 0.03, 0.34, 8), { pos: V(0.24, 0.2, 0), rot: [0, 0, -1.0] });
+	b.add('rose', grey, new THREE.CylinderGeometry(0.05, 0.03, 0.04, 10), { pos: V(0.39, 0.3, 0), rot: [0, 0, -1.0] });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
 	ceramic_pot: buildCeramicPot, soil_bag: buildSoilBag, water_tank: buildWaterTank, nursery_tap: buildNurseryTap,
 	smiling_pot: buildSmilingPot, npc_dona_hortensia: buildDonaHortensia,
+	npc_brotecito: buildBrotecito, watering_can: buildWateringCan,
 };
 
 export const views = {
@@ -217,6 +250,7 @@ export const views = {
 			{ name: 'potted_plant_2', pos: [1.0, 0, 1.9] }, { name: 'ceramic_pot', pos: [2.9, 0, 1.6] },
 			{ name: 'soil_bag', pos: [3.2, 0, 0.3], rotY: 0.4 }, { name: 'nursery_tap', pos: [3.4, 0, -0.9] },
 			{ name: 'nursery_sprinkler', pos: [-0.2, 0, 0.6] }, { name: 'npc_dona_hortensia', pos: [1.6, 0, 2.6], rotY: -0.2 },
+			{ name: 'npc_brotecito', pos: [-1.6, 0, 2.6], rotY: 0.2 }, { name: 'watering_can', pos: [-0.9, 0, 3.1], rotY: 0.5 },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},
