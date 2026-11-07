@@ -158,3 +158,9 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   cada uno se arma con la foto (las botas), las huellas, los dientes (una dona o un pan), el olor (E: qué animal
   cuida), el pelo (E: se saca la gorra; uno, sorteado, no se la saca hasta que come) y las manos (E: curita o no; con
   los guantes puestos no las muestra). Copito siempre picoteó al culpable, así que el culpable siempre tiene curita.
+- **Paso 4:** la semilla esconde a Copito (`Zoo.loot_spot`) en el casillero del culpable, el freezer de los helados,
+  entre los pingüinos de peluche de la tienda (donde estornuda "¡Achís!" cada 3 s), el bote o el caparazón.
+  `ZooHideout` busca en 5 s y lee la libreta en 10 s. Encontrado, `Copito` es un objeto que se agarra; en brazos se
+  sacude, y soltado sobre el témpano (o cerca) se queda y suma 100. La reja de los pingüinos (`ZooGate`) se abre y
+  se cierra con E; las de los animales tienen candado hasta la hora de comer. Falta que el policía camine más lento
+  con Copito en brazos: queda para jugarlo.

@@ -60,7 +60,25 @@ function pico(b) {
 	b.add('body', red, loft([{ y: 0.0, rx: 0.05, rz: 0.03 }, { y: -0.22, rx: 0.02, rz: 0.015 }], 6), { pos: V(0, 0.06, -0.08), rot: [-0.5, 0, 0] });
 }
 
-const PEOPLE = { npc_cuidador: cuidador, npc_jaula: jaula, npc_pico: pico };
+// Copito, the baby penguin: a grey fluffy chick with a black head, a white face, an orange beak and feet, and his
+// birthday party hat. About 0.45 m tall, feet at y = 0, faces +Z.
+function copito(b) {
+	const fluff = C('penguin_fluff', 0x9a9aa2), black = C('penguin_black', 0x1e1e24), orange = C('penguin_orange', 0xf08a24);
+	b.add('body', fluff, ellipsoid(0.14, 0.17, 0.13, 10, 7), { pos: V(0, 0.17, 0) });
+	b.add('body', C('penguin_belly', 0xd8d8de), ellipsoid(0.1, 0.12, 0.05, 8, 6), { pos: V(0, 0.15, 0.09) });
+	b.add('head', black, ellipsoid(0.1, 0.09, 0.1, 10, 7), { pos: V(0, 0.36, 0.01) });
+	b.add('head', M.white, ellipsoid(0.07, 0.05, 0.03, 8, 5), { pos: V(0, 0.35, 0.08) });
+	b.add('head', orange, new THREE.ConeGeometry(0.02, 0.05, 6), { pos: V(0, 0.34, 0.12), rot: [Math.PI / 2, 0, 0] });
+	b.add('hat', C('party_hat', 0xe0408a), new THREE.ConeGeometry(0.05, 0.12, 8), { pos: V(0.02, 0.48, 0), rot: [0, 0, -0.2] });
+	b.add('hat', C('party_dot', 0xf2c84b), ellipsoid(0.015, 0.015, 0.015, 6, 4), { pos: V(0.033, 0.54, 0) });
+	for (const s of [-1, 1]) {
+		b.add('face', M.black, ellipsoid(0.012, 0.014, 0.008, 6, 4), { pos: V(s * 0.03, 0.37, 0.095) });
+		b.add('wing', black, ellipsoid(0.03, 0.1, 0.06, 6, 4), { pos: V(s * 0.14, 0.18, 0), rot: [0, 0, s * 0.3] });
+		b.add('feet', orange, new THREE.BoxGeometry(0.05, 0.015, 0.07), { pos: V(s * 0.05, 0.008, 0.04) });
+	}
+}
+
+const PEOPLE = { npc_cuidador: cuidador, npc_jaula: jaula, npc_pico: pico, animal_copito: copito };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -71,7 +89,7 @@ export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => 
 export const views = {
 	zoo_people: {
 		items: [{ name: 'npc_jaula', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_cuidador', pos: [0, 0, 0], rotY: 0.2 },
-			{ name: 'npc_pico', pos: [1.2, 0.9, 0], rotY: -0.3 }],
+			{ name: 'npc_pico', pos: [1.2, 0.9, 0], rotY: -0.3 }, { name: 'animal_copito', pos: [0.7, 0, 0.6], rotY: -0.2 }],
 		cam: { pos: [0, 1.4, 6.0], target: [0, 0.85, 0], fov: 38 },
 	},
 };
