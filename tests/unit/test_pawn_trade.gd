@@ -30,9 +30,11 @@ func test_the_shop_goods_are_for_sale_on_the_cases() -> void:
 		assert_not_null(place.goods[i].get_node_or_null("PriceTag"))
 
 
+## Don Regateo just appraised something: he prices this one at a glance (his errand is step 3's test).
 func test_evidence_left_on_the_counter_is_pawned_and_put_up_for_sale() -> void:
 	var place := _shop()
 	await wait_physics_frames(2)
+	place.appraisal.rest_left = 100.0
 	var evidence: Evidence = EVIDENCE_SCENE.instantiate()
 	place.add_child(evidence)
 	await wait_physics_frames(1)

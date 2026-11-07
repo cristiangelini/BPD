@@ -15,6 +15,7 @@ signal armor_fallen
 signal customer_complained(customer: PawnCustomer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/pawn_owner.tscn")
 const COUNTER_MODEL := preload("res://assets/models/pawn_counter.glb")
 const CASE_MODEL := preload("res://assets/models/pawn_case.glb")
 const SHELF_MODEL := preload("res://assets/models/pawn_shelf.glb")
@@ -63,6 +64,16 @@ const AISLE_Z := 1.45
 const AISLE_X := 2.8
 const TURN_GAP := 4.0
 const FIRST_TURN := 3.0
+## Don Regateo's round: back and forth behind his counter, never out in the shop. Something to pawn sends him to the
+## appraisal mat in the corner behind the counter, crouched over it, his back to the shop.
+const OWNER_ROUTE: Array[Vector3] = [Vector3(3.9, FLOOR_TOP, 6.3), Vector3(6.5, FLOOR_TOP, 6.3),
+	Vector3(9.3, FLOOR_TOP, 6.3)]
+const APPRAISAL_ON := Vector3(10.0, FLOOR_TOP, 7.9)
+## What he notices besides what every owner does: a customer's complaint (each one's own cooldown, PawnCustomer),
+## something taken out unpaid and the cops' third appraisal.
+const CUSTOMER_COMPLAINT := 5.0
+const TAKEN_COMPLAINT := 10.0
+const CAUGHT_ON := 10.0
 ## The parrot's cage hangs from the ceiling by the counter's east end.
 const CAGE_AT := Vector3(9.6, 2.6, 4.2)
 ## The three glass cases in a row in the middle of the shop, and what breaks them.
@@ -133,6 +144,9 @@ var fines := 0
 @export var case_seed := 0
 ## The counter's top: what the shop buys and sells (step 2).
 var counter: PawnCounter
+var owner_boss: FloorBoss
+var appraisal: Appraisal
+var complaint_bar: ProgressBar
 var goods: Array[Grabbable] = []
 var customers: Array[PawnCustomer] = []
 ## The customer whose turn it is (null between turns), the next one in line and how long until they go.
@@ -168,6 +182,7 @@ func _ready() -> void:
 	city_map.setup(city, "pawn_shop", car)
 	_build_trade()
 	_build_customers()
+	_place_owner()
 
 
 ## The floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its giant price tag.
@@ -255,6 +270,49 @@ func _build_trade() -> void:
 		item.position = CASES[i] + Vector3(0, CASE_SIZE.y + 0.02, 0)
 		counter.stock(item, good.price)
 		goods.append(item)
+
+
+## Don Regateo behind his counter, the appraisal that turns him away, what he notices and the complaint bar.
+func _place_owner() -> void:
+	appraisal = Appraisal.new()
+	appraisal.name = "Appraisal"
+	appraisal.position = APPRAISAL_ON
+	add_child(appraisal)
+	appraisal.appraised.connect(counter.appraisal_done)
+	owner_boss = OWNER_SCENE.instantiate()
+	for point: Vector3 in OWNER_ROUTE:
+		owner_boss.route.append(to_global(point))
+	owner_boss.printer = appraisal
+	owner_boss.printer_spot = to_global(APPRAISAL_ON + Vector3(-0.5, 0, -0.4))
+	owner_boss.fix_facing = to_global(APPRAISAL_ON + Vector3(1.0, 1.0, 1.0))
+	add_child(owner_boss)
+	owner_boss.start_at(0)
+	appraisal.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "REGATEO_CAUGHT_ON"))
+	customer_complained.connect(func(_customer: PawnCustomer) -> void:
+		owner_boss.blame(CUSTOMER_COMPLAINT, "REGATEO_CUSTOMER"))
+	counter.taken.connect(func(_item: Grabbable) -> void: owner_boss.blame(TAKEN_COMPLAINT, "REGATEO_TAKEN"))
+	stock_door.broken.connect(owner_boss.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
+	case_broken.connect(func(index: int) -> void:
+		owner_boss.saw(to_global(CASES[index] + Vector3.UP), FloorBoss.SAW_BREAK, "REGATEO_CASE"))
+	armor_fallen.connect(func() -> void:
+		owner_boss.saw(to_global(ARMOR_AT + Vector3.UP), FloorBoss.SAW_BREAK, "REGATEO_ARMOR"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_boss.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## The 3 customers, each browsing in front of the shelves.

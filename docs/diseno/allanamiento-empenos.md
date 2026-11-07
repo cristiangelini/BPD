@@ -142,3 +142,10 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   ("¿Solo 5 por la tostadora de mi tía?") y vuelven. Se quejan si hay un policía en su lugar del mostrador ("¡Permiso,
   que estoy en la fila!") o si una vitrina o la armadura se rompe a menos de 2 m ("¡Cuidado, que eso lo empeñé yo!").
   Capturas en `/mnt/project-files/allanamiento-empenos/paso2-*.png`.
+- Paso 3: Don Regateo (petiso, chaleco, lupa en el ojo, calculadora al cuello) va y viene detrás del mostrador, nunca
+  sale a la tienda. Lo que un policía deja en el mostrador para empeñar lo manda al rincón de atrás del mostrador a
+  tasarlo 15 s agachado con la lupa, de espaldas a la tienda ("Mmm... hay que ver, hay que ver..."), y recién después
+  paga. Después de una tasación descansa 45 s: lo que llega mientras lo tasa de un vistazo, sin darse vuelta. A la
+  tercera sospecha ("¿Usted vino a vender o a mirar?"), suma 10 y no lo compra. Su denuncia suma 5 por cada queja de
+  un cliente, 10 por lo que se llevan sin pagar, y lo de siempre (empujones, la puerta del depósito, la caja, las
+  vitrinas y la armadura si las ve romperse). Capturas en `/mnt/project-files/allanamiento-empenos/paso3-*.png`.
