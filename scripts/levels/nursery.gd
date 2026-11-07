@@ -63,6 +63,12 @@ const TAP_AT := Vector3(13.6, FLOOR_TOP, 0.0)
 const DENTUDA_AT := Vector3(8.0, FLOOR_TOP, 0.0)
 const DENTUDA_POT_RADIUS := 1.1
 const DENTUDA_POT_TOP := 0.84
+## Her mouth, 1.8 m up her stem and a little toward the door she faces (west).
+const DENTUDA_MOUTH := DENTUDA_AT + Vector3(-0.5, 0.8 + 1.8, 0.0)
+## The fertilizer bags she eats (NurseryDentuda.FOOD_GROUP): by the shed and one by the greenhouse door.
+const FOOD_AT: Array[Vector3] = [Vector3(-16.0, 0.3, -5.2), Vector3(-15.2, 0.3, -5.2), Vector3(3.0, 0.3, -3.4)]
+const FOOD_KG := 2.5
+const FOOD_SIZE := Vector3(0.4, 0.15, 0.6)
 ## By the front: the counter with the till, the seed basket, the shelf of ceramic pots (each one a fine), the row of
 ## gnomes and the tool hut.
 const COUNTER_AT := Vector3(-15.0, FLOOR_TOP, 8.5)
@@ -143,6 +149,9 @@ var sprinkler_heads: Array[Node3D] = []
 var jets: Array[MeshInstance3D] = []
 var yard_ground: MeshInstance3D
 var valve: PushButton
+var dentuda: NurseryDentuda
+var dentuda_plant: Node3D
+var food: Array[Grabbable] = []
 ## Money taken off the case pay: the panes and the pots.
 var fines := 0
 ## Same seed, same nursery (the stories and the hiding spots come from it, step 6).
@@ -166,6 +175,19 @@ func _ready() -> void:
 	irrigation.nursery = self
 	add_child(irrigation)
 	valve.pressed.connect(func(_cop: Cop) -> void: irrigation.start())
+	dentuda = NurseryDentuda.new()
+	dentuda.name = "Dentuda"
+	dentuda.nursery = self
+	dentuda.plant = dentuda_plant
+	dentuda.mouth = DENTUDA_MOUTH
+	add_child(dentuda)
+	for at in FOOD_AT:
+		var bag := ClubEvidence.make_item("Fertilizer%d" % food.size(), SOIL_BAG_MODEL, FOOD_SIZE, FOOD_KG)
+		(bag.get_child(1) as Node3D).position.y = -FOOD_SIZE.y / 2
+		bag.add_to_group(NurseryDentuda.FOOD_GROUP)
+		add_child(bag)
+		bag.position = at
+		food.append(bag)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("nursery")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -252,7 +274,7 @@ func _build_yard() -> void:
 
 
 ## The greenhouse: a white frame with its glass panes (the door in the west wall), the glass roof, the tables with
-## their plants, the tap and the Dentuda in her pot in the middle. She doesn't bite yet (step 3).
+## their plants, the tap and the Dentuda in her pot in the middle (she bites: NurseryDentuda).
 func _build_greenhouse() -> void:
 	var walls := [
 		["x", -GREEN_HALF_Z, GREEN_X0, GREEN_X1],
@@ -292,7 +314,7 @@ func _build_greenhouse() -> void:
 	_build.shape(_build.body(TAP_AT + Vector3(0, 0.45, 0)), Vector3(0.15, 0.9, 0.15))
 	_model(DENTUDA_POT_MODEL, DENTUDA_AT)
 	_cylinder(DENTUDA_AT + Vector3(0, DENTUDA_POT_TOP / 2, 0), DENTUDA_POT_RADIUS, DENTUDA_POT_TOP)
-	_model(DENTUDA_MODEL, DENTUDA_AT + Vector3(0, 0.8, 0), -PI / 2)
+	dentuda_plant = _model(DENTUDA_MODEL, DENTUDA_AT + Vector3(0, 0.8, 0), -PI / 2)
 	_cylinder(DENTUDA_AT + Vector3(0, 0.8 + 0.8, 0), 0.2, 1.6)
 	var lamp := _build.light(Vector3(mid_x, GREEN_TOP - 0.4, 0))
 	lamp.light_color = Color(0.9, 1.0, 0.85)

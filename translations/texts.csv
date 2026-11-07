@@ -5609,3 +5609,5 @@ LOC_under_water_tank,debajo del tanque de agua,under the water tank,debaixo da c
 PROMPT_NURSERY_VALVE,E: abrir la llave de paso del riego,E: open the sprinklers' valve,E: abrir o registro da irrigação
 HINT_NURSERY_SPRINKLER,¡Splash! El aspersor te mojó entero.,Splash! The sprinkler soaked you.,Splash! O aspersor te molhou inteiro.
 HINT_NURSERY_MUD_SLIP,¡Barro! Te resbalaste corriendo.,Mud! You slipped while running.,Lama! Você escorregou correndo.
+HINT_NURSERY_DENTUDA_TOOK,¡La Dentuda te sacó lo que tenías en la mano! Lo va a escupir en un rato.,The Dentuda took what you were holding! She'll spit it out in a moment.,A Dentuda tirou o que você tinha na mão! Ela vai cuspir daqui a pouco.
+HINT_NURSERY_DENTUDA_PUSH,¡Ñam! La Dentuda te empujó. Dale de comer abono para calmarla.,Chomp! The Dentuda pushed you. Feed her fertilizer to calm her down.,Nhac! A Dentuda te empurrou. Dê adubo para ela se acalmar.

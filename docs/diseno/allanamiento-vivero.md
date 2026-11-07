@@ -133,6 +133,14 @@ los extras suman 500.
    Hortensia en el paso 4). Una misma cosa o policía no se vuelve a empujar ni a resbalar hasta 1,5 s después.
    Capturas: `/mnt/project-files/vivero/paso2-*.png`.
 3. La Dentuda: muerde, se queda con las cosas, las escupe y se calma si come.
+   **Hecho así** (`NurseryDentuda`): su boca está 2,6 m arriba del piso del invernadero, medio metro hacia la puerta
+   (mira al oeste). Una vez cada 3 s muerde lo más cercano a menos de 1,5 m de la boca (medido en el piso, hasta 0,6 m
+   por encima): un policía o una cosa que se mueve o que alguien lleva. Lo que está quieto (lo escondido en su
+   maceta) no lo muerde. Se traga la cosa y a los 5 s la escupe a 7 m/s hacia la puerta, y no la vuelve a morder
+   hasta 2 s después. Al policía le saca lo que tiene en la mano o, con las manos vacías, lo empuja 0,5 s. Come para
+   siempre las bolsas de abono (3: dos junto al galpón y una en la puerta del invernadero, 2,5 kg) y se calma 10 s.
+   No hay hamburguesas en el juego todavía, así que por ahora solo come abono. Señales `bitten` (para Doña Hortensia
+   en el paso 4) y `fed`. Capturas: `/mnt/project-files/vivero/paso3-*.png`.
 4. Doña Hortensia: la ronda, la denuncia, "¡no me pisen los canteros!" y el camión de tierra.
 5. Brotecito y la regadera llena.
 6. El caso con la primera historia, la orquídea robada.
