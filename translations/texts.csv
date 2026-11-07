@@ -5227,6 +5227,21 @@ WH_SIDE_LEFT,"izquierda","left","esquerda"
 WH_SIDE_RIGHT,"derecha","right","direita"
 CLUE_WH_LETTER,"Buzón de la casa de la %s: una carta para «calle de los Sauces 14».","Mailbox of the house on the %s: a letter for ""14 Willow Street"".","Caixa de correio da casa da %s: uma carta para ""rua dos Salgueiros 14""."
 WH_MAILBOX_ADS,"Solo propaganda de la pizzería.","Just flyers from the pizza place.","Só propaganda da pizzaria."
+PLACE_PIZZERIA,Pizzería Don Muzza,Don Muzza's Pizzeria,Pizzaria Don Muzza
+MENU_PIZZA_RAID,Pizzería (allanamiento) (prueba),Pizzeria (raid) (test),Pizzaria (batida) (teste)
+CASE_FAILED_LAWYER_PIZZA,Don Muzza llamó al abogado de la pizzería. Caso perdido.,Don Muzza called the pizzeria's lawyer. Case lost.,Don Muzza ligou para o advogado da pizzaria. Caso perdido.
+LOC_pizza_under_counter,debajo del mostrador,under the counter,debaixo do balcão
+LOC_pizza_behind_oven,detrás del horno de barro,behind the clay oven,atrás do forno de barro
+LOC_pizza_in_cold_room,en la cámara de frío,in the cold room,na câmara fria
+LOC_pizza_under_dough_table,debajo de la mesa de amasar,under the dough table,debaixo da mesa de sovar
+LOC_pizza_in_flour_pile,entre las bolsas de harina,among the flour sacks,entre os sacos de farinha
+LOC_pizza_on_scooter_box,en la caja de una moto de reparto,in a delivery scooter's box,no baú de uma moto de entrega
+LOC_pizza_in_wardrobe,en el ropero de la oficina,in the office wardrobe,no armário do escritório
+LOC_pizza_in_drinks_fridge,en la heladera de bebidas,in the drinks fridge,na geladeira de bebidas
+LOC_pizza_in_firewood_box,en el cajón de la leña,in the firewood box,na caixa de lenha
+LOC_pizza_in_tablecloth_trunk,en el baúl de los manteles,in the tablecloth trunk,no baú das toalhas de mesa
+LOC_pizza_in_yard_bin,en el tacho del patio,in the yard bin,na lixeira do quintal
+LOC_pizza_in_box_tower,en la torre de cajas de pizza,in the tower of pizza boxes,na torre de caixas de pizza
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
