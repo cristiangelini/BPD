@@ -40,6 +40,7 @@ const MODELS := {
 	"karaoke": preload("res://assets/models/npc_rosaura.glb"),
 	"carwash": preload("res://assets/models/npc_don_chorro.glb"),
 	"dentist": preload("res://assets/models/npc_molina.glb"),
+	"costume_shop": preload("res://assets/models/npc_fantoche.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),

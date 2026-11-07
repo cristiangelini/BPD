@@ -8974,3 +8974,153 @@ CONFESS_owner_ghost,"¡Está bien! ¡Fui yo! Seis fantasmas iguales y nadie se a
 HINT_ESCAPE_ghost,"¡%s se subió al camión de la escenografía y se escapa! ¡Al patrullero, y cuidado con los decorados que se caen!","%s jumped onto the scenery truck and is getting away! To the patrol car, and mind the falling scenery!","%s subiu no caminhão de cenografia e está fugindo! Para a viatura, e cuidado com os cenários que caem!"
 PROMPT_KICK_SCENERY,"E: patear el decorado","E: kick the scenery","E: chutar o cenário"
 HINT_SCENERY_KICKED,"¡Fuera ese árbol de cartón! Nadie lo va a extrañar.","Out with that cardboard tree! Nobody will miss it.","Fora essa árvore de papelão! Ninguém vai sentir falta."
+PLACE_COSTUME_SHOP,Disfraces El Bigote Postizo,The Fake Mustache Costumes,Fantasias O Bigode Postiço
+COSTUME_MOTTO,¡Sé quien quieras!,Be whoever you want!,Seja quem você quiser!
+MENU_COSTUME_SHOP,Tienda de disfraces (allanamiento) (prueba),Costume shop (raid) (test),Loja de fantasias (batida) (teste)
+HINT_TILL_KEY_COSTUME,¡Una llave! Abre la oficina de Don Fantoche.,A key! It opens Don Fantoche's office.,Uma chave! Abre o escritório do Don Fantoche.
+CASE_FAILED_LAWYER_COSTUME,Don Fantoche llamó al abogado de la tienda. Caso perdido.,Don Fantoche called the shop's lawyer. Case lost.,Don Fantoche ligou para o advogado da loja. Caso perdido.
+COSTUME_RACK_1,Piratas,Pirates,Piratas
+COSTUME_RACK_2,Animales,Animals,Animais
+COSTUME_RACK_3,Monstruos,Monsters,Monstros
+COSTUME_RACK_4,Princesas,Princesses,Princesas
+COSTUME_RACK_5,Oficios,Jobs,Profissões
+COSTUME_FITTING_1,Probador 1,Fitting room 1,Provador 1
+COSTUME_FITTING_2,Probador 2,Fitting room 2,Provador 2
+COSTUME_FITTING_3,Probador 3,Fitting room 3,Provador 3
+COSTUME_STOCK_SIGN,DEPÓSITO · Solo personal,STOCK ROOM · Staff only,DEPÓSITO · Só funcionários
+COSTUME_MIRROR_BROKEN,«¡Mi espejo! ¡Ahora todos se ven feos!»,“My mirror! Now everyone looks ugly!”,“Meu espelho! Agora todo mundo fica feio!”
+COSTUME_CASE_BROKEN,"«¡Las máscaras! ¡Eran de colección, campeón!»","“The masks! They were collector's items, champ!”","“As máscaras! Eram de coleção, campeão!”"
+PROMPT_TALK_CUSTOMER,"E: charlar","E: chat","E: conversar"
+COSTUME_TRY_1,"«¿Me queda bien el de gallina?»","“Does the chicken one look good on me?”","“A de galinha fica bem em mim?”"
+COSTUME_TRY_2,"«¡Este de astronauta me aprieta!»","“This astronaut one is too tight!”","“Esta de astronauta está apertada!”"
+COSTUME_TRY_3,"«¿Alguien tiene un talle más de vampiro?»","“Does anyone have a bigger vampire size?”","“Alguém tem um tamanho maior de vampiro?”"
+COSTUME_TRY_4,"«¡Arrr! ¡Soy un pirata temible!»","“Arrr! I'm a fearsome pirate!”","“Arrr! Sou um pirata temível!”"
+COSTUME_TRY_5,"«No encuentro la cabeza del oso...»","“I can't find the bear's head...”","“Não encontro a cabeça do urso...”"
+COSTUME_CUSTOMER_TALK_1,"«Busco un disfraz para la fiesta de la oficina.»","“I'm looking for a costume for the office party.”","“Procuro uma fantasia para a festa do escritório.”"
+COSTUME_CUSTOMER_TALK_2,"«Don Fantoche le dice ‘campeón’ a todo el mundo.»","“Don Fantoche calls everyone ‘champ’.”","“Don Fantoche chama todo mundo de ‘campeão’.”"
+COSTUME_CUSTOMER_TALK_3,"«Esos maniquíes me miran raro.»","“Those mannequins look at me funny.”","“Esses manequins me olham estranho.”"
+COSTUME_CUSTOMER_CRUSH,"«¡Casi me aplasta un maniquí!»","“A mannequin almost crushed me!”","“Um manequim quase me esmagou!”"
+COSTUME_CUSTOMER_BUSY,"«¡Hay un policía en el probador!»","“There's a cop in the fitting room!”","“Tem um policial no provador!”"
+FANTOCHE_LINE_1,"¿Qué vas a ser hoy, campeón?","What are you going to be today, champ?","O que você vai ser hoje, campeão?"
+FANTOCHE_LINE_2,"¡Ese uniforme de policía te queda genial! ¿Lo alquilaste aquí?","That police uniform looks great on you! Did you rent it here?","Esse uniforme de policial ficou ótimo! Você alugou aqui?"
+FANTOCHE_LINE_3,"Mi loro se llama Capitán. No habla, pero escucha todo.","My parrot is called Captain. He doesn't talk, but he hears everything.","Meu papagaio se chama Capitão. Não fala, mas escuta tudo."
+FANTOCHE_LINE_4,"Todo disfraz tiene su talle, campeón. Todo.","Every costume has its size, champ. Every one.","Toda fantasia tem seu tamanho, campeão. Toda."
+FANTOCHE_PRINTER,"¡Ya te lo traigo, campeón! ¡El talle más grande!","I'll bring it right away, champ! The biggest size!","Já te trago, campeão! O maior tamanho!"
+FANTOCHE_FIX_1,"A ver… extra grande… súper grande…","Let's see… extra large… super large…","Vejamos… extra grande… super grande…"
+FANTOCHE_FIX_2,"¿Dónde metí el talle de dinosaurio?","Where did I put the dinosaur size?","Onde eu coloquei o tamanho de dinossauro?"
+FANTOCHE_FIX_3,"¡Lo encontré! Ah, no, es un mantel.","Found it! Oh, no, it's a tablecloth.","Achei! Ah, não, é uma toalha de mesa."
+FANTOCHE_FIX_DONE,"¡Aquí está! Talle gigante, campeón.","Here it is! Giant size, champ.","Aqui está! Tamanho gigante, campeão."
+FANTOCHE_HURT,"¡Epa! ¡Cuidado con el loro, campeón!","Whoa! Mind the parrot, champ!","Opa! Cuidado com o papagaio, campeão!"
+FANTOCHE_DOOR,"¡Mi oficina! ¡Esa puerta era de utilería, pero era mía!","My office! That door was a prop, but it was mine!","Meu escritório! Essa porta era cenográfica, mas era minha!"
+FANTOCHE_SAW,"¡Eso no está en alquiler, campeón!","That's not for rent, champ!","Isso não está para alugar, campeão!"
+FANTOCHE_NOTHING,"Yo solo alquilo disfraces, oficial. Con recibo.","I just rent costumes, officer. With a receipt.","Eu só alugo fantasias, policial. Com nota."
+FANTOCHE_OFFENDED,"No hablo más. Me voy a cambiar de disfraz.","I'm done talking. I'm off to change costumes.","Não falo mais. Vou trocar de fantasia."
+FANTOCHE_LAWYER,"¡Llamo a mi abogado! ¡Se disfraza de juez los sábados!","I'm calling my lawyer! He dresses up as a judge on Saturdays!","Vou ligar para o meu advogado! Ele se fantasia de juiz aos sábados!"
+FANTOCHE_CAUGHT_ON,"¿Tanto talle para qué? Ustedes no vinieron a disfrazarse.","All these sizes for what? You didn't come to dress up.","Tanto tamanho para quê? Vocês não vieram se fantasiar."
+FANTOCHE_CUSTOMER,"¡Mis clientes se quejan! ¡Así no se atiende, campeón!","My customers are complaining! That's no way to serve them, champ!","Meus clientes estão reclamando! Assim não se atende, campeão!"
+FANTOCHE_MIRROR,"¡Mi espejo! ¡Ahí se miraban todos los campeones!","My mirror! Every champ looked at himself in it!","Meu espelho! Todos os campeões se olhavam nele!"
+FANTOCHE_CASE,"¡Mis máscaras de colección!","My collector's masks!","Minhas máscaras de coleção!"
+PROMPT_TALK_MIMI,"E: hablar con Mimí","E: talk to Mimí","E: falar com a Mimí"
+MIMI_GIGGLE,¡Jiji!,Hee hee!,Hihi!
+MIMI_NOTHING,"¡Me encontraste! Mi tío no escondió nada hoy… creo.","You found me! My uncle didn't hide anything today… I think.","Você me achou! Meu tio não escondeu nada hoje… acho."
+MIMI_AGAIN,"¡Ya me encontraste! Ahora busca a otro.","You already found me! Now go find someone else.","Você já me achou! Agora procure outro."
+PROMPT_COSTUME_BELL,"E: tocar el timbre","E: ring the bell","E: tocar a campainha"
+HINT_COSTUME_BELL_WAIT,"Don Fantoche no vuelve a ir tan pronto. Espera un poco.","Don Fantoche won't go again so soon. Wait a bit.","Don Fantoche não vai de novo tão cedo. Espere um pouco."
+COSTUME_BELL_SIGN,"Atención al cliente","Customer service","Atendimento ao cliente"
+LOC_in_stock_boxes,entre las cajas del depósito,among the stock room's boxes,entre as caixas do depósito
+LOC_by_stock_shelf,al pie del estante del depósito,at the foot of the stock room's shelf,ao pé da estante do depósito
+LOC_in_dinosaur_costume,adentro del disfraz de dinosaurio,inside the dinosaur costume,dentro da fantasia de dinossauro
+LOC_behind_costume_counter,detrás del mostrador,behind the counter,atrás do balcão
+LOC_in_costume_office_corner,en un rincón de la oficina de Don Fantoche,in a corner of Don Fantoche's office,num canto do escritório do Don Fantoche
+LOC_by_wig_trunk,al lado del baúl de pelucas,by the wig trunk,ao lado do baú de perucas
+LOC_in_fitting_room_1,en el probador 1,in fitting room 1,no provador 1
+LOC_behind_pirate_rack,detrás del perchero de piratas,behind the pirates' rack,atrás da arara de piratas
+LOC_in_sale_basket,en la canasta de ofertas,in the sale basket,no cesto de ofertas
+LOC_under_costume_desk,debajo del escritorio de Don Fantoche,under Don Fantoche's desk,embaixo da escrivaninha do Don Fantoche
+LOC_behind_costume_safe,detrás de la caja fuerte,behind the safe,atrás do cofre
+LOC_on_mask_case,arriba de la vitrina de máscaras,on top of the mask display case,em cima da vitrine de máscaras
+SUSPECT_bear_loot,Esconden el botín de un robo en un disfraz,They hide a robbery's loot in a costume,Escondem o dinheiro de um roubo numa fantasia
+SUSPECT_false_fitting_room,Falsifican disfraces de marca,They fake brand-name costumes,Falsificam fantasias de marca
+SUSPECT_itchy_costumes,Venden disfraces que pican,They sell costumes that itch,Vendem fantasias que coçam
+SUSPECT_theater_costumes,Alquilan los trajes robados del teatro,They rent out the theater's stolen costumes,Alugam os figurinos roubados do teatro
+SUSPECT_smoke_bombs,Venden bombas de humo prohibidas,They sell banned smoke bombs,Vendem bombas de fumaça proibidas
+SUSPECT_neighborhood_ghost,Asustan al barrio disfrazados de fantasma,They scare the neighborhood dressed as a ghost,Assustam o bairro fantasiados de fantasma
+CLUE_SUSPECT_bear_loot,"Un recorte de diario: «Asaltan el banco unos ladrones disfrazados de payaso. Se fueron en un oso de peluche gigante».","A newspaper clipping: “Bank robbed by thieves dressed as clowns. They got away inside a giant teddy bear.”","Um recorte de jornal: “Ladrões fantasiados de palhaço assaltam o banco. Fugiram dentro de um urso de pelúcia gigante.”"
+CLUE_SUSPECT_false_fitting_room,"Una etiqueta: «Disfraz original de marca Superfantasía». Abajo, con lápiz: «hecho aquí».","A tag: “Original Superfantasy brand costume.” Below, in pencil: “made here.”","Uma etiqueta: “Fantasia original da marca Superfantasia.” Embaixo, a lápis: “feito aqui.”"
+CLUE_SUSPECT_itchy_costumes,"Una queja de un cliente: «Me alquilé un disfraz de conejo y me rasqué tres días».","A customer's complaint: “I rented a bunny costume and scratched for three days.”","Uma reclamação de um cliente: “Aluguei uma fantasia de coelho e me cocei por três dias.”"
+CLUE_SUSPECT_theater_costumes,"Un afiche roto: «Teatro de Mimos. Se suspende la obra: nos robaron los trajes».","A torn poster: “Mime Theater. Show cancelled: our costumes were stolen.”","Um cartaz rasgado: “Teatro de Mímicos. Peça suspensa: roubaram nossos figurinos.”"
+CLUE_SUSPECT_smoke_bombs,"Un pedido: «200 bombas de humo rosa. Que no se entere el comisario».","An order: “200 pink smoke bombs. Don't let the comisario find out.”","Um pedido: “200 bombas de fumaça rosa. Que o comissário não fique sabendo.”"
+CLUE_SUSPECT_neighborhood_ghost,"Un volante: «¿Su casa tiene fantasma? Véndala barata. Pregunte en la tienda de disfraces».","A flyer: “Is your house haunted? Sell it cheap. Ask at the costume shop.”","Um panfleto: “Sua casa tem fantasma? Venda barato. Pergunte na loja de fantasias.”"
+BRIEF_COSTUME_TIP_B,"Llegó una denuncia anónima: en «Disfraces El Bigote Postizo» pasan cosas raras de noche, y el dueño se compró un barco pirata de verdad.","We got an anonymous tip: strange things happen at night at «The Fake Mustache Costumes», and the owner bought himself a real pirate ship.","Chegou uma denúncia anônima: na «Fantasias O Bigode Postiço» acontecem coisas estranhas de noite, e o dono comprou um navio pirata de verdade."
+BRIEF_COSTUME_TIP_D,"La tienda está abierta y Don Fantoche atiende disfrazado de pirata. Su oficina está cerrada con llave, y su sobrina Mimí anda jugando a las escondidas.","The shop is open and Don Fantoche serves dressed as a pirate. His office is locked, and his niece Mimí is playing hide and seek.","A loja está aberta e o Don Fantoche atende fantasiado de pirata. O escritório dele está trancado, e a sobrinha Mimí está brincando de esconde-esconde."
+BRIEF_COSTUME_TIP_E,Y no rompan nada: el espejo gigante y la vitrina de máscaras se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: the giant mirror and the mask display case come out of your pay. Press Q to see your checklist.,E não quebrem nada: o espelho gigante e a vitrine de máscaras saem do salário de vocês. Com Q vocês veem a lista do que precisam fazer.
+BRIEF_BEAR_LOOT_B,"Los payasos que asaltaron el banco alquilaron los disfraces aquí, y Don Fantoche se quedó con su parte del botín.","The clowns who robbed the bank rented their costumes here, and Don Fantoche kept his share of the loot.","Os palhaços que assaltaram o banco alugaram as fantasias aqui, e o Don Fantoche ficou com a parte dele do dinheiro."
+BRIEF_BEAR_LOOT_C,"La guardó adentro del disfraz de oso, relleno de billetes. Pesa como un ropero: llévenlo entre varios.","He keeps it inside the bear costume, stuffed with bills. It weighs as much as a wardrobe: carry it together.","Ele guardou dentro da fantasia de urso, recheada de notas. Pesa como um guarda-roupa: levem entre vários."
+BRIEF_BEAR_LOOT_D,"Tráiganme el oso, la lista de alquileres de esa noche y una máscara de payaso del robo.","Bring me the bear, that night's rental list and a clown mask from the robbery.","Tragam o urso, a lista de aluguéis daquela noite e uma máscara de palhaço do roubo."
+OBJ_FIND_BEAR_LOOT,Encontrar el disfraz de oso con el botín,Find the bear costume with the loot,Achar a fantasia de urso com o dinheiro
+OBJ_EXTRA_RENTAL_LIST,La lista de alquileres de la noche del robo,The rental list of the robbery night,A lista de aluguéis da noite do roubo
+OBJ_EXTRA_CLOWN_MASK,La máscara de payaso del robo,The clown mask from the robbery,A máscara de palhaço do roubo
+OBJ_ENTER_COSTUME,Entrar a la tienda (está abierta),Get into the shop (it's open),Entrar na loja (está aberta)
+OBJ_GUESS_COSTUME,"Averiguar qué pasa en la tienda (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the shop (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na loja (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_COSTUME,Espejo y vitrina rotos: %d (multa: %d),Mirror and display case broken: %d (fines: %d),Espelho e vitrine quebrados: %d (multa: %d)
+OBJ_COMPLAINT_COSTUME,Denuncia de Don Fantoche: %d%%,Don Fantoche's complaint: %d%%,Denúncia do Don Fantoche: %d%%
+FANTOCHE_SLIP,"«¡Yo no guardé nada %s, campeón!... Digo, ¿qué disfraz buscas?»","“I didn't put anything %s, champ!... I mean, what costume are you after?”","“Eu não guardei nada %s, campeão!... Quer dizer, que fantasia você procura?”"
+CLUE_MIMI,Mimí vio a su tío esconder algo %s,Mimí saw her uncle hide something %s,A Mimí viu o tio dela esconder algo %s
+MIMI_CLUE_bear_loot,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y el oso hace ruido de papelitos.","You found me! Here's a secret: my uncle hid something %s. And the bear makes a paper rustling sound.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E o urso faz barulho de papelzinho."
+BRIEF_FALSE_FITTING_B,"Don Fantoche cose disfraces falsos de la marca Superfantasía y los alquila como originales.","Don Fantoche sews fake Superfantasy brand costumes and rents them out as the real thing.","O Don Fantoche costura fantasias falsas da marca Superfantasia e aluga como originais."
+BRIEF_FALSE_FITTING_C,"Tiene la máquina de coser escondida en algún lado de la tienda. Búsquenla, pesa bastante.","He keeps the sewing machine hidden somewhere in the shop. Find it, it's quite heavy.","Ele tem a máquina de costura escondida em algum lugar da loja. Procurem, ela é bem pesada."
+BRIEF_FALSE_FITTING_D,"Tráiganme la máquina, las etiquetas falsas y el molde del disfraz.","Bring me the machine, the fake labels and the costume pattern.","Tragam a máquina, as etiquetas falsas e o molde da fantasia."
+OBJ_FIND_FALSE_FITTING,Encontrar la máquina de coser de los disfraces falsos,Find the sewing machine of the fake costumes,Achar a máquina de costura das fantasias falsas
+OBJ_EXTRA_FAKE_BRAND_LABELS,Las etiquetas de marca falsas,The fake brand labels,As etiquetas de marca falsas
+OBJ_EXTRA_COSTUME_PATTERN,El molde del disfraz,The costume pattern,O molde da fantasia
+COSTUME_OUT_OF_ORDER,Fuera de servicio,Out of order,Fora de serviço
+PROMPT_FALSE_BACK,"E: empujar el espejo","E: push the mirror","E: empurrar o espelho"
+SEWING_SOUND,¡Tracatracatraca!,Rattattattat!,Tracatracatraca!
+CLUE_SEWING_SOUND,En el probador 3 se oye una máquina de coser detrás del espejo,In fitting room 3 you hear a sewing machine behind the mirror,No provador 3 se ouve uma máquina de costura atrás do espelho
+MIMI_CLUE_false_fitting_room,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y en el probador 3 hay ruido de noche.","You found me! Here's a secret: my uncle hid something %s. And there's noise in fitting room 3 at night.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E no provador 3 tem barulho de noite."
+BRIEF_ITCHY_B,"Don Fantoche les echa polvo pica-pica a los disfraces, y los clientes terminan comprando la crema «Antipica» de la farmacia de su primo.","Don Fantoche sprinkles itching powder on the costumes, and the customers end up buying the «No-Itch» cream from his cousin's pharmacy.","O Don Fantoche joga pó de mico nas fantasias, e os clientes acabam comprando o creme «Antecoceira» da farmácia do primo dele."
+BRIEF_ITCHY_C,"El bidón de polvo está escondido en algún lado de la tienda. No lo abran.","The drum of powder is hidden somewhere in the shop. Don't open it.","O galão de pó está escondido em algum lugar da loja. Não abram."
+BRIEF_ITCHY_D,"Tráiganme el bidón, los frascos de crema y el folleto de la farmacia.","Bring me the drum, the cream jars and the pharmacy's flyer.","Tragam o galão, os potes de creme e o folheto da farmácia."
+OBJ_FIND_ITCHY,Encontrar el bidón de polvo pica-pica,Find the drum of itching powder,Achar o galão de pó de mico
+OBJ_EXTRA_CREAM_JARS,Los frascos de crema «Antipica»,The «No-Itch» cream jars,Os potes de creme «Antecoceira»
+OBJ_EXTRA_PHARMACY_FLYER,El folleto de la farmacia del primo,The cousin's pharmacy flyer,O folheto da farmácia do primo
+HINT_ITCHY,¡Me pica todo!,I itch all over!,Está coçando tudo!
+CLUE_ITCHY_COSTUME,El disfraz de conejo de la canasta de ofertas pica muchísimo,The bunny costume in the sale basket itches like crazy,A fantasia de coelho do cesto de ofertas coça demais
+CUSTOMER_ITCHY,¡Ay! ¡Este disfraz pica!,Ow! This costume itches!,Ai! Esta fantasia coça!
+MIMI_CLUE_itchy_costumes,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y dice que la crema de su primo se vende sola.","You found me! Here's a secret: my uncle hid something %s. And he says his cousin's cream sells itself.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E ele diz que o creme do primo vende sozinho."
+BRIEF_THEATER_B,"Al Teatro de Mimos le robaron todos los trajes, y Don Fantoche los alquila como si fueran suyos.","All the Mime Theater's costumes were stolen, and Don Fantoche rents them out as if they were his.","Roubaram todos os figurinos do Teatro de Mímicos, e o Don Fantoche aluga como se fossem dele."
+BRIEF_THEATER_C,"Los trajes vinieron en el baúl del teatro. Está escondido en algún lado de la tienda, y pesa.","The costumes came in the theater's trunk. It's hidden somewhere in the shop, and it's heavy.","Os figurinos vieram no baú do teatro. Está escondido em algum lugar da loja, e é pesado."
+BRIEF_THEATER_D,"Tráiganme el baúl, el sello del teatro y el programa de la obra.","Bring me the trunk, the theater's stamp and the play's program.","Tragam o baú, o carimbo do teatro e o programa da peça."
+OBJ_FIND_THEATER,Encontrar el baúl con los trajes del teatro,Find the trunk with the theater's costumes,Achar o baú com os figurinos do teatro
+OBJ_EXTRA_THEATER_STAMP,El sello del teatro,The theater's stamp,O carimbo do teatro
+OBJ_EXTRA_PLAY_PROGRAM,El programa de la obra,The play's program,O programa da peça
+PROMPT_COSTUME_TAG,"E: mirar la etiqueta","E: look at the tag","E: olhar a etiqueta"
+CLUE_THEATER_TAG,Un disfraz del perchero de oficios tiene la etiqueta «Propiedad del Teatro de Mimos»,A costume on the jobs rack has the tag “Property of the Mime Theater”,Uma fantasia do cabide de profissões tem a etiqueta “Propriedade do Teatro de Mímicos”
+THEATER_POSTER,"Teatro de Mimos: se suspende la obra. ¡Nos robaron los trajes!","Mime Theater: show cancelled. Our costumes were stolen!","Teatro de Mímicos: peça suspensa. Roubaram nossos figurinos!"
+MIMI_CLUE_theater_costumes,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y trajo un baúl lleno de trajes de mimo.","You found me! Here's a secret: my uncle hid something %s. And he brought a trunk full of mime costumes.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E ele trouxe um baú cheio de figurinos de mímico."
+BRIEF_SMOKE_B,"Don Fantoche vende bombas de humo de colores prohibidas a magos y bromistas. Ya llenaron de humo rosa tres cumpleaños.","Don Fantoche sells banned colored smoke bombs to magicians and pranksters. They've already filled three birthday parties with pink smoke.","O Don Fantoche vende bombas de fumaça coloridas proibidas para mágicos e brincalhões. Já encheram três aniversários de fumaça rosa."
+BRIEF_SMOKE_C,"La caja de bombas está escondida en algún lado de la tienda. No la tiren, por favor.","The box of bombs is hidden somewhere in the shop. Please don't throw it.","A caixa de bombas está escondida em algum lugar da loja. Por favor, não joguem."
+BRIEF_SMOKE_D,"Tráiganme la caja, el sombrero de doble fondo y la lista de clientes.","Bring me the box, the hat with the double bottom and the list of buyers.","Tragam a caixa, a cartola de fundo falso e a lista de clientes."
+OBJ_FIND_SMOKE,Encontrar la caja de bombas de humo,Find the box of smoke bombs,Achar a caixa de bombas de fumaça
+OBJ_EXTRA_DOUBLE_HAT,El sombrero de mago con doble fondo,The magician's hat with a double bottom,A cartola de mágico com fundo falso
+OBJ_EXTRA_SMOKE_CLIENTS,La lista de clientes de las bombas,The list of bomb buyers,A lista de clientes das bombas
+CLUE_SHOW_HAT,El sombrero de mago del baúl suelta una nube de humo de color cuando lo tiras,The magician's hat on the trunk lets out a cloud of colored smoke when you throw it,A cartola de mágico do baú solta uma nuvem de fumaça colorida quando você joga
+MIMI_CLUE_smoke_bombs,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y del depósito sale humo rosa.","You found me! Here's a secret: my uncle hid something %s. And pink smoke comes out of the stock room.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E sai fumaça rosa do depósito."
+BRIEF_NEIGHBOR_GHOST_B,"Por las noches, un fantasma con cadenas asusta a los vecinos de la cuadra, y Don Fantoche les compra las casas baratas cuando se mudan.","At night a ghost with chains scares the neighbors on the block, and Don Fantoche buys their houses cheap when they move out.","À noite, um fantasma com correntes assusta os vizinhos do quarteirão, e o Don Fantoche compra as casas baratinho quando eles se mudam."
+BRIEF_NEIGHBOR_GHOST_C,"El fantasma es él. El disfraz está escondido en algún lado de la tienda.","The ghost is him. The costume is hidden somewhere in the shop.","O fantasma é ele. A fantasia está escondida em algum lugar da loja."
+BRIEF_NEIGHBOR_GHOST_D,"Tráiganme el disfraz de fantasma, la grabadora de aullidos y la lista de casas del barrio.","Bring me the ghost costume, the howl recorder and the list of the neighborhood's houses.","Tragam a fantasia de fantasma, o gravador de uivos e a lista de casas do bairro."
+OBJ_FIND_GHOST,Encontrar el disfraz de fantasma con cadenas,Find the ghost costume with chains,Achar a fantasia de fantasma com correntes
+OBJ_EXTRA_HOWL_RECORDER,La grabadora de aullidos,The howl recorder,O gravador de uivos
+OBJ_EXTRA_HOUSE_LIST,La lista de casas del barrio,The list of the neighborhood's houses,A lista de casas do bairro
+PROMPT_LIGHTS_OFF,"E: apagar la luz","E: turn the lights off","E: apagar a luz"
+PROMPT_LIGHTS_ON,"E: prender la luz","E: turn the lights on","E: acender a luz"
+PROMPT_GLOW_COSTUME,"E: mirar el disfraz que brilla","E: look at the glowing costume","E: olhar a fantasia que brilha"
+CLUE_GHOST_GLOW,"Con la luz apagada, un disfraz blanco del perchero de monstruos brilla en la oscuridad","With the lights off, a white costume on the monsters rack glows in the dark","Com a luz apagada, uma fantasia branca do cabide de monstros brilha no escuro"
+FANTOCHE_LIGHTS,"¡Eh! ¿Quién apagó la luz, campeón?","Hey! Who turned off the lights, champ?","Ei! Quem apagou a luz, campeão?"
+CUSTOMER_GHOST_1,"¿Supiste? Anoche el fantasma asustó a la vecina del 5.","Did you hear? Last night the ghost scared the neighbor at number 5.","Ficou sabendo? Ontem à noite o fantasma assustou a vizinha do 5."
+CUSTOMER_GHOST_2,"Si el fantasma vuelve, vendo la casa. Don Fantoche dice que me la compra.","If the ghost comes back, I'm selling the house. Don Fantoche says he'll buy it.","Se o fantasma voltar, eu vendo a casa. O Don Fantoche diz que compra."
+CUSTOMER_GHOST_3,"El fantasma arrastra cadenas y aúlla... siempre a la misma hora.","The ghost drags chains and howls... always at the same time.","O fantasma arrasta correntes e uiva... sempre na mesma hora."
+MIMI_CLUE_neighborhood_ghost,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y de noche sale a pasear con sábanas.","You found me! Here's a secret: my uncle hid something %s. And at night he goes out for walks wearing sheets.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E de noite ele sai para passear de lençol."
+HINT_ESCAPE_costume_shop,¡Don Fantoche vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Fantoche saw the evidence and is getting away in his car! You have one minute to catch him.,O Don Fantoche viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CRIME_owner_costume_shop,"¡Novatos! Ayer se trajeron a Don Fantoche, el dueño de la tienda de disfraces, y lo tenemos en la sala de interrogatorio. Algo escondió en la tienda que no encontraron.","Rookies! Yesterday you brought in Don Fantoche, the costume shop's owner, and he's in the interrogation room. He hid something in the shop you never found.","Novatos! Ontem vocês trouxeram o Don Fantoche, o dono da loja de fantasias, e ele está na sala de interrogatório. Ele escondeu algo na loja que vocês não acharam."
+CONFESS_owner_costume_shop,"¡Está bien, campeón! ¡Fui yo! Pero me llevo el parche puesto.","Fine, champ! It was me! But I'm keeping the eye patch on.","Tá bom, campeão! Fui eu! Mas vou com o tapa-olho."

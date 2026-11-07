@@ -18,6 +18,7 @@ const RAID_PLACES: Array[String] = [
 	"karaoke",
 	"carwash",
 	"dentist",
+	"costume_shop",
 ]
 
 
