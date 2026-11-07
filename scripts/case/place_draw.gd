@@ -60,6 +60,7 @@ const PLACES := {
 	"birthday": "res://scenes/levels/plaza_birthday.tscn",
 	"convertible": "res://scenes/levels/plaza_convertible.tscn",
 	"laundry": "res://scenes/levels/prison_laundry.tscn",
+	"pizza_raid": "res://scenes/levels/pizza_raid.tscn",
 	"hardware": "res://scenes/levels/hardware_store.tscn",
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
 	"insurance": "res://scenes/levels/insurance_office.tscn",
@@ -96,7 +97,7 @@ const PLACES := {
 	"furniture": "res://scenes/levels/furniture_store.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage", "fair", "birthday_raid", "cinema", "supermarket", "farm_raid", "radio", "bowling", "rink", "ice_cream", "karaoke", "carwash", "dentist_raid", "costume_shop", "furniture"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage", "fair", "birthday_raid", "cinema", "supermarket", "farm_raid", "radio", "bowling", "rink", "ice_cream", "karaoke", "carwash", "dentist_raid", "costume_shop", "furniture", "pizza_raid"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3

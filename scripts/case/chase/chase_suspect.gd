@@ -42,6 +42,7 @@ const MODELS := {
 	"dentist": preload("res://assets/models/npc_molina.glb"),
 	"costume_shop": preload("res://assets/models/npc_fantoche.glb"),
 	"furniture": preload("res://assets/models/npc_don_cajon.glb"),
+	"pizzeria": preload("res://assets/models/npc_muzza.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),

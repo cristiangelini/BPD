@@ -111,6 +111,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "MENU_INSURANCE"
 
+[node name="PizzaRaidButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MENU_PIZZA_RAID"
+
 [node name="CakeLabButton" type="Button" parent="Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)

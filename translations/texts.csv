@@ -5701,6 +5701,97 @@ WH_SIDE_LEFT,"izquierda","left","esquerda"
 WH_SIDE_RIGHT,"derecha","right","direita"
 CLUE_WH_LETTER,"Buzón de la casa de la %s: una carta para «calle de los Sauces 14».","Mailbox of the house on the %s: a letter for ""14 Willow Street"".","Caixa de correio da casa da %s: uma carta para ""rua dos Salgueiros 14""."
 WH_MAILBOX_ADS,"Solo propaganda de la pizzería.","Just flyers from the pizza place.","Só propaganda da pizzaria."
+PLACE_PIZZERIA,Pizzería Don Muzza,Don Muzza's Pizzeria,Pizzaria Don Muzza
+MENU_PIZZA_RAID,Pizzería (allanamiento) (prueba),Pizzeria (raid) (test),Pizzaria (batida) (teste)
+CASE_FAILED_LAWYER_PIZZA,Don Muzza llamó al abogado de la pizzería. Caso perdido.,Don Muzza called the pizzeria's lawyer. Case lost.,Don Muzza ligou para o advogado da pizzaria. Caso perdido.
+LOC_pizza_under_counter,debajo del mostrador,under the counter,debaixo do balcão
+LOC_pizza_behind_oven,detrás del horno de barro,behind the clay oven,atrás do forno de barro
+LOC_pizza_in_cold_room,en la cámara de frío,in the cold room,na câmara fria
+LOC_pizza_under_dough_table,debajo de la mesa de amasar,under the dough table,debaixo da mesa de sovar
+LOC_pizza_in_flour_pile,entre las bolsas de harina,among the flour sacks,entre os sacos de farinha
+LOC_pizza_on_scooter_box,en la caja de una moto de reparto,in a delivery scooter's box,no baú de uma moto de entrega
+LOC_pizza_in_wardrobe,en el ropero de la oficina,in the office wardrobe,no armário do escritório
+LOC_pizza_in_drinks_fridge,en la heladera de bebidas,in the drinks fridge,na geladeira de bebidas
+LOC_pizza_in_firewood_box,en el cajón de la leña,in the firewood box,na caixa de lenha
+LOC_pizza_in_tablecloth_trunk,en el baúl de los manteles,in the tablecloth trunk,no baú das toalhas de mesa
+LOC_pizza_in_yard_bin,en el tacho del patio,in the yard bin,na lixeira do quintal
+LOC_pizza_in_box_tower,en la torre de cajas de pizza,in the tower of pizza boxes,na torre de caixas de pizza
+PROMPT_PIZZA_PHONE,E: llamar y pedir una grande de muzza,E: call and order a large cheese pizza,E: ligar e pedir uma grande de muçarela
+RING_PHONE,¡Riiing!,Riiing!,Triiim!
+HINT_PHONE_BUSY,Don Muzza ya está haciendo un pedido.,Don Muzza is already making an order.,Don Muzza já está fazendo um pedido.
+HINT_PHONE_RESTING,"Don Muzza mira el teléfono con sospecha. Espera un poco.","Don Muzza eyes the phone suspiciously. Wait a bit.","Don Muzza olha para o telefone desconfiado. Espere um pouco."
+MUZZA_LINE_1,"♪ Muzza, muzza, muzzarella, la más rica es la más bella ♪","♪ Mozzarella, mozzarella, the tastiest and most bella ♪","♪ Muça, muça, muçarela, a mais gostosa e a mais bela ♪"
+MUZZA_LINE_2,"La pizza más barata del barrio. ¿Clientes? Están por venir.","The cheapest pizza in the neighborhood. Customers? They're on their way.","A pizza mais barata do bairro. Clientes? Estão chegando."
+MUZZA_LINE_3,"¿Motos nuevas? Las gané en una rifa. Tres veces.","New scooters? I won them in a raffle. Three times.","Motos novas? Ganhei numa rifa. Três vezes."
+MUZZA_LINE_4,"No toquen la masa. La masa siente.","Don't touch the dough. The dough has feelings.","Não toquem na massa. A massa sente."
+MUZZA_PRINTER,"¡Un pedido! ¡Una grande de muzza, sale!","An order! One large cheese pizza, coming up!","Um pedido! Uma grande de muçarela, saindo!"
+MUZZA_FIX_1,"♪ Amasa, amasa, que la masa no se pasa ♪","♪ Knead it, knead it, the dough won't be defeated ♪","♪ Sova, sova, que a massa não estoura ♪"
+MUZZA_FIX_2,"♪ Un poquito de tomate, un poquito de amor ♪","♪ A little bit of tomato, a little bit of love ♪","♪ Um pouquinho de tomate, um pouquinho de amor ♪"
+MUZZA_FIX_3,"♪ Queso, queso, mucho queso… bueno, el que hay ♪","♪ Cheese, cheese, lots of cheese… well, what there is ♪","♪ Queijo, queijo, muito queijo… bom, o que tem ♪"
+MUZZA_FIX_DONE,"¡Lista! ¿Y el cliente? Bueno, la como yo.","Done! And the customer? Well, I'll eat it.","Pronta! E o cliente? Bom, eu como."
+MUZZA_HURT,"¡Cuidado! ¡Casi se me cae el bollo!","Careful! I almost dropped my dough!","Cuidado! Quase deixei a massa cair!"
+MUZZA_DOOR,"¿Me rompieron la puerta? ¡Esto es una pizzería, no una demolición!","You broke my door? This is a pizzeria, not a demolition!","Quebraram minha porta? Isto é uma pizzaria, não uma demolição!"
+MUZZA_SAW,"¡Me arruinaron la masa!","You ruined my dough!","Vocês estragaram minha massa!"
+MUZZA_NOTHING,"Yo solo hago pizzas, oficial. Baratas.","I just make pizzas, officer. Cheap ones.","Eu só faço pizzas, policial. Baratas."
+MUZZA_OFFENDED,"No hablo más. La masa tiene que descansar, y yo también.","I'm done talking. The dough needs to rest, and so do I.","Não falo mais. A massa precisa descansar, e eu também."
+MUZZA_LAWYER,"¡Llamo a mi abogado! Le debo tres pizzas, pero viene igual.","I'm calling my lawyer! I owe him three pizzas, but he'll come anyway.","Vou ligar para o meu advogado! Devo três pizzas para ele, mas ele vem mesmo assim."
+MUZZA_PLATE,"¡Mis platos! ¡Eran de la abuela!","My plates! They were grandma's!","Meus pratos! Eram da vovó!"
+MUZZA_FLOUR,"¡Me están enharinando el local! ¡Eso es harina cero cero cero!","You're getting flour all over my place! That's triple-zero flour!","Estão enfarinhando o meu local! É farinha zero zero zero!"
+MUZZA_OVEN,"¡¿Qué metieron en mi horno?! ¡Ahí solo entra pizza!","What did you put in my oven?! Only pizza goes in there!","O que vocês colocaram no meu forno?! Ali só entra pizza!"
+PROMPT_OVEN_HAND,E: meter la mano en el horno,E: put your hand in the oven,E: enfiar a mão no forno
+HINT_OVEN_HOT,"¡Ay, quema! Soltaste lo que tenías.","Ouch, it's hot! You let go of what you had.","Ai, queima! Você soltou o que segurava."
+PROMPT_TITO,E: hablar con Tito,E: talk to Tito,E: falar com o Tito
+PROMPT_TITO_SLICE,E: darle la porción a Tito,E: give Tito the slice,E: dar a fatia para o Tito
+TITO_WANTS_SLICE,"Tengo un hambre… Don Muzza no me deja comer en horario. Si me traen una porción, les cuento algo.","I'm so hungry… Don Muzza won't let me eat on the clock. Bring me a slice and I'll tell you something.","Que fome… Don Muzza não me deixa comer no expediente. Se me trouxerem uma fatia, eu conto uma coisa."
+TITO_AGAIN,"Ya les conté todo. Bueno, todo lo que vi.","I already told you everything. Well, everything I saw.","Já contei tudo. Bom, tudo o que vi."
+TITO_THANKS,"¡Gracias! Otra porción más y llego a la noche.","Thanks! One more slice and I'll make it to tonight.","Valeu! Mais uma fatia e eu chego até a noite."
+TITO_NOTHING,"Mmm, rica. Pero no vi nada raro, eh. Bueno, las motos nuevas.","Mmm, tasty. But I didn't see anything weird. Well, the new scooters.","Hmm, gostosa. Mas não vi nada estranho, hein. Bom, as motos novas."
+TITO_IDLE_1,"Tres motos nuevas y ni un pedido. Yo reparto aire.","Three new scooters and not a single order. I deliver air.","Três motos novas e nenhum pedido. Eu entrego ar."
+TITO_IDLE_2,"¿Saben patinar? Yo reparto en patines. La moto es para la foto.","Can you skate? I deliver on skates. The scooter is for the photo.","Vocês sabem patinar? Eu entrego de patins. A moto é para a foto."
+TITO_IDLE_3,"Huele a muzza… y yo acá, con la panza vacía.","It smells like cheese pizza… and here I am, with an empty belly.","Cheiro de muçarela… e eu aqui, de barriga vazia."
+BRIEF_PIZZA_TIP_B,"Llegó una denuncia anónima: Don Muzza no tiene clientes, pero se compró tres motos de reparto nuevas.","We got an anonymous tip: Don Muzza has no customers, but he just bought three new delivery scooters.","Chegou uma denúncia anônima: Don Muzza não tem clientes, mas comprou três motos de entrega novas."
+BRIEF_PIZZA_TIP_D,"El salón está abierto y Don Muzza se ofende por cada plato roto. La cámara de frío está cerrada con llave: usen el ariete.","The dining room is open and Don Muzza takes offense at every broken plate. The cold room is locked: use the ram.","O salão está aberto e Don Muzza se ofende com cada prato quebrado. A câmara fria está trancada: usem o aríete."
+BRIEF_PIZZA_TIP_E,"Y cuidado con el horno: lo que queda adentro se quema. Con Q ven la planilla.","And careful with the oven: whatever stays inside burns. Press Q to see the checklist.","E cuidado com o forno: o que fica dentro queima. Com Q vocês veem a planilha."
+BRIEF_JEWELS_B,"Don Muzza esconde joyas robadas adentro de pizzas congeladas y las reparte a «clientes especiales».","Don Muzza hides stolen jewels inside frozen pizzas and delivers them to «special customers».","Don Muzza esconde joias roubadas dentro de pizzas congeladas e entrega para «clientes especiais»."
+BRIEF_JEWELS_C,"Traigan la caja de pizzas congeladas con las joyas en el baúl del patrullero. Pesa 5 kilos y vale una fortuna.","Bring the box of frozen pizzas with the jewels in the patrol car's trunk. It weighs 5 kilos and is worth a fortune.","Tragam a caixa de pizzas congeladas com as joias no porta-malas da viatura. Pesa 5 quilos e vale uma fortuna."
+BRIEF_JEWELS_D,"Si encuentran la lupa de joyero o la lista de «clientes especiales», mejor: todo suma. Y no la metan al horno.","If you find the jeweler's loupe or the «special customers» list, even better: it all counts. And don't put it in the oven.","Se acharem a lupa de joalheiro ou a lista de «clientes especiais», melhor: tudo soma. E não coloquem no forno."
+OBJ_FIND_FROZEN_JEWELS,Llevarse la caja de pizzas congeladas con las joyas,Take the box of frozen pizzas with the jewels,Levar a caixa de pizzas congeladas com as joias
+OBJ_EXTRA_SPECIAL_CLIENTS,Extra: la lista de «clientes especiales»,Extra: the «special customers» list,Extra: a lista de «clientes especiais»
+SUSPECT_jewels,Las joyas en la muzza,The jewels in the cheese,As joias na muçarela
+SUSPECT_crazy_yeast,La levadura loca,The crazy yeast,O fermento maluco
+SUSPECT_oven_tunnel,El horno con túnel,The oven with a tunnel,O forno com túnel
+SUSPECT_phone_backpack,Los celulares en la mochila,The phones in the backpack,Os celulares na mochila
+SUSPECT_plastic_cheese,El queso de plástico,The plastic cheese,O queijo de plástico
+SUSPECT_giant_pizza,La pizza gigante,The giant pizza,A pizza gigante
+CLUE_SUSPECT_jewels,"Un recibo de una joyería: «Tasar 3 collares y 12 anillos. Traerlos congelados, como siempre».","A jeweler's receipt: «Appraise 3 necklaces and 12 rings. Bring them frozen, as usual».","Um recibo de uma joalheria: «Avaliar 3 colares e 12 anéis. Trazer congelados, como sempre»."
+CLUE_SUSPECT_crazy_yeast,"Un pedido: «20 litros de súper levadura. Que no la vea la aduana».","An order: «20 liters of super yeast. Keep it away from customs».","Um pedido: «20 litros de superfermento. Que a alfândega não veja»."
+CLUE_SUSPECT_oven_tunnel,"Una factura: «Alquiler de pala y casco de minero. Por 30 días».","An invoice: «Shovel and miner's helmet rental. For 30 days».","Uma nota: «Aluguel de pá e capacete de mineiro. Por 30 dias»."
+CLUE_SUSPECT_phone_backpack,"Una nota: «El martes entran 80 celulares. Repartirlos en la mochila térmica».","A note: «80 phones come in on Tuesday. Deliver them in the thermal backpack».","Um bilhete: «Na terça chegam 80 celulares. Entregar na mochila térmica»."
+CLUE_SUSPECT_plastic_cheese,"Un recibo: «500 kg de bolitas de plástico color queso».","A receipt: «500 kg of cheese-colored plastic pellets».","Um recibo: «500 kg de bolinhas de plástico cor de queijo»."
+CLUE_SUSPECT_giant_pizza,"Un pedido: «Imprimir 10 000 billetes. Que parezcan de verdad. Bueno, más o menos».","An order: «Print 10,000 bills. Make them look real. Well, more or less».","Um pedido: «Imprimir 10 000 notas. Que pareçam de verdade. Bom, mais ou menos»."
+OBJ_ENTER_PIZZA,Entrar a la pizzería (el salón está abierto),Get into the pizzeria (the dining room is open),Entrar na pizzaria (o salão está aberto)
+OBJ_GUESS_PIZZA,"Averiguar qué pasa en la pizzería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the pizzeria (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na pizzaria (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_PIZZA,Platos rotos: %d (multa: %d),Broken plates: %d (fines: %d),Pratos quebrados: %d (multa: %d)
+OBJ_COMPLAINT_PIZZA,Queja de Don Muzza: %d%%,Don Muzza's complaint: %d%%,Queixa de Don Muzza: %d%%
+MUZZA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿le pongo aceitunas?»","“I didn't put anything %s!... I mean, want olives on that?”","“Eu não guardei nada %s!... Quer dizer, coloco azeitonas?”"
+CLUE_TITO,Tito vio a Don Muzza esconder algo %s,Tito saw Don Muzza hide something %s,O Tito viu Don Muzza esconder algo %s
+TITO_CLUE_jewels,"«Mmm… Vi a Don Muzza esconder algo %s. Y ayer me tocó repartir una pizza congelada que hacía clinc.»","“Mmm… I saw Don Muzza hide something %s. And yesterday I delivered a frozen pizza that went clink.”","“Hmm… Vi Don Muzza esconder algo %s. E ontem entreguei uma pizza congelada que fazia plim.”"
+PROMPT_BITTEN_SLICE,E: mirar la porción mordida,E: look at the bitten slice,E: olhar a fatia mordida
+CLUE_BITTEN_SLICE,Una porción mordida en el tacho tiene un anillo de oro en el queso,A bitten slice in the bin has a gold ring in the cheese,Uma fatia mordida na lixeira tem um anel de ouro no queijo
+PROMPT_TOWER_LIFT,E: levantar una caja de la torre,E: lift a box from the tower,E: levantar uma caixa da torre
+TOWER_COINS,¡Clinc! ¡Clinc!,Clink! Clink!,Plim! Plim!
+CLUE_TOWER_COINS,Una caja de la torre del mostrador suena a monedas,A box in the counter's tower clinks like coins,Uma caixa da torre do balcão faz barulho de moedas
+BRIEF_YEAST_B,"Don Muzza mete súper levadura de contrabando y se la vende a las panaderías: los panes salen del tamaño de un auto.","Don Muzza smuggles super yeast and sells it to bakeries: the loaves come out the size of a car.","Don Muzza contrabandeia superfermento e vende para as padarias: os pães saem do tamanho de um carro."
+BRIEF_YEAST_C,"Traigan el bidón de súper levadura en el baúl del patrullero. Pesa 20 kilos: entre dos.","Bring the drum of super yeast in the patrol car's trunk. It weighs 20 kilos: carry it between two.","Tragam o galão de superfermento no porta-malas da viatura. Pesa 20 quilos: carreguem em dois."
+BRIEF_YEAST_D,"Si encuentran las pastillas de levadura o la factura de «Panaderías Infladas», mejor. Y lejos de los bollos: cuando revientan, pegan.","If you find the yeast pills or the «Inflated Bakeries» invoice, even better. And stay away from the dough balls: when they burst, they stick.","Se acharem as pastilhas de fermento ou a nota das «Padarias Infladas», melhor. E longe das bolas de massa: quando estouram, grudam."
+OBJ_FIND_YEAST_DRUM,Llevarse el bidón de súper levadura,Take the drum of super yeast,Levar o galão de superfermento
+OBJ_EXTRA_YEAST_PILLS,Extra: las pastillas de levadura,Extra: the yeast pills,Extra: as pastilhas de fermento
+OBJ_EXTRA_INFLATED_INVOICE,Extra: la factura de «Panaderías Infladas»,Extra: the «Inflated Bakeries» invoice,Extra: a nota das «Padarias Infladas»
+TITO_CLUE_crazy_yeast,"«Mmm… Vi a Don Muzza esconder algo %s. Y el otro día la masa se escapó sola de la cocina. Yo la vi.»","“Mmm… I saw Don Muzza hide something %s. And the other day the dough escaped from the kitchen on its own. I saw it.”","“Hmm… Vi Don Muzza esconder algo %s. E outro dia a massa fugiu sozinha da cozinha. Eu vi.”"
+PROMPT_DOUGH_PUDDLE,E: mirar la masa del piso,E: look at the dough on the floor,E: olhar a massa no chão
+CLUE_DOUGH_PUDDLE,Sale masa por debajo de la puerta de la cámara de frío,Dough is oozing out from under the cold room's door,Está saindo massa por baixo da porta da câmara fria
+DOUGH_PLOF,¡PLOF!,PLOF!,PLOFT!
+HINT_DOUGH_STUCK,"¡Te reventó un bollo encima! Quedaste pegado en la masa.","A dough ball burst on you! You're stuck in the dough.","Uma bola de massa estourou em você! Você ficou grudado na massa."
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
@@ -9271,3 +9362,53 @@ CLUE_FINE_PRINT,"Las etiquetas de precio dicen «120 cuotas de $1» y, en letra 
 CAJON_OFFER_1,"¿Me miras, oficial? ¡Te hago precio! Cuota 1 de 999, y la primera te la regalo.","Looking at me, officer? I'll give you a deal! Installment 1 of 999, and the first one's on me.","Está me olhando, oficial? Te faço um preço! Parcela 1 de 999, e a primeira é por minha conta."
 CAJON_OFFER_2,"Esa mirada es de cliente. ¿En cuántas cuotas lo quieres? Tengo de 120, de 999 y de para siempre.","That's a customer's look. How many installments do you want? I've got 120, 999 and forever.","Esse olhar é de cliente. Em quantas parcelas você quer? Tenho de 120, de 999 e de para sempre."
 CAJON_OFFER_3,"Aunque me estés denunciando, oficial: ¿una mesita de luz? Cuotas sin fin, sin interés. Bueno, con un poquito.","Even while you're reporting me, officer: a nightstand? Endless installments, no interest. Well, a little bit.","Mesmo me denunciando, oficial: um criado-mudo? Parcelas sem fim, sem juros. Bom, com um pouquinho."
+BRIEF_OVEN_TUNNEL_B,"Don Muzza cava un túnel desde su horno de barro hasta el banco de al lado. Ya sacó una bolsa de plata.","Don Muzza is digging a tunnel from his clay oven to the bank next door. He already took out a bag of silver.","Don Muzza cava um túnel do forno de barro até o banco ao lado. Já tirou um saco de prata."
+BRIEF_OVEN_TUNNEL_C,"Traigan la bolsa de plata del banco en el baúl del patrullero. Está al fondo del túnel.","Bring the bank's bag of silver in the patrol car's trunk. It's at the far end of the tunnel.","Tragam o saco de prata do banco no porta-malas da viatura. Está no fundo do túnel."
+BRIEF_OVEN_TUNNEL_D,"Si encuentran el casco de minero o el plano del banco, mejor. El horno quema: apáguenlo antes de meterse.","If you find the miner's helmet or the bank's floor plan, even better. The oven burns: put it out before you go in.","Se acharem o capacete de mineiro ou a planta do banco, melhor. O forno queima: apaguem antes de entrar."
+OBJ_FIND_SILVER_BAG,Llevarse la bolsa de plata del banco,Take the bank's bag of silver,Levar o saco de prata do banco
+OBJ_EXTRA_BANK_PLAN,Extra: el plano del banco,Extra: the bank's floor plan,Extra: a planta do banco
+TITO_CLUE_oven_tunnel,"«Mmm… Vi a Don Muzza esconder algo %s. Y de noche el horno hace ruido de pala. Yo lo oí.»","“Mmm… I saw Don Muzza hide something %s. And at night the oven sounds like a shovel. I heard it.”","“Hmm… Vi Don Muzza esconder algo %s. E à noite o forno faz barulho de pá. Eu ouvi.”"
+LOC_pizza_oven_tunnel,en el túnel debajo del horno,in the tunnel under the oven,no túnel debaixo do forno
+PROMPT_SOOT_PRINTS,E: mirar las huellas negras,E: look at the black footprints,E: olhar as pegadas pretas
+CLUE_SOOT_PRINTS,Huellas de hollín salen del horno y van hasta la oficina,Soot footprints come out of the oven and go to the office,Pegadas de fuligem saem do forno e vão até o escritório
+PROMPT_EXTINGUISHER,E: apagar el horno con el matafuegos,E: put the oven out with the extinguisher,E: apagar o forno com o extintor
+PROMPT_OVEN_CRAWL,E: meterse gateando en el horno,E: crawl into the oven,E: entrar engatinhando no forno
+PROMPT_TUNNEL_OUT,E: volver a la cocina,E: go back to the kitchen,E: voltar para a cozinha
+OVEN_FSSH,¡FSSSH!,FSSSH!,FSSSH!
+HINT_TUNNEL_CRAWL,"Estás en el túnel. Gateas: no te puedes parar.","You're in the tunnel. You crawl: you can't stand up.","Você está no túnel. Engatinha: não dá para ficar de pé."
+BRIEF_PHONES_B,"Los repartidores de Don Muzza se quedan con el celular de cada cliente que les abre la puerta. Ya juntaron una mochila llena.","Don Muzza's delivery boys keep the phone of every customer who opens the door to them. They've already filled a backpack.","Os entregadores de Don Muzza ficam com o celular de cada cliente que abre a porta. Já encheram uma mochila."
+BRIEF_PHONES_C,"Traigan la mochila térmica con los celulares en el baúl del patrullero. Escuchen: cada tanto suenan todos juntos.","Bring the thermal backpack with the phones in the patrol car's trunk. Listen: every now and then they all ring at once.","Tragam a mochila térmica com os celulares no porta-malas da viatura. Escutem: de vez em quando tocam todos juntos."
+BRIEF_PHONES_D,"Si encuentran la caja de cargadores o el cuaderno de pedidos falsos, mejor.","If you find the box of chargers or the fake orders notebook, even better.","Se acharem a caixa de carregadores ou o caderno de pedidos falsos, melhor."
+OBJ_FIND_THERMAL_BACKPACK,Llevarse la mochila térmica con los celulares,Take the thermal backpack with the phones,Levar a mochila térmica com os celulares
+OBJ_EXTRA_CHARGERS_BOX,Extra: la caja de cargadores,Extra: the box of chargers,Extra: a caixa de carregadores
+OBJ_EXTRA_FAKE_ORDERS,Extra: el cuaderno de pedidos falsos,Extra: the fake orders notebook,Extra: o caderno de pedidos falsos
+TITO_CLUE_phone_backpack,"«Mmm… Vi a Don Muzza esconder algo %s. Y suena todo el tiempo, pero nunca atiende. Yo lo oí.»","“Mmm… I saw Don Muzza hide something %s. And it rings all the time, but he never answers. I heard it.”","“Hmm… Vi Don Muzza esconder algo %s. E toca o tempo todo, mas ele nunca atende. Eu ouvi.”"
+PROMPT_ORDERS_NOTEBOOK,E: leer el cuaderno de pedidos,E: read the orders notebook,E: ler o caderno de pedidos
+CLUE_ORDERS_NOTEBOOK,"El cuaderno de pedidos tiene direcciones que no existen: «Calle Falsa 0», «Pasaje Ninguno 999»","The orders notebook has addresses that don't exist: «0 Fake Street», «999 Nowhere Lane»","O caderno de pedidos tem endereços que não existem: «Rua Falsa 0», «Travessa Nenhuma 999»"
+PHONES_RIIING,¡RIIING!,RIIING!,TRIIIM!
+BRIEF_PLASTIC_CHEESE_B,"Don Muzza hace la muzzarella de plástico y la vende como queso de verdad. Hay clientes que todavía la están masticando.","Don Muzza makes his muzzarella out of plastic and sells it as real cheese. Some customers are still chewing it.","Don Muzza faz a muçarela de plástico e vende como queijo de verdade. Tem cliente que ainda está mastigando."
+BRIEF_PLASTIC_CHEESE_C,"Traigan el molde de hacer queso de plástico en el baúl del patrullero. Pesa 8 kilos.","Bring the plastic cheese mold in the patrol car's trunk. It weighs 8 kilos.","Tragam o molde de fazer queijo de plástico no porta-malas da viatura. Pesa 8 quilos."
+BRIEF_PLASTIC_CHEESE_D,"Si encuentran la bolsa de bolitas de plástico o las etiquetas «100 % muzzarella», mejor. Y cuidado con las porciones: rebotan.","If you find the bag of plastic pellets or the «100 % muzzarella» labels, even better. And careful with the slices: they bounce.","Se acharem o saco de bolinhas de plástico ou as etiquetas «100 % muçarela», melhor. E cuidado com as fatias: elas quicam."
+OBJ_FIND_CHEESE_MOLD,Llevarse el molde de queso de plástico,Take the plastic cheese mold,Levar o molde de queijo de plástico
+OBJ_EXTRA_PLASTIC_PELLETS,Extra: la bolsa de bolitas de plástico,Extra: the bag of plastic pellets,Extra: o saco de bolinhas de plástico
+OBJ_EXTRA_MUZZARELLA_LABELS,Extra: las etiquetas «100 % muzzarella»,Extra: the «100 % muzzarella» labels,Extra: as etiquetas «100 % muçarela»
+TITO_CLUE_plastic_cheese,"«Mmm… Vi a Don Muzza esconder algo %s. Y la muzza de acá no se rompe nunca. Yo la mordí.»","“Mmm… I saw Don Muzza hide something %s. And the cheese here never breaks. I bit it.”","“Hmm… Vi Don Muzza esconder algo %s. E a muçarela daqui nunca arrebenta. Eu mordi.”"
+PROMPT_SAMPLE_PIZZA,E: mirar la pizza de muestra,E: look at the sample pizza,E: olhar a pizza de amostra
+CLUE_SAMPLE_PIZZA,El queso de la pizza de muestra se estira 3 metros sin cortarse,The sample pizza's cheese stretches 3 meters without breaking,O queijo da pizza de amostra estica 3 metros sem arrebentar
+HINT_CHEESE_SNAP,"¡El queso se estiró de más y la pizza volvió sola al mostrador!","The cheese stretched too far and the pizza flew back to the counter!","O queijo esticou demais e a pizza voltou sozinha para o balcão!"
+CHEESE_BOING,¡BOING!,BOING!,BOING!
+BRIEF_GIANT_PIZZA_B,"Don Muzza imprime billetes falsos y los da de vuelto con cada pizza. La caja fuerte está en algún lugar de la pizzería.","Don Muzza prints fake bills and gives them as change with every pizza. The safe is somewhere in the pizzeria.","Don Muzza imprime notas falsas e dá de troco com cada pizza. O cofre está em algum lugar da pizzaria."
+BRIEF_GIANT_PIZZA_C,"Traigan los billetes falsos de la caja fuerte en el baúl del patrullero.","Bring the fake bills from the safe in the patrol car's trunk.","Tragam as notas falsas do cofre no porta-malas da viatura."
+BRIEF_GIANT_PIZZA_D,"Si encuentran la plancha de imprimir billetes o la servilleta con la combinación, mejor.","If you find the bill printing plate or the napkin with the combination, even better.","Se acharem a chapa de imprimir notas ou o guardanapo com a combinação, melhor."
+OBJ_FIND_FAKE_BILLS,Llevarse los billetes falsos de la caja fuerte,Take the fake bills from the safe,Levar as notas falsas do cofre
+OBJ_EXTRA_PRINTING_PLATE,Extra: la plancha de imprimir billetes,Extra: the bill printing plate,Extra: a chapa de imprimir notas
+OBJ_EXTRA_COMBO_NAPKIN,Extra: la servilleta con la combinación,Extra: the napkin with the combination,Extra: o guardanapo com a combinação
+TITO_CLUE_giant_pizza,"«Mmm… Vi a Don Muzza esconder algo %s. Y le habla a la pizza grande de la pared. Yo lo vi.»","“Mmm… I saw Don Muzza hide something %s. And he talks to the big pizza on the wall. I saw him.”","“Hmm… Vi Don Muzza esconder algo %s. E ele fala com a pizza grande da parede. Eu vi.”"
+LOC_pizza_safe,en la caja fuerte detrás de la pizza gigante,in the safe behind the giant pizza,no cofre atrás da pizza gigante
+GIANT_PIZZA_SIGN,Récord del barrio,Neighborhood record,Recorde do bairro
+PROMPT_PEPPERONI_LOCK,E: mirar la rodaja de pepperoni,E: look at the pepperoni slice,E: olhar a rodela de pepperoni
+CLUE_PEPPERONI_LOCK,La pizza gigante de la pared tiene una cerradura en una rodaja de pepperoni,The giant pizza on the wall has a lock in a pepperoni slice,A pizza gigante da parede tem uma fechadura numa rodela de pepperoni
+GIANT_PIZZA_CREAK,¡ÑIIIC!,CREEEAK!,NHEEEC!
+HINT_ESCAPE_pizzeria,¡Don Muzza vio la prueba y se escapa en la moto de reparto! Tienen un minuto para agarrarlo.,Don Muzza saw the evidence and is getting away on the delivery scooter! You have one minute to catch him.,Don Muzza viu a prova e está fugindo na moto de entrega! Vocês têm um minuto para pegá-lo.
+CRIME_owner_pizzeria,"¡Novatos! Ayer se trajeron a Don Muzza, el dueño de la pizzería, y lo tenemos en la sala de interrogatorio. Algo escondió en la pizzería que no encontraron.","Rookies! Yesterday you brought in Don Muzza, the pizzeria's owner, and he's in the interrogation room. He hid something in the pizzeria you never found.","Novatos! Ontem vocês trouxeram Don Muzza, o dono da pizzaria, e ele está na sala de interrogatório. Ele escondeu algo na pizzaria que vocês não acharam."
+CONFESS_owner_pizzeria,"¡Está bien! ¡Fui yo! Pero antes de ir preso… ¿quién quiere una porción?","Fine! It was me! But before I go to jail… who wants a slice?","Tá bom! Fui eu! Mas antes de ir preso… quem quer uma fatia?"

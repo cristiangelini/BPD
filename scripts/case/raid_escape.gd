@@ -14,8 +14,11 @@ const CAR_AHEAD := 9.0
 ## The wheelchair waits this far (m) out of his door, on the sidewalk.
 const DOOR_OUT := 1.5
 ## Each owner's place in the city (CityLayout), what he gets away in (SuspectCar) and who gets off (ChaseSuspect).
-const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym", "garage": "garage", "fair": "fair", "birthday": "party_hall", "cinema": "cinema", "supermarket": "supermarket", "farm": "farm", "radio": "radio"}
-const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night", "garage": "night", "fair": "night", "birthday": "night", "cinema": "night", "supermarket": "night", "farm": "night", "radio": "night"}
+const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym", "garage": "garage", "fair": "fair", "birthday": "party_hall", "cinema": "cinema", "supermarket": "supermarket", "farm": "farm", "radio": "radio", "pizzeria": "pizzeria"}
+const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night", "garage": "night", "fair": "night", "birthday": "night", "cinema": "night", "supermarket": "night", "farm": "night", "radio": "night", "pizzeria": SuspectCar.PIZZA_SCOOTER}
+
+## Who rides off instead of the vehicle's usual rider (Don Muzza on the pizza scooter, not Flambé).
+const RIDERS := {"pizzeria": preload("res://assets/models/npc_muzza.glb")}
 
 var raid: RaidCase
 ## The chase, once he ran off.
@@ -54,6 +57,8 @@ func flee() -> void:
 	chase = ChaseCase.begin(level, VEHICLES[raid.owner_id], city.global_transform * spot(raid.owner_id), raid.car,
 		city, raid.case_seed, map)
 	chase.who = raid.owner_id
+	if RIDERS.has(raid.owner_id):
+		_swap_rider(chase.truck, RIDERS[raid.owner_id])
 	chase.online = raid.online
 	chase.follower = raid.follower
 	chase.ended.connect(_on_ended)
@@ -69,6 +74,19 @@ static func spot(owner_id: String) -> Transform3D:
 		var p := CityLayout.place(place)
 		return Transform3D(parking.basis, CityLayout.door_of(place) + CityLayout.side_normal(p.side) * DOOR_OUT)
 	return parking.translated_local(Vector3(0, 0, -CAR_AHEAD))
+
+
+## The owner on the vehicle instead of its usual rider.
+static func _swap_rider(vehicle: SuspectCar, model: PackedScene) -> void:
+	var old := vehicle.get_node_or_null("Rider") as Node3D
+	if not old:
+		return
+	var rider: Node3D = model.instantiate()
+	rider.transform = old.transform
+	old.name = "OldRider"
+	old.queue_free()
+	rider.name = "Rider"
+	vehicle.add_child(rider)
 
 
 ## Caught, the one in the patrol car is the owner the raid takes away; got away, nobody is.

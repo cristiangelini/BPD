@@ -201,6 +201,8 @@ func current_prompt() -> String:
 				or (aimed is ResurfacerDriver and $Grabber.held is CocoaCup) \
 				or (aimed is RagBoy and $Grabber.held is Chamois) \
 				or aimed is CellHeater \
+				or aimed is PizzaTito \
+				or (aimed is PushButton and (aimed.get_parent() is PizzaOven or aimed.get_parent().name == &"OvenTunnel")) \
 				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
 				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)) \
 				or (takes_food(aimed) and ($Grabber.held is DonutBox or $Grabber.held is Bread)):
