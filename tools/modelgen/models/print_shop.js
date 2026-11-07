@@ -325,7 +325,34 @@ export function buildMortarboard() {
 	return b.build();
 }
 
+// The famous writer's manuscript, 0.3 x 0.12 x 0.22 m: a stack of typed pages tied with string, a coffee ring on top.
+// Origin at its middle.
+export function buildManuscript() {
+	const b = new Builder('manuscript');
+	const paper = mat('manuscript_paper', 0xf4f0e2), string = mat('manuscript_string', 0xa07a48);
+	for (let i = 0; i < 6; i++) {
+		b.add('pages', paper, new THREE.BoxGeometry(0.28, 0.018, 0.21), { pos: V(0, -0.05 + i * 0.02, 0), rot: [0, (i % 3 - 1) * 0.03, 0] });
+	}
+	b.add('string', string, new THREE.BoxGeometry(0.3, 0.125, 0.012), {});
+	b.add('string', string, new THREE.BoxGeometry(0.012, 0.125, 0.22), {});
+	b.add('coffee', mat('manuscript_coffee', 0x8a5a34), new THREE.TorusGeometry(0.035, 0.006, 4, 12),
+		{ pos: V(0.07, 0.063, 0.05), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The new cover with his name, 0.24 x 0.02 x 0.32 m: a red hard cover with a gold title band. Origin at its middle.
+export function buildBookCover() {
+	const b = new Builder('book_cover');
+	b.add('cover', mat('cover_red', 0xc0392b), new THREE.BoxGeometry(0.24, 0.02, 0.32), {});
+	const gold = mat('cover_gold', 0xf2c84b, { metalness: 0.5, roughness: 0.35 });
+	b.add('title', gold, new THREE.BoxGeometry(0.18, 0.004, 0.05), { pos: V(0, 0.011, -0.08) });
+	b.add('name', gold, new THREE.BoxGeometry(0.12, 0.004, 0.025), { pos: V(0, 0.011, 0.1) });
+	b.add('spine', mat('cover_spine', 0x8e2a20), new THREE.BoxGeometry(0.02, 0.024, 0.32), { pos: V(-0.12, 0, 0) });
+	return b.build();
+}
+
 export const models = {
+	manuscript: buildManuscript, book_cover: buildBookCover,
 	diploma_roll: buildDiplomaRoll, university_seal: buildUniversitySeal, mortarboard: buildMortarboard,
 	ticket_box: buildTicketBox, concert_poster: buildConcertPoster, vip_stamp: buildVipStamp,
 	bills_plate: buildBillsPlate, bill_loupe: buildBillLoupe, green_ink_tin: buildGreenInkTin,
@@ -351,6 +378,7 @@ export const views = {
 			{ name: 'bills_plate', pos: [0.2, 0.04, 3.2] }, { name: 'bill_loupe', pos: [0.9, 0.01, 3.3] },
 			{ name: 'green_ink_tin', pos: [1.4, 0.07, 3.2] }, { name: 'ticket_box', pos: [2.1, 0.125, 3.2] },
 			{ name: 'concert_poster', pos: [2.9, 0.04, 3.3] }, { name: 'vip_stamp', pos: [3.5, 0.06, 3.3] },
+			{ name: 'manuscript', pos: [4.1, 0.06, 3.3] }, { name: 'book_cover', pos: [4.7, 0.01, 3.3] },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},

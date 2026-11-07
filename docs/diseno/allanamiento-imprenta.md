@@ -172,6 +172,13 @@ suman 500.
   Renglón: "Doctor en Astronautas". El policía que se acerca a 2,5 m lo nota, y es pista una vez. Cada vez que
   arranca la rotativa, sale flotando "Diploma de Doctor en Todo" con el nombre de un policía al azar, y las hojas salen
   color pergamino. Captura en `imprenta/paso7b-diploma.png`.
+- **Paso 7c (el libro robado):** `StolenBookRig`. La escritora es Rosa Prosa. En la pared del frente, afuera, hay dos
+  afiches: "¡El nuevo libro de Don Renglón!" con la foto de una señora de anteojos. El policía que se acerca a 2,5 m
+  los nota, y es pista una vez. Adentro hay 4 pilas de 6 libros rojos. Cada vez que arranca la rotativa se caen (un
+  empujón más fuerte cuanto más arriba está el libro). Las pilas esperan congeladas hasta el primer arranque, porque
+  6 libros finos y livianos apilados no se quedan quietos solos en la física. La máquina de escribir usa el modelo
+  que ya estaba (`typewriter.glb`) con otra escena de 6 kg. Capturas en `imprenta/paso7c-afiches.png` y
+  `imprenta/paso7c-pilas.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

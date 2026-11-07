@@ -62,6 +62,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_UNIVERSITY_SEAL", "OBJ_EXTRA_MORTARBOARD"],
 		"rig": preload("res://scripts/case/print_shop/fake_diplomas_rig.gd"),
 	},
+	"stolen_book": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_BOOK_B", "BRIEF_STOLEN_BOOK_C", "BRIEF_STOLEN_BOOK_D"],
+		"find": "OBJ_FIND_MANUSCRIPT",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/manuscript.tscn"), preload("res://scenes/props/writer_typewriter.tscn"),
+			preload("res://scenes/props/book_cover.tscn")],
+		"half_heights": [0.06, 0.125, 0.01],
+		"heavy": [false, true, false],
+		"extra_keys": ["OBJ_EXTRA_WRITER_TYPEWRITER", "OBJ_EXTRA_BOOK_COVER"],
+		"rig": preload("res://scripts/case/print_shop/stolen_book_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
 ## side and by the binding table.
