@@ -116,8 +116,33 @@ function elefante(b) {
 	b.add('tail', M.black, ellipsoid(0.06, 0.1, 0.06, 6, 4), { pos: V(0, 1.0, -1.5) });
 }
 
+// The zoo's van the culprit flees in (step 7): green with a yellow stripe, the zoo's elephant painted on the side, a
+// bunch of bananas on the roof rack and two back doors that bang open to let banana peels out. Front +Z, wheels the
+// sedan's (SuspectCar.SEDAN_WHEELS), 2.1 x 2.3 x 4.8 like the museum's van.
+function camioneta(b) {
+	const green = C('zoo_van_green', 0x3f8a3a), yellow = C('zoo_van_yellow', 0xf2c84b), grey = C('elephant_grey', 0x8a8a92);
+	b.add('body', green, new THREE.BoxGeometry(2.0, 1.0, 1.4), { pos: V(0, 0.95, 1.6) });
+	b.add('body', green, new THREE.BoxGeometry(2.1, 1.85, 3.4), { pos: V(0, 1.38, -0.7) });
+	b.add('glass', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.8, 0.5, 0.04), { pos: V(0, 1.3, 2.31), rot: [-0.25, 0, 0] });
+	b.add('stripe', yellow, new THREE.BoxGeometry(2.12, 0.18, 3.42), { pos: V(0, 0.8, -0.7) });
+	for (const s of [-1, 1]) {
+		b.add('logo', grey, ellipsoid(0.04, 0.35, 0.5, 8, 5), { pos: V(s * 1.06, 1.6, -0.7) });
+		b.add('logo', grey, ellipsoid(0.04, 0.22, 0.2, 8, 5), { pos: V(s * 1.06, 1.75, -0.1) });
+		b.add('logo', grey, new THREE.BoxGeometry(0.03, 0.4, 0.08), { pos: V(s * 1.07, 1.45, 0.05) });
+	}
+	b.add('doors', C('door_line', 0x2a5a28), new THREE.BoxGeometry(0.03, 1.6, 0.02), { pos: V(0, 1.35, -2.41) });
+	b.add('rack', C('rack', 0x3a3a3e), new THREE.BoxGeometry(1.6, 0.06, 2.4), { pos: V(0, 2.34, -0.7) });
+	const banana = C('banana', 0xf2d23a);
+	for (let i = 0; i < 5; i++) {
+		b.add('bananas', banana, new THREE.TorusGeometry(0.22, 0.06, 4, 8, Math.PI * 0.8), { pos: V(-0.4 + i * 0.2, 2.5, -0.7), rot: [Math.PI / 2, 0, 0.5 + i * 0.1] });
+	}
+	for (const x of [-1.05, 1.05]) for (const z of [-1.55, 1.55]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.26, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+}
+
 const PEOPLE = { npc_cuidador: cuidador, npc_jaula: jaula, npc_pico: pico, animal_copito: copito,
-	animal_avestruz: avestruz, animal_elefante: elefante };
+	animal_avestruz: avestruz, animal_elefante: elefante, zoo_van: camioneta };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -130,6 +155,10 @@ export const views = {
 		items: [{ name: 'npc_jaula', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_cuidador', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_pico', pos: [1.2, 0.9, 0], rotY: -0.3 }, { name: 'animal_copito', pos: [0.7, 0, 0.6], rotY: -0.2 }],
 		cam: { pos: [0, 1.4, 6.0], target: [0, 0.85, 0], fov: 38 },
+	},
+	zoo_van: {
+		items: [{ name: 'zoo_van', pos: [0, 0, 0], rotY: 0.7 }, { name: 'npc_cuidador', pos: [-0.5, 0.4, 1.5], rotY: 0.7, scale: 0.85 }],
+		cam: { pos: [7.5, 3.2, 1.5], target: [0, 1.2, -0.3], fov: 40 },
 	},
 	zoo_animals: {
 		items: [{ name: 'animal_avestruz', pos: [-1.6, 0, 0], rotY: 0.5 }, { name: 'animal_elefante', pos: [1.4, 0, -0.5], rotY: -0.5 },
