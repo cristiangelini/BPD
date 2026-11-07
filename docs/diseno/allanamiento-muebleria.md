@@ -204,3 +204,15 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - Capturas `paso5-cuotas-*.png` y `endless_installments.png` (modelos).
 - **Paso 6:** la mueblería entra al sorteo de los allanamientos de Jugar, con las mismas chances que los otros 10, y
   la semilla elige una de sus 6 historias (la prueba revisa que en 900 semillas salgan las 6).
+- **Paso 7, el online (propuesta):**
+  - Don Cajón lo maneja el anfitrión y los invitados lo siguen, con su globo y su denuncia. La venta, el estante de
+    Tablita, los roperos, las sillas antiguas, el sillón del comisario y los sillones que crujen andan con E desde
+    cualquier PC (las acciones compartidas).
+  - El anfitrión decide:
+    - lo frágil que se rompe, los roperos que se tumban de a dos y la torre de sillas que se cae; los invitados lo
+      copian del estado del caso, y las 12 sillas sueltas llegan como objetos;
+    - cuándo el estante se cae porque el policía se movió, y cuándo Tablita lo atornilla; se lo avisa a los invitados
+      y Tablita habla en todas las PC;
+    - las ofertas de cuotas de Don Cajón, mirando hacia dónde apunta la cabeza de cada policía.
+  - Lo que solo adorna se hace en cada PC por su lado: los billetes de juguete, el huésped en pijama, los ronquidos y
+    el rebote de los colchones (cada PC hace rebotar a su propio policía).

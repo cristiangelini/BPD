@@ -62,7 +62,8 @@ func _physics_process(delta: float) -> void:
 				if flat.length() <= READ_RANGE:
 					read_fine_print(cop)
 					break
-		if is_instance_valid(store.cajon) and looks_at_cajon(cop):
+		# Online the host's Don Cajón makes the offers (every cop's head turns there too) and his bubble goes to all.
+		if multiplayer.is_server() and is_instance_valid(store.cajon) and looks_at_cajon(cop):
 			offer(cop)
 
 

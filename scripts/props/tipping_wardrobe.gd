@@ -45,6 +45,10 @@ func use(cop: Cop) -> void:
 		tip()
 		pulled_alone.emit(cop)
 		return
+	# Online the host decides whether two pulls came together (each PC hears them at its own time); the guests take
+	# the tipped wardrobes from its state (FurnitureStore.net_state).
+	if not multiplayer.is_server():
+		return
 	var now := Time.get_ticks_msec() / 1000.0
 	if _last_cop and _last_cop != cop and now - _last_at <= PAIR_WINDOW:
 		tip()

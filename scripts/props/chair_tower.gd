@@ -51,7 +51,11 @@ func _ready() -> void:
 	area.body_entered.connect(_on_touched)
 
 
+## Online only the host knocks it over: its loose chairs reach the guests as props, and the fall itself through the
+## store's state (fall_look).
 func _on_touched(body: Node3D) -> void:
+	if not multiplayer.is_server():
+		return
 	if body is Cop:
 		knock_over(global_position - body.global_position)
 	elif body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > KNOCK_SPEED:
@@ -67,19 +71,8 @@ func knock_over(away: Vector3) -> void:
 	away = away.normalized() if away.length() > 0.01 else Vector3.FORWARD
 	var parent := get_parent()
 	for i in CHAIRS:
-		var chair := Grabbable.new()
+		var chair := LooseChair.new()
 		chair.name = "LooseChair%d" % i
-		chair.collision_layer = 4
-		chair.collision_mask = 15
-		chair.mass = CHAIR_KG
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = CHAIR_SIZE
-		shape.shape = box
-		chair.add_child(shape)
-		var look: Node3D = CHAIR_MODEL.instantiate()
-		look.position = Vector3(0, -CHAIR_SIZE.y / 2, 0)
-		chair.add_child(look)
 		parent.add_child(chair)
 		# Laid out along the fall in two rows, so they don't start inside each other: 3 m at most.
 		var side := away.cross(Vector3.UP) * (0.5 if i % 2 == 0 else -0.5)
@@ -87,7 +80,14 @@ func knock_over(away: Vector3) -> void:
 		chair.linear_velocity = away * SPREAD_SPEED * (1.0 + i * 0.05) + Vector3.UP * LIFT_SPEED
 		chair.angular_velocity = Vector3(away.z, 0.5, -away.x) * 2.0
 		chairs.append(chair)
-	# The stack itself goes: no more box to bump into, nor chairs drawn on it.
+	fall_look()
+	fell.emit()
+
+
+## The stack goes: no more box to bump into, nor chairs drawn on it. Online a guest's tower only does this (the loose
+## chairs come from the host).
+func fall_look() -> void:
+	has_fallen = true
 	for child in get_children():
 		if child is CollisionShape3D:
 			(child as CollisionShape3D).set_deferred("disabled", true)
@@ -95,4 +95,3 @@ func knock_over(away: Vector3) -> void:
 			child.queue_free()
 		elif child is Node3D:
 			(child as Node3D).visible = false
-	fell.emit()

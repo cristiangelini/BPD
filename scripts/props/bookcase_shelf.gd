@@ -79,28 +79,44 @@ func end_turn(cop: Cop) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not multiplayer.is_server():
-		return
 	if _floor_left > 0.0 or _screwed_left > 0.0:
 		_floor_left -= delta
 		_screwed_left -= delta
 		if _free():
 			_lean()
 		return
-	if holder == null:
+	# Online the host decides when it slips or is screwed in, and tells the guests (ActionSync.tell_guests).
+	if holder == null or not multiplayer.is_server():
 		return
 	if not is_instance_valid(holder) or holder.turning != self \
 			or Vector2(holder.global_position.x - _held_at.x, holder.global_position.z - _held_at.z).length() > STILL:
+		_tell_guests("end_turn", holder)
 		end_turn(holder)
 		return
 	held_for += delta
 	if held_for < HOLD_TIME:
 		return
-	var cop := holder
+	_tell_guests("screw_in", holder)
+	screw_in(holder)
+
+
+## Held long enough: Tablita screws it in and talks to `cop`, and it stays in a while.
+func screw_in(cop: Cop) -> void:
+	if not is_instance_valid(cop) or cop != holder:
+		return
+	held_for = HOLD_TIME
 	end_turn(cop)
 	cop.show_hint("HINT_SHELF_DONE")
 	_screwed_left = SCREWED
+	position = SLOT
+	rotation = Vector3.ZERO
 	held.emit(cop)
+
+
+## Host: the guests do `method` with `cop` too.
+func _tell_guests(method: String, cop: Cop) -> void:
+	if is_instance_valid(cop) and cop.sync and cop.sync.net.actions:
+		cop.sync.net.actions.tell_guests(cop, method, self, [cop])
 
 
 ## Whether it's lying on the floor after falling.

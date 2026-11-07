@@ -263,6 +263,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -311,6 +313,25 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": cajon.complaint,
 	}
+
+
+## Online, what the guests' store takes from the host's (RaidCase.snapshot): the broken goods, the tipped wardrobes
+## and whether the chair tower fell (its loose chairs come as props).
+func net_state() -> Dictionary:
+	var tipped: Array[int] = []
+	for i in wardrobes.size():
+		if wardrobes[i].is_tipped:
+			tipped.append(i)
+	return {"broken": broken.duplicate(), "tipped": tipped, "tower": chair_tower.has_fallen}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.broken:
+		break_good(index)
+	for index: int in state.tipped:
+		wardrobes[index].tip()
+	if state.tower:
+		chair_tower.fall_look()
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -488,8 +509,10 @@ func _place_goods() -> void:
 		shape.shape = box
 		area.add_child(shape)
 		body.add_child(area)
+		# Online only the host sees things break (a guest's props are frozen copies); the guests take it from net_state.
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > GOOD_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > GOOD_SPEED:
 				break_good(i))
 
 
