@@ -88,9 +88,50 @@ export const models = {
 		b.add('ring', C('jewel_gold', 0xf8c828, { metalness: 0.6, roughness: 0.25 }), new THREE.TorusGeometry(0.022, 0.006, 4, 10), { pos: V(0.01, 0.02, -0.05) });
 		return b.build();
 	},
+	// The crazy yeast story's main evidence: a 20-liter blue drum of contraband super yeast, foam spilling from the cap.
+	// 0.32 x 0.5 x 0.32 m.
+	yeast_drum() {
+		const b = new Builder('yeast_drum');
+		b.add('drum', C('drum_blue', 0x2a5ab8, { roughness: 0.6 }), new THREE.CylinderGeometry(0.16, 0.16, 0.44, 14), { pos: V(0, 0.22, 0) });
+		b.add('band', C('drum_band', 0x1a3a80), new THREE.CylinderGeometry(0.163, 0.163, 0.03, 14), { pos: V(0, 0.15, 0) });
+		b.add('label', C('drum_label', 0xf8e060), new THREE.BoxGeometry(0.16, 0.12, 0.01), { pos: V(0, 0.27, 0.158) });
+		b.add('cap', C('drum_cap', 0xd02020), new THREE.CylinderGeometry(0.04, 0.04, 0.03, 10), { pos: V(0.06, 0.455, 0) });
+		b.add('foam', dough, ellipsoid(0.07, 0.04, 0.06, 8, 5), { pos: V(0.06, 0.48, 0) });
+		return b.build();
+	},
+	// A jar of yeast pills with a yellow lid. 0.1 x 0.14 x 0.1 m.
+	yeast_pills() {
+		const b = new Builder('yeast_pills');
+		b.add('jar', C('pill_jar', 0xe8f0f0, { roughness: 0.3 }), new THREE.CylinderGeometry(0.05, 0.05, 0.11, 10), { pos: V(0, 0.055, 0) });
+		b.add('lid', C('pill_lid', 0xf0c020), new THREE.CylinderGeometry(0.052, 0.052, 0.03, 10), { pos: V(0, 0.125, 0) });
+		b.add('label', C('pill_label', 0xc03030), new THREE.CylinderGeometry(0.051, 0.051, 0.04, 10), { pos: V(0, 0.055, 0) });
+		return b.build();
+	},
+	// The invoice from "Panaderías Infladas": a sheet with a round puffy logo. 0.21 x 0.006 x 0.29 m, flat.
+	inflated_invoice() {
+		const b = new Builder('inflated_invoice');
+		b.add('sheet', C('invoice_sheet', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('logo', C('invoice_logo', 0xe08030), new THREE.CylinderGeometry(0.03, 0.03, 0.004, 10), { pos: V(-0.06, 0.005, -0.1) });
+		for (let i = 0; i < 5; i++) {
+			b.add('lines', C('invoice_ink', 0x303030), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(0, 0.005, -0.03 + i * 0.03) });
+		}
+		return b.build();
+	},
+	// A flat puddle of risen dough, as if it oozed under a door. 0.6 x 0.05 x 0.4 m.
+	dough_puddle() {
+		const b = new Builder('dough_puddle');
+		b.add('dough', dough, ellipsoid(0.3, 0.025, 0.2, 12, 4), { pos: V(0, 0.0, 0) });
+		b.add('dough', dough, ellipsoid(0.12, 0.03, 0.1, 8, 4), { pos: V(0.12, 0.01, 0.05) });
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_yeast: {
+		items: [{ name: 'yeast_drum', pos: [-0.35, 0, 0] }, { name: 'yeast_pills', pos: [0.05, 0, 0.1] },
+			{ name: 'inflated_invoice', pos: [0.35, 0, 0.1], rotY: -0.3 }, { name: 'dough_puddle', pos: [0.1, 0, -0.35] }],
+		cam: { pos: [0.0, 0.8, 1.4], target: [0.0, 0.15, 0], fov: 40 },
+	},
 	pizza_story_jewels: {
 		items: [{ name: 'frozen_pizza_jewels', pos: [-0.3, 0, 0] }, { name: 'jeweler_loupe', pos: [0.1, 0, 0.1] },
 			{ name: 'special_clients_list', pos: [0.4, 0, 0.1], rotY: -0.3 }, { name: 'bitten_slice_ring', pos: [0.15, 0, -0.2], rotY: 0.6 }],

@@ -19,3 +19,26 @@ func net_state() -> Variant:
 
 func apply_net_state(_state: Variant) -> void:
 	pass
+
+
+## A thing lying at `at` (the pizzeria's space) that E looks at and puts on the checklist the first time: the
+## story's own clue.
+func clue_item(item_name: String, model: PackedScene, size: Vector3, at: Vector3, prompt: String, text_key: String) \
+		-> ClueNote:
+	var item := ClueNote.new()
+	item.name = item_name
+	item.prompt = prompt
+	item.text = tr(text_key)
+	item.collision_layer = 4
+	item.collision_mask = 15
+	item.mass = 0.15
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	item.add_child(shape)
+	item.add_child(model.instantiate())
+	item.position = at
+	item.read.connect(pizzeria.raid.add_clue)
+	pizzeria.add_child(item)
+	return item

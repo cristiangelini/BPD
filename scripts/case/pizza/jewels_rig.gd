@@ -35,22 +35,8 @@ func setup(place: PizzaRaid) -> void:
 		if part is MeshInstance3D:
 			part.hide()
 	button.pressed.connect(func(_cop: Cop) -> void: lift_next())
-	bitten_slice = ClueNote.new()
-	bitten_slice.name = "BittenSlice"
-	bitten_slice.prompt = "PROMPT_BITTEN_SLICE"
-	bitten_slice.text = tr("CLUE_BITTEN_SLICE")
-	bitten_slice.collision_layer = 4
-	bitten_slice.collision_mask = 15
-	bitten_slice.mass = 0.15
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(0.2, 0.03, 0.22)
-	shape.shape = box
-	bitten_slice.add_child(shape)
-	bitten_slice.add_child(SLICE_MODEL.instantiate())
-	bitten_slice.position = PizzaRaid.BIN_AT + Vector3(0, 0.08, 0)
-	bitten_slice.read.connect(place.raid.add_clue)
-	place.add_child(bitten_slice)
+	bitten_slice = clue_item("BittenSlice", SLICE_MODEL, Vector3(0.2, 0.03, 0.22), PizzaRaid.BIN_AT + Vector3(0, 0.08, 0),
+		"PROMPT_BITTEN_SLICE", "CLUE_BITTEN_SLICE")
 
 
 ## Lifts the next box from the top of the tower for a moment; a clinking one goes on the checklist the first time.
