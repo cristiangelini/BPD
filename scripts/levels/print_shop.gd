@@ -4,7 +4,7 @@ extends Node3D
 ## The print shop "La Tinta Loca" as a place to raid (docs/diseno/allanamiento-imprenta.md, step 1): a brick shed in
 ## the city with its front to +Z and the wide door open on the west side under the sign and its smiling inkwell. By
 ## the front, the counter with the till and the bell, and the display of fine invitations behind its four glass panes.
-## In the middle the rotativa (still, step 2) with the four ink barrels and the empty one beside it; along the west
+## In the middle the rotativa (PrintingPress) with the four ink barrels and the empty one beside it; along the west
 ## wall the chibalete and the plates cabinet, with the binding table and the paper guillotine in front of them; on the
 ## east wall the shelf of ink jars. At the back, the paper store (reams and rolls), the fax, the recycling basket and
 ## the owner's office, locked with the till's key. Something thrown hard at a display pane or at an ink jar breaks it,
@@ -45,6 +45,8 @@ const HOUSING_LOW := 0.6
 const HOUSING_TOP := 2.3
 const TRAY_X := Vector2(1.5, 4.0)
 const TRAY_TOP := 0.85
+## The red lever on the housing's +Z side, in the press's space.
+const LEVER_AT := Vector3(0.5, 1.2, PRESS_HALF_Z + 0.05)
 ## The four ink barrels (blue, red, yellow, black) by the press, and the empty one a bit further.
 const BARRELS: Array[Vector3] = [Vector3(-3.5, FLOOR_TOP, -2.0), Vector3(-2.5, FLOOR_TOP, -2.0),
 	Vector3(-1.5, FLOOR_TOP, -2.0), Vector3(-0.5, FLOOR_TOP, -2.0)]
@@ -119,6 +121,8 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+## The rotativa: its belt, rollers, lever and flying sheets (step 2).
+var press: PrintingPress
 ## The display's panes (each a body with its glass), the broken ones by index, and the ink jars.
 var panes: Array[StaticBody3D] = []
 var cracked: Array[int] = []
@@ -192,13 +196,16 @@ func _build_shed() -> void:
 	_model(INKWELL_MODEL, Vector3(ENTRANCE_X + 4.2, SHOP_TOP - 1.4, HALF_Z + 0.6))
 
 
-## The rotativa (still, step 2): the belt table, the roller housing on its four posts with room underneath, the
-## output tray, and the four ink barrels and the empty one beside it.
+## The rotativa: its moving belt with the railing and the lever (PrintingPress), the roller housing on its four posts
+## with room underneath, the output tray, and the four ink barrels and the empty one beside it.
 func _build_press() -> void:
 	_model(PRESS_MODEL, PRESS_AT)
 	var width := PRESS_HALF_Z * 2
-	_build.shape(_build.body(PRESS_AT + Vector3((BELT_X.x + BELT_X.y) / 2, BELT_TOP - 0.05, 0)),
-		Vector3(BELT_X.y - BELT_X.x, 0.1, width))
+	press = PrintingPress.new()
+	press.name = "Press"
+	press.position = PRESS_AT
+	add_child(press)
+	press.build(BELT_X, BELT_TOP, PRESS_HALF_Z, TRAY_X, TRAY_TOP, LEVER_AT, case_seed)
 	var housing_high := HOUSING_TOP - HOUSING_LOW
 	_build.shape(_build.body(PRESS_AT + Vector3((HOUSING_X.x + HOUSING_X.y) / 2, HOUSING_LOW + housing_high / 2, 0)),
 		Vector3(HOUSING_X.y - HOUSING_X.x, housing_high, width))
