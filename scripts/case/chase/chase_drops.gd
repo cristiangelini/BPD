@@ -90,6 +90,8 @@ const ICE_GRIP := 0.15
 const ICE_SKID_SECONDS := 2.0
 const PARCELS_PER_CORNER := 2
 const MAX_PARCELS := 12
+const SCENERY_PER_CORNER := 2
+const MAX_SCENERY := 12
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -147,6 +149,9 @@ var soaked_left := 0.0
 var parcels: Array[ChaseParcel] = []
 ## Seconds the patrol car's windshield stays covered in a broken parcel's envelopes.
 var envelopes_left := 0.0
+var scenery: Array[ChaseScenery] = []
+## Seconds the patrol car's windshield stays covered by a cardboard flat on its hood.
+var scenery_left := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -245,6 +250,9 @@ func _physics_process(delta: float) -> void:
 	if case.suspect_id == SuspectCar.MAIL_VAN:
 		envelopes_left = maxf(envelopes_left - delta, 0.0)
 		ConfettiCloud.cover(case.car, envelopes_left > 0.0)
+	if case.suspect_id == SuspectCar.SCENERY_TRUCK:
+		scenery_left = maxf(scenery_left - delta, 0.0)
+		ConfettiCloud.cover(case.car, scenery_left > 0.0)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -405,6 +413,9 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.MAIL_VAN:
 		for i in PARCELS_PER_CORNER:
 			drop_parcel()
+	elif case.suspect_id == SuspectCar.SCENERY_TRUCK:
+		for i in SCENERY_PER_CORNER:
+			drop_scenery()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -743,6 +754,27 @@ func drop_parcel() -> ChaseParcel:
 	parcel.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	parcels.append(parcel)
 	return parcel
+
+
+## A cardboard flat (a tree or a cloud, in turn) falls off the scenery truck's flatbed onto the street, a little to one
+## side, standing.
+func drop_scenery() -> ChaseScenery:
+	# Untyped: a flat that stuck on the patrol car is already freed.
+	scenery.assign(scenery.filter(func(flat: Variant) -> bool: return is_instance_valid(flat)))
+	if scenery.size() >= MAX_SCENERY:
+		scenery.pop_front().queue_free()
+	var flat := ChaseScenery.new()
+	flat.car = case.car
+	flat.drops = self
+	_dropped += 1
+	flat.look = "tree" if _dropped % 2 == 1 else "cloud"
+	flat.name = "Scenery%d" % _dropped
+	case.get_parent().add_child(flat)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	flat.global_position = _behind() + side + Vector3.UP * 0.1
+	flat.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.4, 0.4)
+	scenery.append(flat)
+	return flat
 
 
 func _behind() -> Vector3:

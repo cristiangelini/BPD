@@ -64,6 +64,8 @@ const MODELS := {
 	"guide": preload("res://assets/models/npc_guia.glb"),
 	# The post office's culprit, out of the mail van in the uniform (escena-correo.md).
 	"carrier": preload("res://assets/models/npc_postal.glb"),
+	# The theater's culprit, out of the scenery truck in the sheet (escena-teatro.md).
+	"ghost": preload("res://assets/models/npc_fantasma.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

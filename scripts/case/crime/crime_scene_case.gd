@@ -204,6 +204,18 @@ const VARIANTS := {
 			"letter": "route", "witness": "route"},
 		"parts": ["photo", "prints", "teeth", "hair", "tongue", "route"],
 	},
+	# The Teatro Municipal (escena-teatro.md, decision 510): six ghosts alike in the same sheet; a file knows what the
+	# cops got from its ghost, the deep voice and their embroidery included.
+	"theater": {
+		"shift": "crime_theater", "story": "theater",
+		"brief": ["BRIEF_THEATER_A_", "BRIEF_THEATER_B", "BRIEF_THEATER_C"], "go": "HINT_GO_THEATER",
+		"go_row": "OBJ_THEATER_GO", "look": "HINT_THEATER_LOOK", "files_row": "OBJ_THEATER_FILES",
+		"clue_line": "CLUE_THEATER_", "ruined_hint": "HINT_THEATER_RUINED_", "left": "HINT_GHOST_LEFT",
+		"who": "ghost", "getaway": SuspectCar.SCENERY_TRUCK, "loot_row": "OBJ_THEATER_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "voice": "deep",
+			"sheet": "embroidery", "witness": "embroidery"},
+		"parts": ["photo", "prints", "teeth", "hair", "voice", "embroidery"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -242,6 +254,9 @@ const EMPLOYEE_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"],
 ## At the station, the traits each part of a coworker's file tells.
 const STAFF_PART_TRAITS := {"prints": ["name"], "teeth": ["teeth"], "sign": ["left"], "photo": ["silhouette", "shoe"],
 	"sugar": ["sugar"]}
+## At the theater, the traits each part of a ghost's file tells.
+const GHOST_PART_TRAITS := {"photo": ["shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"voice": ["deep"], "embroidery": ["embroidery"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -390,6 +405,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuideTraits.draw(case_seed)
 	if texts() == VARIANTS.post_office:
 		return CarrierTraits.draw(case_seed)
+	if texts() == VARIANTS.theater:
+		return GhostTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -445,7 +462,7 @@ func magician_part(magician_index: int, part: String) -> bool:
 
 
 ## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md), a
-## tuxedo (escena-boda.md), a reader (escena-biblioteca.md), a diver (escena-acuario.md), a guide (escena-planetario.md) or a carrier (escena-correo.md): it goes to their file with what it says about them.
+## tuxedo (escena-boda.md), a reader (escena-biblioteca.md), a diver (escena-acuario.md), a guide (escena-planetario.md), a carrier (escena-correo.md) or a ghost (escena-teatro.md): it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
@@ -465,6 +482,8 @@ func guard_part(index: int, part: String) -> void:
 		table = GUIDE_PART_TRAITS
 	elif texts() == VARIANTS.post_office:
 		table = CARRIER_PART_TRAITS
+	elif texts() == VARIANTS.theater:
+		table = GHOST_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -577,7 +596,7 @@ func file_traits(id: int) -> Dictionary:
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
 	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
-			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium, VARIANTS.planetarium, VARIANTS.post_office]:
+			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium, VARIANTS.planetarium, VARIANTS.post_office, VARIANTS.theater]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -941,6 +960,8 @@ func clue_line(kind: String) -> String:
 		return _planetarium_clue_line(kind)
 	if texts() == VARIANTS.post_office:
 		return _post_office_clue_line(kind)
+	if texts() == VARIANTS.theater:
+		return _theater_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -1134,6 +1155,22 @@ func _post_office_clue_line(kind: String) -> String:
 	return tr("CLUE_POST_OFFICE_" + kind)
 
 
+## At the theater: the talc footprint, the hair in the wig, the bonbon in the box, the deep voice, the scrap of sheet
+## and Don Susurro.
+func _theater_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_THEATER_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_THEATER_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_THEATER_bite") % tr("TEETH_" + str(who.teeth))
+		"sheet", "witness":
+			return tr("CLUE_THEATER_" + kind) % tr("EMBROIDERY_" + str(who.embroidery))
+	return tr("CLUE_THEATER_" + kind)
+
+
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
 func _hotel_clue_line(kind: String) -> String:
 	var who := culprit()
@@ -1226,6 +1263,8 @@ func file_text(index: int) -> String:
 		return _guide_file_text(index, who)
 	if texts() == VARIANTS.post_office:
 		return _carrier_file_text(index, who)
+	if texts() == VARIANTS.theater:
+		return _ghost_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -1357,6 +1396,24 @@ func _carrier_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_TONGUE_UNKNOWN"))
 	lines.append(tr("FILE_ROUTE") % (tr("ROUTE_" + str(who.route)) if who.has("route") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A ghost's file: their name and number, and what the cops got from them so far. A voice that a honey lozenge
+## cleared before they sang is in the file, but says nothing.
+func _ghost_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	lines.append(tr("FILE_EMBROIDERY") % (tr("EMBROIDERY_" + str(who.embroidery)) if who.has("embroidery") else "?"))
+	lines.append(tr("FILE_SHOE") % who.shoe if who.has("shoe") else tr("FILE_SHOE_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("deep"):
+		lines.append(tr("FILE_VOICE_DEEP") if who.deep else tr("FILE_VOICE_HIGH"))
+	elif file_parts.get(index, {}).get("voice", false):
+		lines.append(tr("FILE_VOICE_CLEARED"))
+	else:
+		lines.append(tr("FILE_VOICE_UNKNOWN"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
