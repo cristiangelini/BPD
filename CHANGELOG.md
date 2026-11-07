@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Toy store raid, step 3: don Cucho works at his bench and walks the salon's middle aisle every 90 s, fills the complaint (bar on screen) and hears every release of wind-up toys (+5). E on the train's lever derails it off the table, which sets off the nearest shelf, and he picks it up for 25 s with his back to the salon; it rests 60 s and the third time he catches on (+10).
 - Toy store raid, step 2: a cop bumping a shelf fast sets 3 wind-up toys loose; they walk 20 s, bounce off walls and furniture, trip running cops and switch off with E; each shelf holds 6. The ball pit hides what's in it until stirred 3 times with E.
 - Toy store raid, step 1: the "Juguetería El Trompo Loco" on block (4, 5): the salon with five toy shelves, the counter with the till, the train table with its control box, the collectors' glass case, the block castle, the giant teddy and the ball pit; the storeroom locked with the till's key, don Cucho's workshop, the bathroom and the fenced yard with the delivery van; 12 hiding spots; the glass case cracks (fine of 30) and the castle falls to pieces (fine of 20). "Juguetería (allanamiento, prueba)" in the menu.
 - Toy store raid design: docs/diseno/allanamiento-jugueteria.md proposes a new raid place, "Juguetería El Trompo Loco", where a bump sets off wind-up toys that squeak, trip runners and tell the owner where the cops are, with don Cucho and his toy train, doña Ramona the grandmother and 6 stories (decision 530).

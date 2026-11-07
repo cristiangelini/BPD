@@ -5614,3 +5614,25 @@ PROMPT_STIR_PIT,E: revolver el pelotero,E: dig through the ball pit,E: remexer a
 HINT_PIT_STIRRING,Revuelves las pelotas... todavía nada.,You dig through the balls... nothing yet.,Você remexe as bolinhas... nada ainda.
 HINT_PIT_FOUND,¡Había algo debajo de las pelotas!,There was something under the balls!,Tinha algo embaixo das bolinhas!
 HINT_PIT_NOTHING,"Solo pelotas, un chupete y una media.","Only balls, a pacifier and a sock.","Só bolinhas, uma chupeta e uma meia."
+PROMPT_TRAIN_LEVER,E: acelerar el tren,E: speed up the train,E: acelerar o trem
+HINT_TRAIN_DERAILED,El tren ya está volcado al lado del túnel.,The train is already tipped over by the tunnel.,O trem já está tombado ao lado do túnel.
+HINT_TRAIN_RESTING,"Si lo descarrilas tan seguido, se va a dar cuenta. Espera un poco.","Derail it that often and he'll catch on. Wait a bit.","Se descarrilar tão seguido, ele vai perceber. Espere um pouco."
+TOY_TRAIN_DERAILED,¡Descarriló el tren!,The train derailed!,O trem descarrilou!
+CUCHO_LINE_1,"Pasen, pasen, oficiales. Pero miren con los ojos, no con las manos.","Come in, officers. But look with your eyes, not your hands.","Entrem, policiais. Mas olhem com os olhos, não com as mãos."
+CUCHO_LINE_2,"¡Despacito por los pasillos, que los juguetes se despiertan!","Slowly down the aisles, the toys wake up!","Devagar pelos corredores, que os brinquedos acordam!"
+CUCHO_LINE_3,"Sesenta años arreglando juguetes y nunca uno me pidió una orden de allanamiento.","Sixty years fixing toys and not one ever asked me for a warrant.","Sessenta anos consertando brinquedos e nenhum nunca me pediu um mandado."
+CUCHO_LINE_4,"Jugar es cosa seria, oficial. Allanar también, supongo.","Playing is serious business, officer. Raiding too, I suppose.","Brincar é coisa séria, policial. Dar batida também, imagino."
+CUCHO_PRINTER,"¡Mi tren! ¡Otra vez se salió en la curva!","My train! It jumped the curve again!","Meu trem! Saiu na curva de novo!"
+CUCHO_FIX_1,"A ver, a ver... la locomotora primero...","Let's see... the engine first...","Vamos ver... a locomotiva primeiro..."
+CUCHO_FIX_2,"¿Quién tocó la palanca? Va despacito, siempre despacito.","Who touched the lever? It goes slowly, always slowly.","Quem mexeu na alavanca? Vai devagarinho, sempre devagarinho."
+CUCHO_FIX_3,"Ya casi... los vagones encajan solitos...","Almost... the cars click right in...","Quase... os vagões encaixam sozinhos..."
+CUCHO_FIX_DONE,"¡Listo! Chu chuuu. Y nadie vio nada, ¿eh?","Done! Choo choo. And nobody saw a thing, right?","Pronto! Piuí. E ninguém viu nada, né?"
+CUCHO_HURT,"¡Ay! ¡Cuidado, que se me caen las pilas!","Ouch! Careful, my batteries are falling out!","Ai! Cuidado, minhas pilhas estão caindo!"
+CUCHO_DOOR,"¡Mi depósito! ¡Ahí guardo los juguetes de las fiestas!","My storeroom! That's where I keep the holiday toys!","Meu depósito! Ali guardo os brinquedos de fim de ano!"
+CUCHO_SAW,"¡Eso no se toca, oficial! ¡Es de colección!","Hands off that, officer! It's a collector's item!","Isso não se mexe, policial! É de coleção!"
+CUCHO_NOTHING,"Yo solo vendo juguetes, oficial.","I just sell toys, officer.","Eu só vendo brinquedos, policial."
+CUCHO_OFFENDED,"No digo nada más. Ni aunque me traigan pilas nuevas.","I'm not saying anything else. Not even for new batteries.","Não digo mais nada. Nem se me trouxerem pilhas novas."
+CUCHO_LAWYER,"¡Llamo a mi abogado! Le arreglé el robot cuando era chico.","I'm calling my lawyer! I fixed his robot when he was a kid.","Vou ligar para o meu advogado! Consertei o robô dele quando era criança."
+CUCHO_HEARD,"¿Quién despertó a los juguetes? ¡Se escuchan desde el taller!","Who woke up the toys? I can hear them from the workshop!","Quem acordou os brinquedos? Dá para ouvir da oficina!"
+CUCHO_CASE,"¡Mi vitrina de colección! ¡Cuarenta años juntando muñequitos!","My collectors' case! Forty years collecting those!","Minha vitrine de coleção! Quarenta anos juntando bonequinhos!"
+CUCHO_NOTICED,"¡Ya sé que me descarrilan el tren ustedes! ¡Déjenlo en paz!","I know you're the ones derailing my train! Leave it alone!","Eu sei que são vocês que descarrilam o trem! Deixem ele em paz!"
