@@ -5109,6 +5109,129 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+TRAIN_STATION_1,Villa Bostezo,Yawnville,Vila Bocejo
+TRAIN_STATION_2,Paso del Medio,Halfway Pass,Passo do Meio
+TRAIN_STATION_3,Las Vacas,The Cows,As Vacas
+TRAIN_STATION_4,Fin del Mundo Chico,Little World's End,Fim do Mundo Pequeno
+TRAIN_STATION_5,Gran Convención,Grand Convention,Grande Convenção
+TRAIN_NEXT_STATION,Próxima: %s (%d s),Next: %s (%d s),Próxima: %s (%d s)
+TRAIN_AT_STATION,Estación: %s,Station: %s,Estação: %s
+TRAIN_LAST_STOP,Última estación: todos abajo,End of the line: everybody off,Última estação: todos para fora
+PROMPT_MAGICIAN_TALK,E: pedirle un truco,E: ask for a trick,E: pedir um truque
+MAGICIAN_TRICK_dove,"¡Ta-chán! Una paloma, cortesía de %s.","Ta-da! A dove, courtesy of %s.","Tcharam! Uma pomba, cortesia de %s."
+MAGICIAN_TRICK_hanky,¡Y el pañuelo no se termina nunca! Soy %s.,And the hanky never ends! I'm %s.,E o lenço nunca acaba! Sou %s.
+MAGICIAN_TRICK_coin,"Tenías una moneda en la oreja. %s, para servirte.","You had a coin in your ear. %s, at your service.","Você tinha uma moeda na orelha. %s, ao seu dispor."
+PROMPT_TRAIN_ENGINEER,E: hablar con don Silbato,E: talk to don Silbato,E: falar com o seu Silbato
+PROMPT_TRAIN_INSPECTOR,E: hablar con la guarda,E: talk to the ticket inspector,E: falar com a fiscal
+PROMPT_TRAIN_VENDOR,E: hablar con el señor Mostaza,E: talk to señor Mostaza,E: falar com o seu Mostaza
+TRAIN_ENGINEER_LINE_0,"¡Fiuuu! Este tren nunca llegó tarde. Bueno, una vez. Bueno, siempre.","Wheee! This train has never been late. Well, once. Well, always.","Fiuuu! Este trem nunca atrasou. Bom, uma vez. Bom, sempre."
+TRAIN_ENGINEER_LINE_1,No toques la palanca roja. Es para emergencias de verdad.,Don't touch the red lever. It's for real emergencies.,Não toque na alavanca vermelha. É para emergências de verdade.
+TRAIN_ENGINEER_LINE_2,"Seis magos a bordo. Si desaparece el tren, ya sé a quién culpar.","Six magicians on board. If the train vanishes, I know who to blame.","Seis mágicos a bordo. Se o trem sumir, já sei de quem é a culpa."
+TRAIN_INSPECTOR_LINE_0,"Boleto, por favor. ¿No tienes? La máquina está ahí.","Ticket, please. No ticket? The machine's right there.","Bilhete, por favor. Não tem? A máquina está ali."
+TRAIN_INSPECTOR_LINE_1,Sin boleto no hablo con nadie. Es la regla.,No ticket and I talk to no one. That's the rule.,Sem bilhete não falo com ninguém. É a regra.
+TRAIN_INSPECTOR_LINE_2,Piqué cuarenta boletos hoy. Me duele la muñeca.,I've punched forty tickets today. My wrist hurts.,Já furei quarenta bilhetes hoje. Meu pulso dói.
+TRAIN_VENDOR_LINE_0,"¡Sándwiches, gaseosas, mostaza! ¡Mostaza con todo!","Sandwiches, sodas, mustard! Mustard on everything!","Sanduíches, refrigerantes, mostarda! Mostarda em tudo!"
+TRAIN_VENDOR_LINE_1,"Paso con el carrito por todos los vagones. Si algo está sucio, lo limpio.","I take the cart through every car. If something's dirty, I clean it.","Passo com o carrinho por todos os vagões. Se algo está sujo, eu limpo."
+TRAIN_VENDOR_LINE_2,Un mago me pagó con una paloma. No acepto palomas.,A magician paid me with a dove. I don't take doves.,Um mágico me pagou com uma pomba. Não aceito pombas.
+PROMPT_TRAIN_STICKER_HELD,Calcomanía con número: E sobre un mago para pegársela en la capa,Numbered sticker: E on a magician to stick it on their cape,Adesivo com número: E sobre um mágico para colar na capa
+PROMPT_MAGICIAN_STICKER,E: pegarle la calcomanía en la capa,E: stick the sticker on their cape,E: colar o adesivo na capa
+PROMPT_MAGICIAN_FEED,E: convidarle algo,E: offer them something,E: oferecer algo
+PROMPT_MAGICIAN_PRINTS,E: tomarle las huellas,E: take their prints,E: tirar as digitais
+PROMPT_MAGICIAN_HAT,E: pedirle que se saque la galera,E: ask them to take off the top hat,E: pedir que tire a cartola
+PROMPT_MAGICIAN_KNOT,E: pedirle que haga un nudo con el pañuelo,E: ask them to tie a knot in the hanky,E: pedir que dê um nó no lenço
+MAGICIAN_STUCK,¿El número %d? ¡Es mi número de la suerte!,Number %d? That's my lucky number!,O número %d? É o meu número da sorte!
+MAGICIAN_TA_DA,¡Ta-chán!,Ta-da!,Tcharam!
+MAGICIAN_NO_DONUTS,"La caja está vacía. Ni yo hago aparecer donas de la nada.","The box is empty. Not even I can make donuts appear from nothing.","A caixa está vazia. Nem eu faço aparecer rosquinhas do nada."
+MAGICIAN_BITES,"Mmm. Un mago nunca rechaza un bocado.","Mmm. A magician never turns down a bite.","Hum. Um mágico nunca recusa uma mordida."
+MAGICIAN_HAT_OFF,"¡Saludo al público! Pero no se acostumbren.","A bow to the audience! But don't get used to it.","Uma reverência ao público! Mas não se acostumem."
+MAGICIAN_KNOT_LEFT,"Un nudo mágico, hecho con la izquierda.","A magic knot, tied with the left hand.","Um nó mágico, feito com a esquerda."
+MAGICIAN_KNOT_RIGHT,"Un nudo mágico, hecho con la derecha.","A magic knot, tied with the right hand.","Um nó mágico, feito com a direita."
+MAGICIAN_PHOTO,"¡Sin flash! Me arruinas el misterio.","No flash! You're ruining the mystery.","Sem flash! Você estraga o mistério."
+HINT_MAGICIAN_NO_STICKER,"No tiene calcomanía: pégale una con número para que vaya a su ficha.","No sticker: stick a numbered one on them so it goes to their file.","Sem adesivo: cole um com número para que vá para a ficha."
+FILE_STICKER,Mago de la calcomanía %d,Magician with sticker %d,Mágico do adesivo %d
+FILE_KNOT_UNKNOWN,"Mano: ? (falta el nudo)","Hand: ? (no knot yet)","Mão: ? (falta o nó)"
+HINT_FILE_knot,"Nudo de %s para la ficha: con qué mano lo hace.","%s's knot for the file: which hand they use.","Nó de %s para a ficha: com que mão faz."
+FILE_PART_knot,nudo,knot,nó
+OBJ_TRAIN_GO,Recorrer el tren,Walk through the train,Percorrer o trem
+OBJ_TRAIN_FILES,Armar la ficha de cada mago (%d de %d),Make each magician's file (%d of %d),Montar a ficha de cada mágico (%d de %d)
+BRIEF_TRAIN_A_rabbit,"Están arriba del tren El Lento, que lleva a seis magos a la Convención Anual de Magia. Alguien robó el Conejo de Oro, el premio de la convención, del vagón de equipaje.","You're on the train El Lento, taking six magicians to the Annual Magic Convention. Someone stole the Golden Rabbit, the convention's prize, from the luggage car.","Vocês estão no trem El Lento, que leva seis mágicos à Convenção Anual de Mágica. Alguém roubou o Coelho de Ouro, o prêmio da convenção, do vagão de bagagem."
+BRIEF_TRAIN_A_wand,"Están arriba del tren El Lento, que lleva a seis magos a la Convención Anual de Magia. Alguien robó la Varita del Gran Abracadabra del vagón de equipaje, y el pobre no para de llorar.","You're on the train El Lento, taking six magicians to the Annual Magic Convention. Someone stole the Great Abracadabra's wand from the luggage car, and the poor man won't stop crying.","Vocês estão no trem El Lento, que leva seis mágicos à Convenção Anual de Mágica. Alguém roubou a Varinha do Grande Abracadabra do vagão de bagagem, e o coitado não para de chorar."
+BRIEF_TRAIN_A_watch,"Están arriba del tren El Lento, que lleva a seis magos a la Convención Anual de Magia. Alguien robó el reloj de bolsillo del maquinista del vagón de equipaje. Sin reloj, no sabe cuándo frenar.","You're on the train El Lento, taking six magicians to the Annual Magic Convention. Someone stole the engine driver's pocket watch from the luggage car. Without it, he doesn't know when to brake.","Vocês estão no trem El Lento, que leva seis mágicos à Convenção Anual de Mágica. Alguém roubou o relógio de bolso do maquinista do vagão de bagagem. Sem relógio, ele não sabe quando frear."
+BRIEF_TRAIN_B,"Los seis tienen la misma capa, la misma galera y la misma barba postiza. En la última estación se bajan todos y se pierden entre la gente.","All six have the same cape, the same top hat and the same fake beard. At the last station they all get off and vanish into the crowd.","Os seis têm a mesma capa, a mesma cartola e a mesma barba postiça. Na última estação todos descem e somem no meio do povo."
+BRIEF_TRAIN_C,"Tienen cinco estaciones. El tablero está colgado en el vagón comedor. Y no le crean nada a un mago.","You have five stations. The board is hanging in the dining car. And don't believe a word a magician says.","Vocês têm cinco estações. O quadro está pendurado no vagão-restaurante. E não acreditem em nada que um mágico diz."
+HINT_GO_TRAIN,"Recorran los vagones. La vitrina vacía está en el vagón de equipaje, al fondo.","Walk through the cars. The empty showcase is in the luggage car, at the back.","Percorram os vagões. A vitrine vazia está no vagão de bagagem, no fundo."
+HINT_TRAIN_LOOK,"Los seis magos son iguales. Pégales una calcomanía de la máquina de boletos para no perderlos en los túneles.","The six magicians look the same. Stick a sticker from the ticket machine on them so you don't lose them in the tunnels.","Os seis mágicos são iguais. Colem um adesivo da máquina de bilhetes neles para não perdê-los nos túneis."
+OBJ_TRAIN_LOOT_rabbit,Encontrar el Conejo de Oro (+100),Find the Golden Rabbit (+100),Encontrar o Coelho de Ouro (+100)
+OBJ_TRAIN_LOOT_wand,Encontrar la Varita del Gran Abracadabra (+100),Find the Great Abracadabra's wand (+100),Encontrar a Varinha do Grande Abracadabra (+100)
+OBJ_TRAIN_LOOT_watch,Encontrar el reloj del maquinista (+100),Find the engine driver's watch (+100),Encontrar o relógio do maquinista (+100)
+HINT_LOOT_FOUND_rabbit,¡El Conejo de Oro! Brilla tanto que da hambre.,The Golden Rabbit! It shines so much it makes you hungry.,O Coelho de Ouro! Brilha tanto que dá fome.
+HINT_LOOT_FOUND_wand,"¡La Varita del Gran Abracadabra! No la agites, por las dudas.","The Great Abracadabra's wand! Don't wave it, just in case.","A Varinha do Grande Abracadabra! Não sacuda, por via das dúvidas."
+HINT_LOOT_FOUND_watch,"¡El reloj del maquinista! Sigue atrasando diez minutos.","The engine driver's watch! Still ten minutes slow.","O relógio do maquinista! Continua dez minutos atrasado."
+PROMPT_SEARCH_hat,E: mirar dentro de las galeras de repuesto,E: look inside the spare top hats,E: olhar dentro das cartolas de reserva
+PROMPT_SEARCH_food_cart,E: revisar el carrito de la comida,E: search the food cart,E: revistar o carrinho de comida
+PROMPT_SEARCH_tank,E: levantar la tapa del tanque del baño,E: lift the toilet tank's lid,E: levantar a tampa da caixa da descarga
+HINT_SEARCH_NOTHING_hat,"Un conejo de verdad, dormido. Nada más.","A real rabbit, asleep. Nothing else.","Um coelho de verdade, dormindo. Nada mais."
+HINT_SEARCH_NOTHING_food_cart,"Sándwiches, gaseosas y mucha mostaza. Nada más.","Sandwiches, sodas and a lot of mustard. Nothing else.","Sanduíches, refrigerantes e muita mostarda. Nada mais."
+HINT_SEARCH_NOTHING_tank,"Agua. Y un patito de goma. Nada más.","Water. And a rubber duck. Nothing else.","Água. E um patinho de borracha. Nada mais."
+TRAIN_CULPRIT_GOT_OFF,"¡Última estación! El culpable se bajó entre la gente y desapareció. Literalmente: es mago.","Last station! The culprit got off into the crowd and vanished. Literally: he's a magician.","Última estação! O culpado desceu no meio do povo e sumiu. Literalmente: é mágico."
+CLUE_TRAIN_prints,"Huellas en la vitrina vacía","Fingerprints on the empty showcase","Digitais na vitrine vazia"
+CLUE_TRAIN_footprint,"Pisada en el hollín del vagón de equipajes: talle %d","Footprint in the luggage car's soot: shoe size %d","Pegada na fuligem do vagão de bagagens: número %d"
+CLUE_TRAIN_hair,"Un pelo en el marco de la ventana rota: pelo %s","A hair on the broken window's sill: %s hair","Um fio de cabelo no parapeito da janela quebrada: cabelo %s"
+CLUE_TRAIN_bite,"El sándwich de mostaza del comedor, mordido: %s","The dining car's mustard sandwich, bitten: %s","O sanduíche de mostarda do vagão-restaurante, mordido: %s"
+CLUE_TRAIN_witness_glasses,"Picadora: al culpable le brillaron los anteojos","Picadora: the culprit's glasses shone","Picadora: os óculos do culpado brilharam"
+CLUE_TRAIN_witness_no_glasses,"Picadora: el culpable no usaba anteojos","Picadora: the culprit wore no glasses","Picadora: o culpado não usava óculos"
+CLUE_TRAIN_knot_left,"El nudo de la soga de la vitrina: lo ató un zurdo","The knot on the showcase's rope: tied by a left-hander","O nó da corda da vitrine: foi um canhoto que amarrou"
+CLUE_TRAIN_knot_right,"El nudo de la soga de la vitrina: lo ató un diestro","The knot on the showcase's rope: tied by a right-hander","O nó da corda da vitrine: foi um destro que amarrou"
+CLUE_TRAIN_RUINED_prints,"Huellas en la vitrina: tapadas por las tuyas","Prints on the showcase: covered by yours","Digitais na vitrine: cobertas pelas suas"
+CLUE_TRAIN_RUINED_footprint,"Pisada en el hollín: la borró el carrito","Footprint in the soot: the cart wiped it out","Pegada na fuligem: o carrinho apagou"
+CLUE_TRAIN_RUINED_hair,"Un pelo en la ventana: se lo llevó el viento","A hair on the window: the wind took it","Um fio de cabelo na janela: o vento levou"
+CLUE_TRAIN_RUINED_bite,"El sándwich mordido: alguien se lo comió","The bitten sandwich: someone ate it","O sanduíche mordido: alguém comeu"
+CLUE_TRAIN_RUINED_witness,"Picadora: ofendida","Picadora: offended","Picadora: ofendida"
+CLUE_TRAIN_RUINED_knot,"El nudo de la vitrina: desatado","The showcase's knot: untied","O nó da vitrine: desamarrado"
+HINT_TRAIN_RUINED_prints,"Tocaste la vitrina. Tus huellas quedaron encima de las del culpable.","You touched the showcase. Your prints are on top of the culprit's now.","Você tocou na vitrine. Suas digitais ficaram por cima das do culpado."
+HINT_TRAIN_RUINED_footprint,"Pasó algo por el hollín del vagón de equipajes. La pisada ya no está.","Something went over the luggage car's soot. The footprint is gone.","Algo passou pela fuligem do vagão de bagagens. A pegada sumiu."
+HINT_TRAIN_RUINED_hair,"Entró el viento por la ventana y se llevó el pelo del marco. Chau, pelo.","The wind came in the window and took the hair off the sill. Bye, hair.","O vento entrou pela janela e levou o fio do parapeito. Tchau, cabelo."
+HINT_TRAIN_RUINED_bite,"Te comiste el sándwich. Y con él, el mordisco.","You ate the sandwich. And the bite with it.","Você comeu o sanduíche. E a mordida junto."
+HINT_TRAIN_RUINED_witness,"Picadora se ofendió. No va a decir nada más.","Picadora is offended. She won't say anything else.","A Picadora se ofendeu. Não vai dizer mais nada."
+HINT_TRAIN_RUINED_knot,"Desataste el nudo. Ahora es una soga y nada más.","You untied the knot. Now it's just a rope.","Você desamarrou o nó. Agora é só uma corda."
+PROMPT_TRAIN_SHOWCASE,"E: tocar la vitrina","E: touch the showcase","E: tocar a vitrine"
+HINT_SHOWCASE_TOUCHED,"¡La tocaste! Dejaste tus huellas en el vidrio.","You touched it! Your prints are on the glass.","Você tocou! Deixou suas digitais no vidro."
+HINT_SHOWCASE_EMPTY,"Una vitrina con terciopelo y nada adentro.","A velvet showcase with nothing inside.","Uma vitrine de veludo sem nada dentro."
+PRINTS_SHOWCASE,"¡Una huella en el vidrio! Es del culpable: se sacó un guante para abrirla.","A fingerprint on the glass! It's the culprit's: he took a glove off to open it.","Uma digital no vidro! É do culpado: tirou uma luva para abrir."
+PRINTS_SHOWCASE_SMUDGED,"Hay una huella en el vidrio, pero tus huellas la taparon.","There's a print on the glass, but yours covered it.","Tem uma digital no vidro, mas as suas cobriram."
+PROMPT_TRAIN_WINDOW_OPEN,"E: abrir la ventana rota","E: open the broken window","E: abrir a janela quebrada"
+PROMPT_TRAIN_WINDOW_SHUT,"E: cerrar la ventana","E: shut the window","E: fechar a janela"
+HINT_TRAIN_WINDOW_WIND,"¡Entra un viento tremendo! Vuela todo lo que no esté atado.","A huge wind comes in! Anything not tied down flies off.","Entra um vento enorme! Voa tudo o que não estiver preso."
+PROMPT_TRAIN_VENDOR_BUY,"E: comprarle algo al señor Mostaza (10)","E: buy something from señor Mostaza (10)","E: comprar algo do seu Mostaza (10)"
+TRAIN_VENDOR_SOLD,"¡Gracias, oficial! ¿Mostaza? Le pongo mostaza. Ya está.","Thanks, officer! Mustard? I'll put mustard on it. Done.","Obrigado, policial! Mostarda? Vou pôr mostarda. Pronto."
+HINT_TRAIN_BOUGHT,"Compraste un sándwich (-%d del sueldo). El señor Mostaza se queda quieto un rato contando el cambio.","You bought a sandwich (-%d off the salary). Señor Mostaza stays put a while counting the change.","Você comprou um sanduíche (-%d do salário). O seu Mostaza fica parado um tempo contando o troco."
+PROMPT_TRAIN_TICKET,"E: sacar un boleto (5)","E: get a ticket (5)","E: tirar uma passagem (5)"
+PROMPT_TRAIN_TICKET_HAVE,"Ya tienes tu boleto","You already have your ticket","Você já tem sua passagem"
+HINT_TRAIN_TICKET,"Sacaste un boleto (-%d del sueldo). Ahora sí: a mostrárselo a la guarda.","You got a ticket (-%d off the salary). Now go show it to the inspector.","Você tirou uma passagem (-%d do salário). Agora sim: mostre para a fiscal."
+HINT_TRAIN_TICKET_ALREADY,"Ya tienes boleto. Uno por persona.","You already have a ticket. One per person.","Você já tem passagem. Uma por pessoa."
+PROMPT_TRAIN_INSPECTOR_TICKET,"E: mostrarle el boleto a Picadora","E: show your ticket to Picadora","E: mostrar a passagem para a Picadora"
+TRAIN_INSPECTOR_TICKET_PLEASE,"Boleto, por favor. Sin boleto no hablo con nadie, ni con la policía.","Ticket, please. No ticket, no talking. Not even to the police.","Passagem, por favor. Sem passagem não falo com ninguém, nem com a polícia."
+TRAIN_INSPECTOR_SAW_GLASSES,"*clic* Al que andaba por el vagón de equipajes le piqué el boleto y lo leyó con anteojos.","*click* I punched the ticket of the one in the luggage car, and he read it with glasses on.","*clic* Piquei a passagem de quem estava no vagão de bagagens e ele leu de óculos."
+TRAIN_INSPECTOR_SAW_NO_GLASSES,"*clic* Al que andaba por el vagón de equipajes le piqué el boleto: lo leyó sin anteojos, con el brazo estirado.","*click* I punched the ticket of the one in the luggage car: he read it without glasses, arm stretched out.","*clic* Piquei a passagem de quem estava no vagão de bagagens: leu sem óculos, com o braço esticado."
+TRAIN_INSPECTOR_NOTHING,"*clic* Boleto en regla. No vi nada raro. Bueno, seis magos iguales, pero eso en este tren es normal.","*click* Ticket in order. I saw nothing odd. Well, six identical magicians, but that's normal on this train.","*clic* Passagem em dia. Não vi nada estranho. Bom, seis mágicos iguais, mas neste trem isso é normal."
+TRAIN_INSPECTOR_OFFENDED,"No hablo más. Que hable el reglamento.","I'm not talking anymore. Ask the rulebook.","Não falo mais. Pergunte ao regulamento."
+PROMPT_TRAIN_KNOT,"E: desatar el nudo de la soga","E: untie the rope's knot","E: desamarrar o nó da corda"
+HINT_TRAIN_KNOT_UNTIED,"La soga cae. Un nudo menos en el mundo.","The rope falls. One less knot in the world.","A corda cai. Um nó a menos no mundo."
+PROMPT_TRAIN_BRAKE,"E: tirar el freno de emergencia","E: pull the emergency brake","E: puxar o freio de emergência"
+HINT_TRAIN_BRAKE,"¡FRRRIIIC! El tren se queda %d s en el medio del campo. Don Silbato te descuenta %d del sueldo.","SCREEEECH! The train stands %d s in the middle of the field. Don Silbato takes %d off your salary.","IIIIIC! O trem fica %d s parado no meio do campo. O seu Silbato desconta %d do seu salário."
+HINT_TRAIN_BRAKE_ON,"El tren ya está frenado. Más frenado no se puede.","The train is already stopped. It can't get any more stopped.","O trem já está freado. Mais freado não dá."
+HINT_TRAIN_BRAKE_JAMMED,"Don Silbato le puso un candado a la palanca. Se acabaron los frenazos.","Don Silbato padlocked the lever. No more braking.","O seu Silbato pôs um cadeado na alavanca. Acabaram as freadas."
+TRAIN_ENGINEER_BRAKE,"¡¿QUIÉN FUE?! ¡Así no llegamos nunca!","WHO DID THAT?! We'll never get there like this!","QUEM FOI?! Assim a gente nunca chega!"
+PROMPT_TRAIN_LADDER,"E: subir al techo","E: climb onto the roof","E: subir no teto"
+HINT_ESCAPE_magician,"¡%s abrió la ventanilla y se subió al techo del tren! ¡Corre hacia la locomotora! ¡Por las escaleras, arriba!","%s opened the window and climbed onto the train's roof! He's heading for the locomotive! Up the ladders!","%s abriu a janela e subiu no teto do trem! Está correndo para a locomotiva! Pelas escadas, para cima!"
+TRAIN_WHISTLE,"¡PIIIIIII! ¡Túnel!","TOOOOOT! Tunnel!","PIIIIIII! Túnel!"
+HINT_TRAIN_DUCK,"¡Silbato! Viene un túnel: si estás en el techo, agáchate (C).","Whistle! A tunnel is coming: if you're on the roof, crouch (C).","Apito! Vem um túnel: se você está no teto, abaixe-se (C)."
+HINT_TRAIN_ROOF_FELL,"¡PUM! El túnel te barrió del techo y caíste por la claraboya. Otra vez la escalera.","THUD! The tunnel swept you off the roof and you fell through the skylight. Back up the ladder.","PUM! O túnel te varreu do teto e você caiu pela claraboia. De novo a escada."
+HINT_TRAIN_DOVE,"¡Una paloma en la cara! No ves nada.","A dove in your face! You can't see a thing.","Uma pomba na cara! Você não vê nada."
+TRAIN_MAGICIAN_CAUGHT,"¡Está bien, está bien! El truco terminó. Aplausos, por favor.","All right, all right! The trick is over. Applause, please.","Tá bom, tá bom! O truque acabou. Aplausos, por favor."
+TRAIN_MAGICIAN_SPLASH,"¡Y para mi último truco... desaparezco! ¡SPLASH!","And for my last trick... I vanish! SPLASH!","E para o meu último truque... eu desapareço! SPLASH!"
+CRIME_owner_magician,"¡Novatos! Ayer acusaron a un mago del tren El Lento y está en la sala de interrogatorio. Dice que fue un truco y que el público tiene que adivinar. Que confiese.","Rookies! Yesterday you accused a magician from the train El Lento and he's in the interrogation room. He says it was a trick and the audience has to guess. Make him confess.","Novatos! Ontem vocês acusaram um mágico do trem El Lento e ele está na sala de interrogatório. Diz que foi um truque e que o público tem que adivinhar. Façam ele confessar."
+CONFESS_owner_magician,"¡Está bien! ¡Fui yo! Veinte años sacando conejos de la galera y nunca uno de oro.","Fine! It was me! Twenty years pulling rabbits out of a hat and never a golden one.","Tá bom! Fui eu! Vinte anos tirando coelhos da cartola e nunca um de ouro."
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."

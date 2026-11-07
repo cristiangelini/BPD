@@ -65,6 +65,18 @@ const VARIANTS := {
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
 	},
+	# The train (escena-tren.md, decision 202): six magicians alike who swap seats in every tunnel; a file follows its
+	# sticker, like the circus's signs.
+	"train": {
+		"shift": "crime_train", "story": "train",
+		"brief": ["BRIEF_TRAIN_A_", "BRIEF_TRAIN_B", "BRIEF_TRAIN_C"], "go": "HINT_GO_TRAIN",
+		"go_row": "OBJ_TRAIN_GO", "look": "HINT_TRAIN_LOOK", "files_row": "OBJ_TRAIN_FILES",
+		"clue_line": "CLUE_TRAIN_", "ruined_hint": "HINT_TRAIN_RUINED_", "left": "HINT_MAGICIAN_LEFT",
+		"who": "magician", "getaway": SuspectCar.BIKE, "clues": MagicianTraits.CLUES, "loot_row": "OBJ_TRAIN_LOOT_",
+		"parts": ["photo", "prints", "teeth", "hair", "knot"],
+		# Nobody goes home on a moving train: the hurry is the last station (Train, end_of_line).
+		"tire": false,
+	},
 	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
 	# them, and the concierge swapped two rooms.
 	"hotel": {
@@ -78,6 +90,9 @@ const VARIANTS := {
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
 }
+## On the train, the traits each part of a magician's file tells.
+const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"knot": ["left"]}
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
@@ -103,6 +118,8 @@ var at_tent := false
 var clues_found: Array[String] = []
 ## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
 var frames_broken := 0
+## What the cops paid out of their salary during the case (on the train: señor Mostaza's sandwiches).
+var spent := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -195,6 +212,8 @@ func texts() -> Dictionary:
 func _draw_suspects() -> Array[Dictionary]:
 	if texts() == VARIANTS.museum:
 		return GuardTraits.draw(case_seed)
+	if texts() == VARIANTS.train:
+		return MagicianTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
@@ -231,6 +250,22 @@ func clown_part(clown_index: int, part: String) -> bool:
 		return false
 	var trait_name: String = PART_TRAITS[part]
 	(captured.get_or_add(id, {}) as Dictionary)[trait_name] = cooks[clown_index][trait_name]
+	file_part(id, part)
+	return true
+
+
+## A magician gave a part of his file (escena-tren.md): it goes to the file of the sticker on his cape, with what it
+## says about him. Without a sticker it goes nowhere. Returns whether it went to a file.
+func magician_part(magician_index: int, part: String) -> bool:
+	if follower or not place:
+		return false
+	var id: int = place.sticker_of(magician_index)
+	if id < 0:
+		_hint_all("HINT_MAGICIAN_NO_STICKER")
+		return false
+	var known: Dictionary = captured.get_or_add(id, {})
+	for trait_name: String in MAGICIAN_PART_TRAITS[part]:
+		known[trait_name] = cooks[magician_index][trait_name]
 	file_part(id, part)
 	return true
 
@@ -330,7 +365,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.train:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -339,12 +374,14 @@ func file_traits(id: int) -> Dictionary:
 func file_name(id: int) -> String:
 	if texts() == VARIANTS.circus:
 		return tr("FILE_SIGN") % (id + 1)
+	if texts() == VARIANTS.train:
+		return tr("FILE_STICKER") % (id + 1)
 	return cooks[id].name
 
 
 ## Who a file's accusation points at: the cook, or the clown wearing its sign now (or the last one who did).
 func accused_index(id: int) -> int:
-	if texts() == VARIANTS.circus and place:
+	if (texts() == VARIANTS.circus or texts() == VARIANTS.train) and place:
 		return place.wearer(id)
 	return id
 
@@ -370,6 +407,18 @@ func accuse(id: int) -> void:
 		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
+## The train got to the last station with nobody rightly accused (escena-tren.md): the culprit gets off among the
+## crowd and the case is lost.
+func end_of_line() -> void:
+	if accused or lost or follower:
+		return
+	lost = true
+	_comisario_says("TRAIN_CULPRIT_GOT_OFF")
+	checklist.show_rows(rows())
+	verdict.emit(false, true)
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
 ## Whether this case's culprit runs off when accused, from the seed. One who already went home can't.
 func runs_off() -> bool:
 	return hash(["crime runs", case_seed]) % RUNS_EVERY == 0 and not gone.has(plan.culprit)
@@ -378,6 +427,9 @@ func runs_off() -> bool:
 ## The culprit gets in his getaway by the scene (the pastry cook's delivery bike) and the chase starts (decision 96).
 ## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead).
 func _run_off() -> bool:
+	if place and place.run_off(plan.culprit):
+		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
+		return true
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	var car := level.get_node_or_null("PatrolCar") as PatrolCar
@@ -395,6 +447,11 @@ func _run_off() -> bool:
 	chase.ended.connect(_on_chase_ended)
 	_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 	return true
+
+
+## A getaway the place ran (Train.run_off) ended.
+func end_chase(caught: bool) -> void:
+	_on_chase_ended(caught)
 
 
 ## Caught and in the patrol car, he's in custody for the next interrogation; got away, the case is lost.
@@ -432,7 +489,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE,
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent,
 		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
@@ -477,7 +534,8 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
+		"frames": frames_broken, "spent": spent,
+		"rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -494,6 +552,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	at_tent = state.at_tent
 	clues_found.assign(state.found)
 	frames_broken = state.get("frames", 0)
+	spent = state.get("spent", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -523,6 +582,9 @@ func apply_snapshot(state: Dictionary) -> void:
 		accused = true
 		if state.has("chase"):
 			_run_off()
+		elif place and runs_off() and place.run_off(plan.culprit):
+			# The place runs his getaway itself (the train's roofs) and follows the host's.
+			pass
 		elif place and not gone.has(plan.culprit):
 			_send_off(place.suspect(plan.culprit))
 	if chase and state.has("chase"):
@@ -608,6 +670,8 @@ func clue_line(kind: String) -> String:
 		return _circus_clue_line(kind)
 	if texts() == VARIANTS.museum:
 		return _museum_clue_line(kind)
+	if texts() == VARIANTS.train:
+		return _train_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
 	match kind:
@@ -663,6 +727,28 @@ func _museum_clue_line(kind: String) -> String:
 	return tr("CLUE_MUSEUM_" + kind)
 
 
+## On the train: the soot footprint, the hair on the broken window's sill, the bitten sandwich, Picadora and the knot.
+func _train_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_TRAIN_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_TRAIN_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_TRAIN_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_TRAIN_witness_glasses" if who.glasses else "CLUE_TRAIN_witness_no_glasses")
+		"knot":
+			return tr("CLUE_TRAIN_knot_left" if who.left else "CLUE_TRAIN_knot_right")
+	return tr("CLUE_TRAIN_" + kind)
+
+
+## Money off the salary for something bought during the case.
+func spend(amount: int) -> void:
+	spent += amount
+
+
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
 func _hotel_clue_line(kind: String) -> String:
 	var who := culprit()
@@ -698,6 +784,8 @@ func file_text(index: int) -> String:
 		return "\n".join(lines)
 	if texts() == VARIANTS.museum:
 		return _guard_file_text(index, who)
+	if texts() == VARIANTS.train:
+		return _magician_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
@@ -708,6 +796,24 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A magician's file: its sticker's number and what the cops got from whoever wore it.
+func _magician_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray([file_name(index)])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("left"):
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	else:
+		lines.append(tr("FILE_KNOT_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 
@@ -830,7 +936,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if not accused and not lost:
 		elapsed += delta
-		if gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
+		if texts().get("tire", true) and gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):

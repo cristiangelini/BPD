@@ -37,14 +37,15 @@ func _on() -> Array[Node]:
 	return pcs
 
 
-func test_the_hotel_is_drawn_in_quarters() -> void:
-	assert_eq(PlaceDraw.CRIME_SCENES, ["crime_scene", "circus", "museum", "hotel"])
+func test_the_hotel_is_drawn_among_the_crime_scenes() -> void:
+	assert_has(PlaceDraw.CRIME_SCENES, "hotel")
 	assert_true(PlaceDraw.PLACES.has("hotel"))
+	var count := PlaceDraw.CRIME_SCENES.size()
 	var drawn := {}
 	for seed_value in range(1, 400):
 		if hash(["crime scene", seed_value]) % PlaceDraw.CRIME_EVERY == 0:
-			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % 4]] = true
-	assert_eq(drawn.size(), 4, "every crime scene comes up")
+			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % count]] = true
+	assert_eq(drawn.size(), count, "every crime scene comes up")
 
 
 func test_the_maid_and_the_card_reach_the_guest() -> void:
