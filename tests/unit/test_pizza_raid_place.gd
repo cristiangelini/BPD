@@ -73,3 +73,19 @@ func test_a_burst_sack_leaves_a_patch_of_flour() -> void:
 	assert_eq(pizzeria.burst_sacks, 1)
 	assert_eq(pizzeria.sacks.size(), PizzaRaid.SACKS_ALONG.size() - 1)
 	assert_eq(pizzeria.flour.patches.size(), 1)
+
+
+func test_a_stack_wakes_up_when_something_reaches_it() -> void:
+	var pizzeria := _pizzeria()
+	await wait_physics_frames(2)
+	assert_true(pizzeria.plates.all(func(plate: StackedPlate) -> bool: return plate.freeze), "frozen, untouched")
+	var box := ClubEvidence.make_item("Thrown", PizzaRaid.BOX_MODEL, Vector3(0.3, 0.1, 0.3), 1.0)
+	pizzeria.add_child(box)
+	box.global_position = pizzeria.to_global(PizzaRaid.PLATE_STACKS[0] + Vector3(0, 0.6, 0))
+	await wait_physics_frames(20)
+	var first_stack := pizzeria.plates.filter(func(plate: StackedPlate) -> bool:
+		return absf(plate.position.x - PizzaRaid.PLATE_STACKS[0].x) < 0.3)
+	assert_true(first_stack.all(func(plate: StackedPlate) -> bool: return not plate.freeze), "the box woke it")
+	var other := pizzeria.plates.filter(func(plate: StackedPlate) -> bool:
+		return absf(plate.position.x - PizzaRaid.PLATE_STACKS[1].x) < 0.3)
+	assert_true(other.all(func(plate: StackedPlate) -> bool: return plate.freeze), "the other stack still waits")
