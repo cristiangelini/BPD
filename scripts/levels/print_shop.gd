@@ -12,6 +12,7 @@ extends Node3D
 
 signal pane_broken(index: int)
 signal jar_broken(index: int)
+signal barrel_tipped(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PRESS_MODEL := preload("res://assets/models/printing_press.glb")
@@ -52,6 +53,8 @@ const BARRELS: Array[Vector3] = [Vector3(-3.5, FLOOR_TOP, -2.0), Vector3(-2.5, F
 	Vector3(-1.5, FLOOR_TOP, -2.0), Vector3(-0.5, FLOOR_TOP, -2.0)]
 const BARREL_RADIUS := 0.32
 const BARREL_TOP := 0.9
+## A barrel tips over when something hits it faster than this, or a running cop bumps into it (step 3).
+const BARREL_SPEED := 3.0
 const EMPTY_BARREL_AT := Vector3(4.8, FLOOR_TOP, -2.0)
 ## By the front: the counter with the till and the bell, and the display of invitations (four glass panes, each a
 ## fine) with a gap behind it against the front wall.
@@ -123,6 +126,11 @@ var office_door: FrontDoor
 var till: Till
 ## The rotativa: its belt, rollers, lever and flying sheets (step 2).
 var press: PrintingPress
+## The ink barrels (their looks and bodies) and the tipped ones by index, and the puddles and footprints (step 3).
+var barrel_looks: Array[Node3D] = []
+var barrel_bodies: Array[StaticBody3D] = []
+var tipped: Array[int] = []
+var ink: InkSpills
 ## The display's panes (each a body with its glass), the broken ones by index, and the ink jars.
 var panes: Array[StaticBody3D] = []
 var cracked: Array[int] = []
@@ -142,6 +150,10 @@ func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
 	_build = PlaceBuilder.new($Built)
+	ink = InkSpills.new()
+	ink.name = "Ink"
+	ink.floor_top = FLOOR_TOP
+	add_child(ink)
 	_build_shed()
 	_build_press()
 	_build_front()
@@ -216,8 +228,16 @@ func _build_press() -> void:
 			var low := HOUSING_LOW if x > BELT_X.y and x < TRAY_X.x else TRAY_TOP - 0.1
 			_build.shape(_build.body(PRESS_AT + Vector3(x, low / 2, z)), Vector3(0.1, low, 0.1))
 	for i in BARRELS.size():
-		_model(BARREL_MODELS[i], BARRELS[i])
-		_cylinder(BARRELS[i] + Vector3(0, BARREL_TOP / 2, 0), BARREL_RADIUS, BARREL_TOP)
+		barrel_looks.append(_model(BARREL_MODELS[i], BARRELS[i]))
+		barrel_bodies.append(_cylinder(BARRELS[i] + Vector3(0, BARREL_TOP / 2, 0), BARREL_RADIUS, BARREL_TOP))
+		var area := _area(BARRELS[i] + Vector3(0, BARREL_TOP / 2, 0), Vector3(1.0, BARREL_TOP, 1.0))
+		area.collision_mask = 2 | 4
+		area.body_entered.connect(func(hit: Node3D) -> void:
+			var away := BARRELS[i] - hit.global_position
+			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > BARREL_SPEED:
+				tip_barrel(i, (hit as RigidBody3D).linear_velocity)
+			elif hit is Cop and (hit as Cop).is_running:
+				tip_barrel(i, away))
 	_model(EMPTY_BARREL_MODEL, EMPTY_BARREL_AT)
 	var side := BARREL_RADIUS * 1.6
 	_build.shape(_build.body(EMPTY_BARREL_AT + Vector3(0, 0.025, 0)), Vector3(side, 0.05, side))
@@ -340,7 +360,7 @@ func break_pane(index: int) -> void:
 	pane_broken.emit(index)
 
 
-## Breaks ink jar `index`, once: a fine, and it's gone (its puddle comes with the ink, step 3).
+## Breaks ink jar `index`, once: a fine, it's gone and its ink spills on the floor below the shelf.
 func break_jar(index: int) -> void:
 	if broken_jars.has(index):
 		return
@@ -348,8 +368,26 @@ func break_jar(index: int) -> void:
 	broken_goods += 1
 	fines += JAR_FINE
 	jars[index].visible = false
+	ink.spill(Vector3(SHELF_AT.x - 1.0, FLOOR_TOP, jars[index].position.z), 0)
 	_say(jars[index].position + Vector3(-0.6, 1.0, 0), "PRINT_SHOP_JAR_BROKEN")
 	jar_broken.emit(index)
+
+
+## Tips ink barrel `index` over toward `away`, once: it lies on the floor and leaves a puddle of its ink in front.
+func tip_barrel(index: int, away: Vector3) -> void:
+	if tipped.has(index):
+		return
+	tipped.append(index)
+	var flat := Vector3(away.x, 0, away.z).normalized()
+	if flat == Vector3.ZERO:
+		flat = Vector3.BACK
+	(barrel_bodies[index].get_child(0) as CollisionShape3D).set_deferred("disabled", true)
+	var look := barrel_looks[index]
+	look.basis = Basis(Vector3.UP.cross(flat).normalized(), PI / 2)
+	look.position = BARRELS[index] + Vector3(0, BARREL_RADIUS, 0)
+	ink.spill(BARRELS[index] + flat * (BARREL_TOP + 0.3), index)
+	_say(BARRELS[index] + Vector3(0, 1.5, 0), "PRINT_SHOP_BARREL_TIPPED")
+	barrel_tipped.emit(index)
 
 
 func _glass(color: Color) -> StandardMaterial3D:
@@ -360,7 +398,7 @@ func _glass(color: Color) -> StandardMaterial3D:
 
 
 ## A standing cylinder body for the collisions, `height` tall, centered at `center`.
-func _cylinder(center: Vector3, radius: float, height: float) -> void:
+func _cylinder(center: Vector3, radius: float, height: float) -> StaticBody3D:
 	var body := _build.body(center)
 	var collision := CollisionShape3D.new()
 	var cylinder := CylinderShape3D.new()
@@ -368,6 +406,7 @@ func _cylinder(center: Vector3, radius: float, height: float) -> void:
 	cylinder.height = height
 	collision.shape = cylinder
 	body.add_child(collision)
+	return body
 
 
 func _area(center: Vector3, size: Vector3) -> Area3D:
