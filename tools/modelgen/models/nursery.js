@@ -345,6 +345,41 @@ export function buildHandMower() {
 	return b.build();
 }
 
+// The pot with diamonds buried in it (0.4 m across, 0.5 m tall): a terracotta pot, a small fern on top and three
+// diamonds peeking out of the soil.
+export function buildDiamondPot() {
+	const b = new Builder('diamond_pot');
+	const gem = mat('diamond_gem', 0xcff4ff, { metalness: 0.2, roughness: 0.05, emissive: 0x204050 });
+	b.add('pot', terracotta(), new THREE.CylinderGeometry(0.2, 0.15, 0.32, 14), { pos: V(0, 0.16, 0) });
+	b.add('soil', soil(), new THREE.CylinderGeometry(0.19, 0.19, 0.02, 14), { pos: V(0, 0.31, 0) });
+	for (let i = 0; i < 5; i++) {
+		const a = (i / 5) * Math.PI * 2;
+		b.add('frond', leaf(), ellipsoid(0.16, 0.02, 0.05), { pos: V(Math.sin(a) * 0.08, 0.42, Math.cos(a) * 0.08), rot: [0, a + Math.PI / 2, 0.6] });
+	}
+	for (const [x, z] of [[0.1, 0.05], [-0.08, 0.1], [0.02, -0.12]]) {
+		b.add('gem', gem, new THREE.OctahedronGeometry(0.035), { pos: V(x, 0.33, z) });
+	}
+	return b.build();
+}
+
+// A jeweler's loupe (0.05 m across): a small black eyepiece with its glass.
+export function buildJewelerLoupe() {
+	const b = new Builder('jeweler_loupe');
+	b.add('body', mat('loupe_black', 0x1a1a1a), new THREE.CylinderGeometry(0.025, 0.02, 0.04, 12), { pos: V(0, 0.02, 0) });
+	b.add('glass', mat('loupe_glass', 0xbfe8ff, { roughness: 0.05, emissive: 0x102030 }), new THREE.CylinderGeometry(0.02, 0.02, 0.005, 12), { pos: V(0, 0.042, 0) });
+	return b.build();
+}
+
+// An empty soil bag (0.45 x 0.6 m): the soil sack, flat and crumpled, with its green label.
+export function buildEmptySoilBag() {
+	const b = new Builder('empty_soil_bag');
+	const sack = mat('soil_sack', 0x8a5a34);
+	b.add('sack', sack, new THREE.BoxGeometry(0.42, 0.02, 0.6), { pos: V(0, 0.01, 0), rot: [0, 0.1, 0.03] });
+	b.add('fold', sack, new THREE.BoxGeometry(0.42, 0.02, 0.15), { pos: V(0, 0.03, -0.22), rot: [0.3, 0.1, 0] });
+	b.add('label', mat('soil_label', 0x58b04a), new THREE.BoxGeometry(0.24, 0.005, 0.2), { pos: V(0, 0.023, 0.05), rot: [0, 0.1, 0] });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
@@ -353,7 +388,8 @@ export const models = {
 	npc_brotecito: buildBrotecito, watering_can: buildWateringCan, nursery_orchid: buildNurseryOrchid,
 	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears, gold_gnome: buildGoldGnome,
 	mayor_photo: buildMayorPhoto, gnome_paint: buildGnomePaint, grass_roll: buildGrassRoll,
-	stadium_ticket: buildStadiumTicket, hand_mower: buildHandMower,
+	stadium_ticket: buildStadiumTicket, hand_mower: buildHandMower, diamond_pot: buildDiamondPot,
+	jeweler_loupe: buildJewelerLoupe, empty_soil_bag: buildEmptySoilBag,
 };
 
 export const views = {
@@ -371,6 +407,8 @@ export const views = {
 			{ name: 'gold_gnome', pos: [-2.6, 0, 3.2] }, { name: 'mayor_photo', pos: [-2.0, 0, 3.7] },
 			{ name: 'gnome_paint', pos: [-1.6, 0, 3.6] }, { name: 'grass_roll', pos: [2.6, 0, 2.8], rotY: 0.4 },
 			{ name: 'stadium_ticket', pos: [2.2, 0, 3.8] }, { name: 'hand_mower', pos: [3.6, 0, 2.2], rotY: -0.6 },
+			{ name: 'diamond_pot', pos: [-3.2, 0, 1.8] }, { name: 'jeweler_loupe', pos: [-2.9, 0, 2.4] },
+			{ name: 'empty_soil_bag', pos: [-3.6, 0, 2.6], rotY: 0.3 },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},

@@ -176,6 +176,11 @@ los extras suman 500.
    patio (sorteado entre 4 lugares) tiene pasto más claro con líneas blancas; el policía que pasa a menos de 1,5 m del
    borde lo ve (pista). Cada vez que se prende el riego, sobre el rollo aparece el canto de la hinchada 4 s (por ahora
    como texto, sin sonido). Captura: `/mnt/project-files/vivero/paso7b-pasto.png`.
+   **Hecho así, las macetas con diamantes** (`DiamondPotsRig`, `--story=diamond_pots`): la maceta (6 kg, 1000), la
+   lupa (0,1 kg, 300) y la bolsa vacía (0,5 kg, 200) van a cualquier escondite. Mientras el riego está prendido, la
+   maceta titila con 5 destellos esté donde esté (el agua llega por los caños, aunque esté bajo techo); un policía a
+   menos de 4 m en ese momento la ve (pista). Cada vez que se prende el riego, 4 macetas del patio hacen "¡Clinc!".
+   Captura: `/mnt/project-files/vivero/paso7c-diamantes.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 
