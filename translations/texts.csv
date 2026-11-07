@@ -7382,3 +7382,30 @@ FARM_SCARECROW_SNEEZE,¡ACHÍS!,ACHOO!,ATCHIM!
 HINT_ESCAPE_farm,¡Don Florencio vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Florencio saw the evidence and is getting away in his car! You have a minute to catch him.,Don Florencio viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
 CRIME_owner_farm,"¡Novatos! Ayer se trajeron a Don Florencio, el dueño de la granja Las Margaritas, y lo tenemos en la sala de interrogatorio. Algo escondió en la granja que no encontraron.","Rookies! Yesterday you brought in Don Florencio, the owner of Las Margaritas farm, and we have him in the interrogation room. He hid something at the farm that you didn't find.","Novatos! Ontem vocês trouxeram Don Florencio, o dono da granja Las Margaritas, e ele está na sala de interrogatório. Ele escondeu algo na granja que vocês não acharam."
 CONFESS_owner_farm,"¡Está bien! ¡Fui yo! Pero las gallinas no tienen nada que ver, ¿eh?","Fine! It was me! But the hens have nothing to do with it, okay?","Tá bom! Fui eu! Mas as galinhas não têm nada a ver com isso, viu?"
+PLACE_RADIO,RADIO LA ANTENA LOCA,RADIO LA ANTENA LOCA,RÁDIO LA ANTENA LOCA
+RADIO_FREQUENCY,FM 104.7 · ¡Siempre al aire!,FM 104.7 · Always on air!,FM 104.7 · Sempre no ar!
+MENU_RADIO,Radio (allanamiento) (prueba),Radio station (raid) (test),Rádio (batida) (teste)
+CASE_FAILED_LAWYER_RADIO,"Don Volumen llamó a su abogado... y lo contó al aire. Caso perdido.","Don Volumen called his lawyer... and told it on air. Case lost.","Seu Volumen ligou para o advogado... e contou no ar. Caso perdido."
+HINT_TILL_KEY_RADIO,"Una llave con una etiqueta: «ARCHIVO».","A key with a tag: «ARCHIVE».","Uma chave com uma etiqueta: «ARQUIVO»."
+RADIO_ON_AIR,AL AIRE,ON AIR,NO AR
+RADIO_RANKING,RANKING DE LA SEMANA,THIS WEEK'S CHART,RANKING DA SEMANA
+RADIO_GLASS_BROKEN,¡Eso salió al aire!,That went out on air!,Isso saiu no ar!
+RADIO_RECORD_BROKEN,¡Un disco de colección!,A collector's record!,Um disco de coleção!
+LOC_behind_reception_desk,detrás del mostrador de la recepción,behind the reception desk,atrás do balcão da recepção
+LOC_behind_radio_sofa,detrás del sillón de la recepción,behind the reception sofa,atrás do sofá da recepção
+LOC_in_record_archive,al fondo del archivo de discos,at the back of the record archive,no fundo do arquivo de discos
+LOC_in_radio_storage,entre los cables del depósito,among the cables in the storage room,entre os cabos do depósito
+LOC_in_radio_bathroom,en el baño de la radio,in the radio's bathroom,no banheiro da rádio
+LOC_on_radio_roof,"en el techo, al pie de la antena","on the roof, at the foot of the antenna","no telhado, ao pé da antena"
+LOC_in_mailbox,en el buzón de las cartas,in the letters' mailbox,na caixa de cartas
+LOC_on_record_shelf,arriba de una estantería de discos,on top of a record shelf,em cima de uma estante de discos
+LOC_on_kitchen_fridge,arriba de la heladera de la cocina,on top of the kitchen fridge,em cima da geladeira da cozinha
+LOC_under_ranking,debajo del ranking de la semana,under this week's chart,embaixo do ranking da semana
+LOC_in_control_room,en la sala de control,in the control room,na sala de controle
+LOC_behind_console,detrás de la consola del estudio,behind the studio's console,atrás da mesa do estúdio
+PROMPT_RADIO_MIC,E: hablar al aire,E: speak on air,E: falar no ar
+RADIO_MIC_LINE,"¡Hola, hola! ¿Se escucha?","Hello, hello! Can you hear me?","Alô, alô! Dá pra ouvir?"
+RADIO_CALL_NOISE,"Un oyente: ""¿Qué fue ese ruido? Casi se me cae la sopa.""","A listener: ""What was that noise? I almost dropped my soup.""","Um ouvinte: ""Que barulho foi esse? Quase derrubei a sopa."""
+RADIO_CALL_SONG,"Una oyente: ""¿Pueden pasar el tema de siempre? El largo.""","A listener: ""Can you play the usual song? The long one.""","Uma ouvinte: ""Podem tocar a música de sempre? A longa."""
+RADIO_CALL_VOLUMEN,"Un oyente: ""¿Y Volumen? Esa voz no es la de Volumen.""","A listener: ""Where's Volumen? That voice isn't Volumen's.""","Um ouvinte: ""Cadê o Volumen? Essa voz não é a do Volumen."""
+RADIO_LISTENER_COMPLAINT,"¡Qué es ese ruido, Volumen!","What is that noise, Volumen!","Que barulho é esse, Volumen!"

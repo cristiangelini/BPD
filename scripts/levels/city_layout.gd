@@ -77,6 +77,8 @@ const PLACES := [
 	{"id": "supermarket", "block": Vector2i(7, 1), "side": "s", "along": 0.0, "size": Vector3(30, 7, 24), "color": Color(0.95, 0.86, 0.4), "sign": "PLACE_SUPERMARKET"},
 	# The farm (allanamiento-granja.md) fills the south-east corner block: its fence and its buildings are its scene's.
 	{"id": "farm", "block": Vector2i(8, 5), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.5, 0.7, 0.3), "sign": "PLACE_FARM", "park": true},
+	# The neighborhood FM station "La Antena Loca", its stair to the roof on the east (allanamiento-radio.md).
+	{"id": "radio", "block": Vector2i(7, 3), "side": "n", "along": 0.0, "size": Vector3(21, 3, 22), "color": Color(0.9, 0.86, 0.78), "sign": "PLACE_RADIO"},
 ]
 
 ## The plaza fills its block.
