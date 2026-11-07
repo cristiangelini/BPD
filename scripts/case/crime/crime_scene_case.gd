@@ -628,6 +628,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.theater:
+		return _theater_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -696,6 +698,22 @@ func _hotel_clue_line(kind: String) -> String:
 		"signature":
 			return tr("CLUE_HOTEL_signature_left" if who.left else "CLUE_HOTEL_signature_right")
 	return tr("CLUE_HOTEL_" + kind)
+
+
+## At the theater: the talc footprint, the hair in the wig, the bonbon in the box, the deep voice, the scrap of sheet
+## and Don Susurro.
+func _theater_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_THEATER_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_THEATER_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_THEATER_bite") % tr("TEETH_" + str(who.teeth))
+		"sheet", "witness":
+			return tr("CLUE_THEATER_" + kind) % tr("EMBROIDERY_" + str(who.embroidery))
+	return tr("CLUE_THEATER_" + kind)
 
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.

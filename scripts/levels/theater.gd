@@ -9,7 +9,8 @@ extends CrimeScenePlace
 ## and two by the dressing rooms (step 2); Maestro Bambalina directs from the aisle and Don Susurro stands in the pit
 ## under his shell. The case reaches the ghosts (step 3, set_up_case). The Golden Mask is hidden in one of nine spots
 ## (step 4) and the props book tells which dressing room. Every two minutes the scene changes (step 5, TheaterShow),
-## and the stage lever behind the curtain stops it. Every number here is (propuesta).
+## and the stage lever behind the curtain stops it. The clues go where the case says (step 6, TheaterClues). Every
+## number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(36, 32)
@@ -66,6 +67,8 @@ const BOX_SEAT_AT := Vector3(15.6, BOX_TOP, -3.2)
 ## The foyer: the ticket booth, the red carpet and the glass case the Golden Mask was taken from.
 const MASK_CASE_AT := Vector3(0, 0, 6.2)
 const BOOTH_AT := Vector3(-13.5, 0, 6.5)
+## The stool with the roll of evidence bags, in the foyer.
+const BAGS_AT := Vector3(-3.0, 0, 7.6)
 ## Behind the backdrop: the dressing rooms along the back wall, one per embroidery, and the props workshop.
 const DRESSING_FROM := -12.0
 const DRESSING_WIDTH := 2.6
@@ -116,6 +119,8 @@ var book: PropsBook
 ## The show that goes on (step 5), and the stage lever that stops it.
 var performance: TheaterShow
 var lever: StageLever
+## The case's clues (step 6).
+var clues: TheaterClues
 ## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
 var _busy := {}
 var ghosts: Array[TheaterGhost] = []
@@ -152,6 +157,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	performance.theater = self
 	performance.case = case
 	add_child(performance)
+	clues = TheaterClues.new()
+	clues.name = "Clues"
+	clues.theater = self
+	clues.case = case
+	add_child(clues)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then the Golden Mask turns up if it's there, or the cop
@@ -168,6 +178,8 @@ func search(spot: String, cop: Cop) -> void:
 ## The search of a spot is over.
 func searched(spot: String, cop: Cop) -> void:
 	_busy.erase(cop)
+	if clues:
+		clues.searched(spot)
 	if spot != loot_spot or mask_uncovered or not case:
 		if cop:
 			cop.show_hint("HINT_THEATER_NOTHING_" + spot)
@@ -357,6 +369,11 @@ func _foyer() -> void:
 	add_child(glass)
 	_builder.mesh_box(MASK_CASE_AT + Vector3(0, 1.03, 0), Vector3(0.3, 0.06, 0.2), VELVET)
 	_label("Plaque", "SIGN_MASK", MASK_CASE_AT + Vector3(0, 0.75, 0.42), 0.0, 0.003, 32)
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
 	for x: float in DOORS_HALL_X:
 		_label("", "SIGN_HALL", Vector3(x, 2.5, FOYER_Z + 0.12), 0.0)
 
@@ -392,6 +409,7 @@ func _hall() -> void:
 			GOLD)
 		_builder.stairs(Vector3(side * 15.6, 0, FOYER_Z - 0.5), FOYER_Z - 0.5 - BOX_TO_Z, WOOD)
 		_builder.mesh_box(Vector3(side * 15.6, BOX_TOP + 0.25, -3.2), Vector3(0.6, 0.5, 0.6), VELVET)
+	_spot("box", BOX_SEAT_AT + Vector3(0, 0.3, 0), Vector3(0.7, 0.6, 0.7), Vector3(-0.7, 0, 0), BOX_TOP)
 
 
 ## The stage: its floor with the holes for the stairs down and the trapdoors (closed), the turntable, the prompter's

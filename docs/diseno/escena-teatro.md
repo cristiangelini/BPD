@@ -201,5 +201,18 @@ Mientras tanto se avanza con lo recomendado.
    - La señal `changed(first)` queda lista para destapar la pisada de talco en el paso 6.
    - Capturas: `teatro/paso5-cambio.png` y `teatro/paso5-arbol.png`.
 6. Las pistas y el testigo: la vitrina, la pisada, la peluca, el caramelo, el trozo de sábana y Don Susurro.
+   **Hecho así (6a, las pistas):** TheaterClues.
+   - **Las huellas:** en el vidrio de la vitrina. Tocarla con E las tapa, y a los 240 s la acomodadora pasa el trapo.
+   - **La pisada de talco:** atrás en el escenario, al este del decorado. Aparece con el primer giro y el cambio
+     siguiente la barre si nadie le sacó foto.
+   - **La peluca:** violeta, con el pelo, tirada sobre la trampilla del fondo al este, camino al taller. Si la
+     trampilla se abre y el pelo no está embolsado, se pierde en el sótano.
+   - **El mordisco:** en un bombón envuelto en papel dorado (en vez de un caramelo), escondido en el palco del este.
+     Se encuentra buscando en el palco con E, 5 s. A los 180 s la señora del palco se despierta y se lo come.
+   - **La voz:** cuenta como pista la primera vez que un fantasma canta grave.
+   - **El trozo de sábana:** en un clavo de la base de la vitrina, con el bordado del culpable. Se mira con E. Por
+     ahora no se arruina, porque la vitrina no se rompe.
+   - Las bolsas de evidencia esperan en un banquito del vestíbulo.
+   - Capturas: `teatro/paso6-peluca.png`, `teatro/paso6-pisada.png` y `teatro/paso6-sabana.png`.
 7. El final: el tablero, el sueldo y el camión con los decorados.
 8. El sorteo de "Jugar" y el online.

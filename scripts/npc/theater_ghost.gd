@@ -123,6 +123,9 @@ func sing() -> void:
 	sang = true
 	say("GHOST_SING_DEEP" if traits.deep else "GHOST_SING_HIGH")
 	_file("voice")
+	# The founder's aria was sung deep that night: hearing a deep voice tells it's a clue.
+	if traits.deep and case:
+		case.found("voice")
 
 
 ## The camera's flash in their face (PhotoCamera): their photo, with their shoes under the hem.
