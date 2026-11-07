@@ -31,7 +31,22 @@ func _on_puffed() -> void:
 		shop.raid.add_clue(tr("CLUE_SHOW_HAT"))
 
 
+## The clouds so far, so a guest's rig puffs the ones it hasn't (the hat flies and the clock runs on the host).
+func net_state() -> Variant:
+	return [hat.puffs, pink_clouds]
+
+
+func apply_net_state(state: Variant) -> void:
+	while hat.puffs < state[0]:
+		hat.puff()
+	while pink_clouds < state[1]:
+		pink_clouds += 1
+		cloud(shop, PINK_AT, PINK, 2.0)
+
+
 func _physics_process(delta: float) -> void:
+	if shop.raid.follower:
+		return
 	_pink_left -= delta
 	if _pink_left > 0.0:
 		return

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 8: online: the host runs Don Fantoche, Mimí and the customers and the guests follow them; the mirror and display case broken on the host break everywhere, the smoke clouds puff on every PC, the bell, the false back, the tag, the light switch and the glowing costume work from any PC, and the itchy costume drops from any PC's cop.
 - Costume shop raid, step 7: Play's raid draw now includes the costume shop (11 raids in equal parts), and Don Fantoche, seeing the main evidence picked up, gets away in his car with the chase on; caught, he's interrogated next shift.
 - Costume shop raid, step 6: the neighborhood ghost story: the ghost costume with chains is hidden with the howl recorder and the list of houses, the light switch by the counter turns the lamps off and a white costume on the monsters rack glows in the dark (the clue), and the customers come out of the fitting rooms talking about the ghost. The shop now tells its six stories.
 - Costume shop raid, step 6: the smoke bombs story: the box of colored smoke bombs is hidden with the hat with a double bottom and the list of buyers, the show hat on the wig trunk puffs colored smoke when it's thrown (the clue) and a pink cloud comes out of the stock room every 25 s.

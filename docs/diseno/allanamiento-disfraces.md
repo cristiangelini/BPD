@@ -170,6 +170,12 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   policía agarra la prueba principal a menos de 15 m, se escapa en su auto, estacionado delante del patrullero, y
   arranca la persecución; atrapado y en el patrullero, va al interrogatorio del turno siguiente ("¡Está bien,
   campeón! ¡Fui yo! Pero me llevo el parche puesto.").
+- Paso 8, el online: el anfitrión maneja a Don Fantoche, a Mimí (encontrada o escondida, y en qué lugar) y a los
+  clientes, y las otras PC los siguen. Los maniquíes, el oso y sus billetes son objetos como cualquiera. El espejo y
+  la vitrina que se rompen en el anfitrión se rompen en todas las PC, y las nubes del sombrero y del depósito salen en
+  todas. El timbre, el espejo del probador 3, la etiqueta del teatro, la llave de luz y el disfraz que brilla
+  funcionan desde cualquier PC. El disfraz que pica se le cae de las manos al policía de cualquier PC con su aviso
+  (rascarse sin poder moverse queda solo para el policía del anfitrión).
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

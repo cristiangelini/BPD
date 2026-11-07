@@ -30,7 +30,15 @@ func hold(holder_id: int, point: Vector3) -> void:
 	if not grabber:
 		return
 	var cop := grabber.get_parent() as Cop
-	grabber.release.call_deferred()
+	_drop.call_deferred(grabber)
 	cop.stagger(SCRATCH)
 	cop.show_hint("HINT_ITCHY")
 	itched.emit(cop)
+
+
+## Out of the cop's hands, and online the owner's PC hears it's empty-handed again.
+func _drop(grabber: Grabber) -> void:
+	grabber.release()
+	var cop := grabber.get_parent() as Cop
+	if cop.sync and multiplayer.has_multiplayer_peer() and multiplayer.is_server():
+		cop.sync.tell_held()

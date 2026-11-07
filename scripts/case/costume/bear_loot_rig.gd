@@ -29,7 +29,8 @@ func setup(place: CostumeShop) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if not is_instance_valid(bear) or not bear.is_inside_tree():
+	# The host drops the bills (PropSync copies them to the guests).
+	if shop.raid.follower or not is_instance_valid(bear) or not bear.is_inside_tree():
 		return
 	var held := bear.is_held()
 	var down := bear.global_basis.y.y < FALLEN_UP_Y

@@ -102,6 +102,16 @@ func is_found() -> bool:
 	return _found_left > 0.0
 
 
+## What a guest's copy needs (NpcSync): whether she's found (her clock runs on the host) and on which spot.
+func net_state() -> Array:
+	return [is_found(), spot]
+
+
+func apply_net_state(state: Array) -> void:
+	_found_left = 1.0 if state[0] else 0.0
+	spot = state[1]
+
+
 func _physics_process(delta: float) -> void:
 	if is_found():
 		_found_left -= delta

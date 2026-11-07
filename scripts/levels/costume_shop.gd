@@ -277,6 +277,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -326,6 +328,19 @@ func _place_facts() -> Dictionary:
 		"broken": int(mirror_cracked) + int(case_broken),
 		"complaint": owner_boss.complaint,
 	}
+
+
+## What a guest's shop needs from the host's (CaseSync): the mirror and the display case, and the story's rig.
+func net_state() -> Dictionary:
+	return {"mirror": mirror_cracked, "case": case_broken, "rig": rig.net_state()}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.mirror:
+		break_mirror()
+	if state.case:
+		break_mask_case()
+	rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -621,9 +636,9 @@ func cop_in_fitting(index: int) -> bool:
 	return false
 
 
-## Between turns the next customer in line goes to the next fitting room.
+## Between turns the next customer in line goes to the next fitting room (the host's customers; a guest's follow).
 func _physics_process(delta: float) -> void:
-	if on_turn:
+	if on_turn or raid.follower:
 		return
 	_turn_left -= delta
 	if _turn_left > 0.0:
