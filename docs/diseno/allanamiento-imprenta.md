@@ -164,6 +164,10 @@ suman 500.
   2 m del canasto lo ve, y es pista la primera vez. La rotativa tira billetes verdes en vez de hojas
   (`PrintingPress.sheet_color` y `sheet_size`). Don Renglón aparece en el interrogatorio como `owner_print_shop`.
   Capturas en `imprenta/paso6-billete-malo.png` e `imprenta/paso6-billetes.png`.
+- **Paso 7a (las entradas truchas):** `FakeTicketsRig`. La entrada se le pega al policía que pisa a 1,5 m del lugar
+  donde estaba escondida la caja (aunque ya la hayan sacado). Queda a la vista en el zapato, y es pista la primera
+  vez. Como la puerta del frente no tiene hoja, los 5 fans de la vereda gritan cuando un policía pasa por el hueco de
+  la puerta, como mucho una vez cada 3 s. Captura en `imprenta/paso7a-fans.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

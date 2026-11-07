@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 7a: the fake tickets story: the box of tickets, the concert poster and the "VIP" stamp are hidden, a ticket sticks to the sole of a cop who steps near where the box was hidden (the clue), and a line of fans outside screams each time a cop goes through the door.
 - Print shop raid, step 6: the print shop is now a raid case like the nursery (the comisario's tip, 3 suspicions among its 6 stories, Don Renglón's slips and lawyer, Tipito's clue, the interrogation) with its first story, the fake bills: the 8 kg plate with his face, the bill magnifier and the tin of green ink are hidden, a badly cut bill in the recycling basket is the clue, and the press throws bills instead of sheets.
 - Print shop raid, step 5: Tipito, the apprentice, stands by the chibalete missing one of the six wooden letters lying around the shop (drawn by the seed); the cop who brings him the right one gets told what he saw (once per cop), any other gets "Esa no, esa es la Q".
 - Print shop raid, step 4: Don Renglón walks between the counter and the press, adds 5 to his complaint for each cop he sees leaving footprints (once per cop) and 10 for each barrel he sees tip over, and the fax's "enviar prueba" sends him to set an urgent order at the chibalete for 20 s, twice; the third time he catches on.
