@@ -81,10 +81,10 @@ const VARIANTS := {
 	# the cops got from its keeper, their smell and the peck on their hand included.
 	"zoo": {
 		"shift": "crime_zoo", "story": "zoo",
-		"brief": ["BRIEF_ZOO_A", "BRIEF_ZOO_B", "BRIEF_ZOO_C"], "go": "HINT_GO_ZOO",
+		"brief": ["BRIEF_ZOO_A_", "BRIEF_ZOO_B", "BRIEF_ZOO_C"], "go": "HINT_GO_ZOO",
 		"go_row": "OBJ_ZOO_GO", "look": "HINT_ZOO_LOOK", "files_row": "OBJ_ZOO_FILES",
 		"clue_line": "CLUE_ZOO_", "ruined_hint": "HINT_ZOO_RUINED_", "left": "HINT_KEEPER_LEFT",
-		"who": "keeper", "getaway": SuspectCar.BIKE,
+		"who": "keeper", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_ZOO_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "blanket": "smell",
 			"peck": "pecked", "witness": "smell"},
 		"parts": ["photo", "prints", "teeth", "hair", "smell", "peck"],

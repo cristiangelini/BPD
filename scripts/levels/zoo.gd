@@ -81,8 +81,24 @@ const LEAVES := Color(0.22, 0.52, 0.22)
 const STEEL := Color(0.62, 0.65, 0.7)
 const RAIL := Color(0.35, 0.3, 0.28)
 
-## The enclosures' gates, by animal: shut bodies across the gap in each fence.
+## Where Copito can be hidden (step 4), one drawn with the seed; "locker" is the culprit's locker.
+const HIDEOUTS: Array[String] = ["locker", "freezer", "plush", "boat", "shell"]
+## The shelf of plush penguins in the souvenir shop, and how often Copito sneezes among them (propuesta).
+const PLUSH_AT := Vector3(15, 1.0, 17.5)
+const SNEEZE_EVERY := 3.0
+
+## The enclosures' gates, by animal (ZooGate): shut across the gap in each fence.
 var gates := {}
+## What was stolen (Copito, always) and where he is (drawn in set_up_case); loot_found once he's back on his floe.
+var loot := "copito"
+var loot_spot := "locker"
+var loot_found := false
+## Copito, once found (null before).
+var copito: Copito
+## The places to search (ZooHideout), by spot: "locker0" to "locker5", "freezer", "plush", "boat", "shell" and "log".
+var hideouts := {}
+var _sneeze: Label3D
+var _sneeze_clock := 0.0
 var case: CrimeSceneCase
 var keepers: Array[ZooKeeper] = []
 var director: ZooDirector
@@ -103,6 +119,7 @@ func _ready() -> void:
 	_animals()
 	_pond()
 	_people()
+	_hideouts()
 
 
 ## The case reaches the keepers (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
@@ -113,6 +130,73 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for keeper in keepers:
 		keeper.case = case
 		keeper.shy = keeper.index == shy
+	loot_spot = HIDEOUTS[absi(hash("zoo copito %d" % case.case_seed)) % HIDEOUTS.size()]
+
+
+## The spot Copito is in: the hideout's name ("locker3" for the culprit's locker).
+func hidden_at() -> String:
+	if loot_spot == "locker":
+		return "locker%d" % (case.plan.culprit if case else 0)
+	return loot_spot
+
+
+## Searching a spot (ZooHideout, after its seconds): Copito turns up in the right one, junk in the others. The feeding
+## log tells whose locker has "1 extra fish", if he's in a locker.
+func search(spot: String, cop: Cop) -> void:
+	if spot == "log":
+		if cop:
+			var extra := case and loot_spot == "locker"
+			cop.show_hint(tr("HINT_ZOO_LOG_EXTRA") % keepers[case.plan.culprit].traits.name if extra \
+				else "HINT_ZOO_LOG_NORMAL")
+		return
+	if case and spot == hidden_at() and copito == null:
+		bring_out()
+		if cop:
+			cop.show_hint("HINT_ZOO_COPITO_FOUND")
+		return
+	if cop:
+		cop.show_hint("HINT_ZOO_NOTHING_" + (hideouts[spot] as ZooHideout).kind)
+
+
+## Copito comes out of his hiding spot, in front of it, to be carried.
+func bring_out() -> void:
+	if copito:
+		return
+	copito = Copito.new()
+	copito.name = "Copito"
+	copito.zoo = self
+	add_child(copito)
+	copito.position = hideouts[hidden_at()].get_meta("drop")
+
+
+## Whether a point in the world is on Copito's floe, or close enough above it.
+func on_floe(world: Vector3) -> bool:
+	var local := to_local(world)
+	return Vector2(local.x - ICE_AT.x, local.z - ICE_AT.z).length() < Copito.HOME_REACH and local.y < 2.0
+
+
+## Copito is back on his floe: he stays and the case notes it (+100).
+func copito_home() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	copito.settle(to_global(ICE_AT + Vector3(0, 0.6, 0)))
+	if case:
+		case.found_loot()
+
+
+## The case says he's home (online, a guest): out of hiding and onto the floe.
+func reveal_loot() -> void:
+	bring_out()
+	copito_home()
+
+
+func _process(delta: float) -> void:
+	if not case or copito or loot_spot != "plush":
+		_sneeze.visible = false
+		return
+	_sneeze_clock += delta
+	_sneeze.visible = fmod(_sneeze_clock, SNEEZE_EVERY) > SNEEZE_EVERY - 1.0
 
 
 ## The keeper by index (the order of the case's traits).
@@ -302,8 +386,11 @@ func _enclosure(kind: String) -> void:
 		else:
 			_builder.wall_at(line[0], line[1], line[2], line[3], 0, ENCLOSURE_FENCE, [], BARS)
 	var at := gate_at(kind)
-	var gate := _builder.body(at + Vector3(0, ENCLOSURE_FENCE / 2, 0))
+	var gate := ZooGate.new()
+	gate.kind = kind
+	gate.position = at + Vector3(0, ENCLOSURE_FENCE / 2, 0)
 	gate.name = "Gate_" + kind
+	add_child(gate)
 	var across := Vector3(GATE_WIDTH, ENCLOSURE_FENCE, 0.12) if sides[side][0] == "x" \
 		else Vector3(0.12, ENCLOSURE_FENCE, GATE_WIDTH)
 	_builder.shape(gate, across)
@@ -313,6 +400,7 @@ func _enclosure(kind: String) -> void:
 	bars.mesh = bars_mesh
 	bars.material_override = _builder.material(Color(0.85, 0.65, 0.2))
 	gate.add_child(bars)
+	gate.bars = bars
 	gates[kind] = gate
 	var sign_at := Vector3(along + GATE_WIDTH, ENCLOSURE_FENCE + 0.5, rect.end.y + 0.1)
 	match side:
@@ -382,6 +470,48 @@ func _pond() -> void:
 	head.height = 0.7
 	_builder.mesh(head, BOAT_AT + Vector3(0, 1.0, 0.9), Color(1.0, 0.85, 0.2))
 	_label("Sign_pond", "SIGN_ZOO_POND", Vector3(POND.get_center().x, 1.4, POND.end.y + 0.3), 0.0)
+
+
+## The places to search for Copito: each locker's door, the ice-cream freezer, the plush penguins on a shop shelf,
+## the pedal boat, the tortoise's shell, and the feeding log on the hut's desk. `drop` is where he turns up.
+func _hideouts() -> void:
+	for i in LOCKERS:
+		_hideout("locker%d" % i, "locker", Vector3(LOCKER_X + 0.33, 1.0, locker_at(i).z), Vector3(0.1, 2.0, 0.9),
+			locker_at(i) + Vector3(0.4, 0.1, 0))
+	_hideout("freezer", "freezer", ICE_CREAM_AT + Vector3(0, 0.6, 0.55), Vector3(1.8, 1.0, 0.1),
+		ICE_CREAM_AT + Vector3(0, 0.1, 1.1))
+	_hideout("plush", "plush", PLUSH_AT + Vector3(0, 0.25, 0), Vector3(1.6, 0.5, 0.8), PLUSH_AT + Vector3(0, -0.9, 1.1))
+	_hideout("boat", "boat", BOAT_AT + Vector3(0, 0.8, -0.4), Vector3(1.4, 0.3, 1.4), BOAT_AT + Vector3(0, 0.7, 0.6))
+	_hideout("shell", "shell", TORTOISE_AT + Vector3(0, 0.6, 0), Vector3(2.0, 1.2, 2.0),
+		TORTOISE_AT + Vector3(-1.5, 0.1, 0))
+	_hideout("log", "log", LOG_DESK_AT + Vector3(0.3, 1.0, 0), Vector3(0.6, 0.15, 0.45), LOG_DESK_AT)
+	for i in 5:
+		var plush: Node3D = Copito.MODEL.instantiate()
+		plush.scale = Vector3.ONE * 0.6
+		plush.position = PLUSH_AT + Vector3(-0.6 + i * 0.3, 0, 0.1 * (i % 2))
+		plush.rotation.y = 0.3 * (i - 2)
+		add_child(plush)
+	_sneeze = Label3D.new()
+	_sneeze.name = "Sneeze"
+	_sneeze.text = "SIGN_ZOO_ACHOO"
+	_sneeze.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_sneeze.font_size = 64
+	_sneeze.outline_size = 12
+	_sneeze.position = PLUSH_AT + Vector3(0, 0.9, 0)
+	_sneeze.visible = false
+	add_child(_sneeze)
+
+
+func _hideout(spot: String, kind: String, at: Vector3, size: Vector3, drop: Vector3) -> void:
+	var body := ZooHideout.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.kind = kind
+	body.place = self
+	body.position = at
+	body.set_meta("drop", drop)
+	add_child(body)
+	hideouts[spot] = body
 
 
 func _label(label_name: String, key: String, at: Vector3, turn: float, pixel := 0.006, font := 32) -> void:
