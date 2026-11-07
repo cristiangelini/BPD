@@ -79,6 +79,10 @@ const MAX_JUGS := 8
 const JUG_ROLL := 2.0
 const BOOKS_PER_CORNER := 2
 const MAX_BOOKS := 12
+const ICE_PER_CORNER := 2
+const MAX_ICE := 12
+const ICE_GRIP := 0.15
+const ICE_SKID_SECONDS := 2.0
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -118,6 +122,9 @@ var dummies: Array[ChaseDummy] = []
 var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
 var books: Array[ChaseBooks] = []
+var ice: Array[ChaseIce] = []
+## Seconds the patrol car still skids after running over a block of ice.
+var ice_skid_left := 0.0
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
 var yarns: Array[ChaseYarn] = []
@@ -245,8 +252,9 @@ func _physics_process(delta: float) -> void:
 	var at := case.car.global_position
 	if confetti:
 		_blind(at, delta)
-	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) or soaked_left > 0.0
-		else 1.0)
+	ice_skid_left = maxf(ice_skid_left - delta, 0.0)
+	case.car.grip = weather_grip * (ICE_GRIP if ice_skid_left > 0.0 else PEEL_GRIP if on_peel(at)
+		else PUDDLE_GRIP if on_puddle(at) or soaked_left > 0.0 else 1.0)
 	for blob in blobs.duplicate():
 		blob[1] -= delta
 		if blob[1] <= 0.0:
@@ -369,6 +377,9 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.BOOKMOBILE:
 		for i in BOOKS_PER_CORNER:
 			drop_books()
+	elif case.suspect_id == SuspectCar.FISH_TRUCK:
+		for i in ICE_PER_CORNER:
+			drop_ice()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -642,6 +653,29 @@ func drop_books() -> ChaseBooks:
 	pile.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.8, 0.8)
 	books.append(pile)
 	return pile
+
+
+## A block of ice slides out of the fish truck's back door onto the street, a little to one side.
+func drop_ice() -> ChaseIce:
+	ice = ice.filter(func(block: ChaseIce) -> bool: return is_instance_valid(block))
+	if ice.size() >= MAX_ICE:
+		ice.pop_front().queue_free()
+	var block := ChaseIce.new()
+	block.car = case.car
+	block.drops = self
+	_dropped += 1
+	block.name = "Ice%d" % _dropped
+	case.get_parent().add_child(block)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	block.global_position = _behind() + side + Vector3.UP * 0.2
+	block.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.8, 0.8)
+	ice.append(block)
+	return block
+
+
+## The patrol car ran over a block of ice: it skids for ICE_SKID_SECONDS.
+func ice_hit() -> void:
+	ice_skid_left = ICE_SKID_SECONDS
 
 
 func _behind() -> Vector3:

@@ -100,6 +100,8 @@ const SUSPECT_MODELS := {
 	"owner_employee": "res://assets/models/npc_oficinista.glb",
 	# The library's culprit (escena-biblioteca.md), accused at the board.
 	"owner_reader": "res://assets/models/npc_lector.glb",
+	# The aquarium's culprit (escena-acuario.md), accused at the board.
+	"owner_diver": "res://assets/models/npc_buzo.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",

@@ -33,10 +33,12 @@ const ICING := Color(1.0, 0.48, 0.7)
 const MUG := Color(0.95, 0.93, 0.86)
 const COFFEE := Color(0.3, 0.18, 0.1)
 
-## "hair", "bite", "recipe" or, at the station, "cup".
+## The looks whose hair is a loose one, not in food.
+const LOOSE_HAIR := ["museum", "hotel", "mansion", "cat_mansion", "library", "aquarium"]
+## "hair", "bite", "recipe", "cup" (the station's) or "ticket" (the aquarium's).
 var kind := "hair"
-## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office", "station" or "library": what the clue
-## looks like.
+## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office", "station", "library" or "aquarium": what
+## the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -54,7 +56,8 @@ func _ready() -> void:
 	collision_layer = 4
 	collision_mask = 15
 	var size := {"hair": Vector3(0.32, 0.12, 0.32), "bite": Vector3(0.14, 0.1, 0.22),
-		"recipe": Vector3(0.21, 0.02, 0.3), "cup": Vector3(0.1, 0.12, 0.1)}[kind] as Vector3
+		"recipe": Vector3(0.21, 0.02, 0.3), "cup": Vector3(0.1, 0.12, 0.1),
+		"ticket": Vector3(0.08, 0.02, 0.18)}[kind] as Vector3
 	if _loose():
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	elif look in ["hotel", "office"]:
@@ -103,6 +106,9 @@ func _ready() -> void:
 	if look == "library":
 		_library_cookie()
 		return
+	if look == "aquarium":
+		_aquarium_look()
+		return
 	match kind:
 		"hair":
 			var plate := CylinderMesh.new()
@@ -149,6 +155,25 @@ func _circus_look() -> void:
 			part.mesh(tail, Vector3(0, 0.045, 0.19), FISH, Vector3(PI / 4, 0, 0))
 			# The bite: a dark notch in its side.
 			part.mesh_box(Vector3(0.05, 0.05, -0.02), Vector3(0.03, 0.06, 0.08), WET)
+
+
+## At the aquarium: the divers' sandwich with a bite out of one corner, or the till's ticket.
+func _aquarium_look() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	if kind == "ticket":
+		part.mesh_box(Vector3(0, 0.005, 0), Vector3(0.07, 0.006, 0.17), PAPER)
+		for i in 4:
+			part.mesh_box(Vector3(-0.01 + (i % 2) * 0.01, 0.009, -0.06 + i * 0.03), Vector3(0.04, 0.002, 0.006),
+				CHOCOLATE)
+		_paper = _eaten_part.get_child(0) as MeshInstance3D
+		return
+	part.mesh_box(Vector3(0, 0.015, 0.02), Vector3(0.12, 0.03, 0.18), SPONGE)
+	part.mesh_box(Vector3(0, 0.035, 0.02), Vector3(0.125, 0.012, 0.185), Color(0.4, 0.75, 0.35))
+	part.mesh_box(Vector3(0, 0.06, 0.02), Vector3(0.12, 0.03, 0.18), SPONGE)
+	# The bite: a dark notch at one corner.
+	part.mesh_box(Vector3(0.04, 0.04, -0.06), Vector3(0.05, 0.08, 0.04), WET)
 
 
 ## The hotel's bonbon: a chocolate square in its gold foil, with a bite out of one corner.
@@ -230,10 +255,9 @@ func _library_cookie() -> void:
 	part.mesh_box(Vector3(0.04, 0.012, 0), Vector3(0.02, 0.022, 0.03), WET)
 
 
-## The circus's look: its loose hair and its fish. The museum's, the hotel's, both mansions' and the library's hair are
-## loose too.
+## The circus's look: its loose hair and its fish. The other crime scenes' hair (LOOSE_HAIR) is loose too.
 func _loose() -> bool:
-	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion", "library"] and kind == "hair")
+	return look == "circus" or (look in LOOSE_HAIR and kind == "hair")
 
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.

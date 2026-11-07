@@ -46,6 +46,7 @@ const PLACES := {
 	"wedding": "res://scenes/levels/wedding.tscn",
 	"hotel": "res://scenes/levels/hotel.tscn",
 	"library": "res://scenes/levels/library.tscn",
+	"aquarium": "res://scenes/levels/aquarium.tscn",
 	"hotel_raid": "res://scenes/levels/hotel_raid.tscn",
 	"office": "res://scenes/levels/forms_office.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
@@ -98,7 +99,7 @@ const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
 ## The crime scenes, drawn by the seed in equal shares (propuesta): the pastry contest and each one with its own
 ## escena-*.md.
-const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel", "train", "cat_mansion", "mansion", "office", "wedding", "station", "library"]
+const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel", "train", "cat_mansion", "mansion", "office", "wedding", "station", "library", "aquarium"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "restaurant", "chess", "biker", "auction"]
