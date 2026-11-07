@@ -291,15 +291,9 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"tv_van": Vector3(2.1, 2.3, 4.8),
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0),
 	"baggage_tug": Vector3(1.3, 1.4, 2.4), "golden_limo": Vector3(2.1, 1.5, 7.0),
-	"water_truck": Vector3(2.1, 2.4, 5.0)}
-	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "bookmobile": Vector3(2.2, 2.7, 6.0),
-	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "fish_truck": Vector3(2.3, 3.0, 6.4),
-	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "planetarium_van": Vector3(2.1, 2.6, 5.0),
-	"baggage_tug": Vector3(1.3, 1.4, 2.4)}
-	"baggage_tug": Vector3(1.3, 1.4, 2.4),
-	"mail_van": Vector3(2.1, 2.6, 5.0)}
-	"baggage_tug": Vector3(1.3, 1.4, 2.4),
-	"scenery_truck": Vector3(2.3, 3.0, 7.0)}
+	"water_truck": Vector3(2.1, 2.4, 5.0), "bookmobile": Vector3(2.2, 2.7, 6.0),
+	"fish_truck": Vector3(2.3, 3.0, 6.4), "planetarium_van": Vector3(2.1, 2.6, 5.0),
+	"mail_van": Vector3(2.1, 2.6, 5.0), "scenery_truck": Vector3(2.3, 3.0, 7.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -330,12 +324,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS,
 	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS,
 	"golden_limo": LIMO_WHEELS,
-	"water_truck": SHUTTLE_WHEELS}
-	"bookmobile": BOOKMOBILE_WHEELS}
-	"fish_truck": FISH_TRUCK_WHEELS}
-	"planetarium_van": SHUTTLE_WHEELS}
-	"mail_van": SHUTTLE_WHEELS}
-	"scenery_truck": MIXER_WHEELS}
+	"water_truck": SHUTTLE_WHEELS, "bookmobile": BOOKMOBILE_WHEELS, "fish_truck": FISH_TRUCK_WHEELS,
+	"planetarium_van": SHUTTLE_WHEELS, "mail_van": SHUTTLE_WHEELS, "scenery_truck": MIXER_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
