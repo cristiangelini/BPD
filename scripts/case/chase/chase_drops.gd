@@ -88,6 +88,8 @@ const ICE_PER_CORNER := 2
 const MAX_ICE := 12
 const ICE_GRIP := 0.15
 const ICE_SKID_SECONDS := 2.0
+const PARCELS_PER_CORNER := 2
+const MAX_PARCELS := 12
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -142,6 +144,9 @@ var tangle_speed := 0.0
 var jugs: Array[ChaseJug] = []
 ## Seconds the patrol car's tires stay wet from a burst jug, skidding as on a puddle.
 var soaked_left := 0.0
+var parcels: Array[ChaseParcel] = []
+## Seconds the patrol car's windshield stays covered in a broken parcel's envelopes.
+var envelopes_left := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -237,6 +242,9 @@ func _physics_process(delta: float) -> void:
 			_jug_left = JUG_EVERY
 			drop_jug()
 	soaked_left = maxf(soaked_left - delta, 0.0)
+	if case.suspect_id == SuspectCar.MAIL_VAN:
+		envelopes_left = maxf(envelopes_left - delta, 0.0)
+		ConfettiCloud.cover(case.car, envelopes_left > 0.0)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -394,6 +402,9 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.PLANETARIUM_VAN:
 		for i in PLANETS_PER_CORNER:
 			drop_planet()
+	elif case.suspect_id == SuspectCar.MAIL_VAN:
+		for i in PARCELS_PER_CORNER:
+			drop_parcel()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -713,6 +724,25 @@ func drop_planet() -> ChasePlanet:
 ## The patrol car hit an inflatable planet: it's held back for PLANET_HOLD_SECONDS.
 func planet_hit() -> void:
 	planet_hold_left = PLANET_HOLD_SECONDS
+
+
+## A "Frágil" parcel falls out of the mail van's back doors onto the street, a little to one side.
+func drop_parcel() -> ChaseParcel:
+	# Untyped: a parcel the patrol car broke is already freed.
+	parcels.assign(parcels.filter(func(parcel: Variant) -> bool: return is_instance_valid(parcel)))
+	if parcels.size() >= MAX_PARCELS:
+		parcels.pop_front().queue_free()
+	var parcel := ChaseParcel.new()
+	parcel.car = case.car
+	parcel.drops = self
+	_dropped += 1
+	parcel.name = "Parcel%d" % _dropped
+	case.get_parent().add_child(parcel)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	parcel.global_position = _behind() + side + Vector3.UP * 0.3
+	parcel.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
+	parcels.append(parcel)
+	return parcel
 
 
 func _behind() -> Vector3:

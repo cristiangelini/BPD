@@ -62,6 +62,8 @@ const MODELS := {
 	"diver": preload("res://assets/models/npc_buzo.glb"),
 	# The planetarium's culprit, out of the van in the astronaut suit (escena-planetario.md).
 	"guide": preload("res://assets/models/npc_guia.glb"),
+	# The post office's culprit, out of the mail van in the uniform (escena-correo.md).
+	"carrier": preload("res://assets/models/npc_postal.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

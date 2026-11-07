@@ -107,6 +107,8 @@ const SUSPECT_MODELS := {
 	"owner_diver": "res://assets/models/npc_buzo.glb",
 	# The planetarium's culprit (escena-planetario.md), accused at the board.
 	"owner_guide": "res://assets/models/npc_guia.glb",
+	# The post office's culprit (escena-correo.md), accused at the board.
+	"owner_carrier": "res://assets/models/npc_postal.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",

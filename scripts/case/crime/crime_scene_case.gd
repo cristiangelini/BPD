@@ -192,6 +192,18 @@ const VARIANTS := {
 			"booth": "planet", "witness": "planet"},
 		"parts": ["photo", "prints", "teeth", "hair", "glow", "planet"],
 	},
+	# The Correo Central (escena-correo.md, decision 470): six carriers alike in the post office's uniform; a file knows
+	# what the cops got from its carrier, the blue tongue and their route included.
+	"post_office": {
+		"shift": "crime_post_office", "story": "post_office",
+		"brief": ["BRIEF_POST_OFFICE_A_", "BRIEF_POST_OFFICE_B", "BRIEF_POST_OFFICE_C"], "go": "HINT_GO_POST_OFFICE",
+		"go_row": "OBJ_POST_OFFICE_GO", "look": "HINT_POST_OFFICE_LOOK", "files_row": "OBJ_POST_OFFICE_FILES",
+		"clue_line": "CLUE_POST_OFFICE_", "ruined_hint": "HINT_POST_OFFICE_RUINED_", "left": "HINT_CARRIER_LEFT",
+		"who": "carrier", "getaway": SuspectCar.MAIL_VAN, "loot_row": "OBJ_POST_OFFICE_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "tongue": "blue",
+			"letter": "route", "witness": "route"},
+		"parts": ["photo", "prints", "teeth", "hair", "tongue", "route"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -217,6 +229,9 @@ const DIVER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "t
 ## At the planetarium, the traits each part of a guide's file tells.
 const GUIDE_PART_TRAITS := {"photo": ["shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"glow": ["glow"], "planet": ["planet"]}
+## At the post office, the traits each part of a carrier's file tells.
+const CARRIER_PART_TRAITS := {"photo": ["shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"tongue": ["blue"], "route": ["route"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -373,6 +388,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return DiverTraits.draw(case_seed)
 	if texts() == VARIANTS.planetarium:
 		return GuideTraits.draw(case_seed)
+	if texts() == VARIANTS.post_office:
+		return CarrierTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -428,7 +445,7 @@ func magician_part(magician_index: int, part: String) -> bool:
 
 
 ## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md), a
-## tuxedo (escena-boda.md), a reader (escena-biblioteca.md), a diver (escena-acuario.md) or a guide (escena-planetario.md): it goes to their file with what it says about them.
+## tuxedo (escena-boda.md), a reader (escena-biblioteca.md), a diver (escena-acuario.md), a guide (escena-planetario.md) or a carrier (escena-correo.md): it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
@@ -446,6 +463,8 @@ func guard_part(index: int, part: String) -> void:
 		table = DIVER_PART_TRAITS
 	elif texts() == VARIANTS.planetarium:
 		table = GUIDE_PART_TRAITS
+	elif texts() == VARIANTS.post_office:
+		table = CARRIER_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -558,7 +577,7 @@ func file_traits(id: int) -> Dictionary:
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
 	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
-			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium, VARIANTS.planetarium]:
+			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium, VARIANTS.planetarium, VARIANTS.post_office]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -920,6 +939,8 @@ func clue_line(kind: String) -> String:
 		return _aquarium_clue_line(kind)
 	if texts() == VARIANTS.planetarium:
 		return _planetarium_clue_line(kind)
+	if texts() == VARIANTS.post_office:
+		return _post_office_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -1097,6 +1118,22 @@ func _planetarium_clue_line(kind: String) -> String:
 	return tr("CLUE_PLANETARIUM_" + kind)
 
 
+## At the post office: the dusty footprint in the sorting room, the hair by the cap, the cookie behind the scale, the
+## letter stamped at 3 in the morning and what Cartita heard.
+func _post_office_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_POST_OFFICE_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_POST_OFFICE_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_POST_OFFICE_bite") % tr("TEETH_" + str(who.teeth))
+		"letter", "witness":
+			return tr("CLUE_POST_OFFICE_" + kind) % tr("ROUTE_" + str(who.route))
+	return tr("CLUE_POST_OFFICE_" + kind)
+
+
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
 func _hotel_clue_line(kind: String) -> String:
 	var who := culprit()
@@ -1187,6 +1224,8 @@ func file_text(index: int) -> String:
 		return _diver_file_text(index, who)
 	if texts() == VARIANTS.planetarium:
 		return _guide_file_text(index, who)
+	if texts() == VARIANTS.post_office:
+		return _carrier_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -1300,6 +1339,24 @@ func _guide_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_GLOW_UNKNOWN"))
 	lines.append(tr("FILE_PLANET") % (tr("PLANET_" + str(who.planet)) if who.has("planet") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A carrier's file: their name and number, and what the cops got from them so far. A tongue that was washed by a bite
+## before anyone looked at it is in the file, but says nothing.
+func _carrier_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	lines.append(tr("FILE_SHOE") % who.shoe if who.has("shoe") else tr("FILE_SHOE_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("blue"):
+		lines.append(tr("FILE_TONGUE_BLUE") if who.blue else tr("FILE_TONGUE_PINK"))
+	elif file_parts.get(index, {}).get("tongue", false):
+		lines.append(tr("FILE_TONGUE_WASHED"))
+	else:
+		lines.append(tr("FILE_TONGUE_UNKNOWN"))
+	lines.append(tr("FILE_ROUTE") % (tr("ROUTE_" + str(who.route)) if who.has("route") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 

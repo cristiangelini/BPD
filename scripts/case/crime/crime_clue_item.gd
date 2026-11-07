@@ -34,7 +34,7 @@ const MUG := Color(0.95, 0.93, 0.86)
 const COFFEE := Color(0.3, 0.18, 0.1)
 
 ## The looks whose hair is a loose one, not in food.
-const LOOSE_HAIR := ["museum", "hotel", "mansion", "cat_mansion", "library", "aquarium", "planetarium"]
+const LOOSE_HAIR := ["museum", "hotel", "mansion", "cat_mansion", "library", "aquarium", "planetarium", "post_office"]
 ## "hair", "bite", "recipe", "cup" (the station's) or "ticket" (the aquarium's).
 var kind := "hair"
 ## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office", "station", "library" or "aquarium": what
@@ -111,6 +111,9 @@ func _ready() -> void:
 		return
 	if look == "planetarium" and kind == "bite":
 		_ice_cream()
+		return
+	if look == "post_office" and kind == "bite":
+		_post_office_cookie()
 		return
 	match kind:
 		"hair":
@@ -190,6 +193,20 @@ func _ice_cream() -> void:
 	part.mesh_box(Vector3(0, 0.035, 0.11), Vector3(0.1, 0.03, 0.06), CHOCOLATE)
 	# The bite: a dark notch at one corner.
 	part.mesh_box(Vector3(0.035, 0.04, -0.03), Vector3(0.04, 0.04, 0.03), WET)
+
+
+## The post office's cookie: a round butter cookie with a bite out of its edge.
+func _post_office_cookie() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var cookie := CylinderMesh.new()
+	cookie.top_radius = 0.06
+	cookie.bottom_radius = 0.06
+	cookie.height = 0.02
+	var part := PlaceBuilder.new(_eaten_part)
+	part.mesh(cookie, Vector3(0, 0.01, 0), SPONGE)
+	# The bite: a dark notch at the edge.
+	part.mesh_box(Vector3(0.05, 0.012, 0), Vector3(0.04, 0.025, 0.05), WET)
 
 
 ## The hotel's bonbon: a chocolate square in its gold foil, with a bite out of one corner.

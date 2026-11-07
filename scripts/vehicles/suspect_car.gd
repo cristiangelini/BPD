@@ -119,6 +119,9 @@ const MODELS := {
 	"golden_limo": preload("res://assets/models/golden_limo.glb"),
 	# The office's culprit runs off in the water delivery truck, dropping jugs off its back (escena-oficina.md).
 	"water_truck": preload("res://assets/models/water_truck.glb"),
+	# The post office's culprit runs off in the mail van, slow, dropping "Frágil" parcels at every corner
+	# (escena-correo.md).
+	"mail_van": preload("res://assets/models/mail_van.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -157,6 +160,7 @@ const RIDERS := {
 	"baggage_tug": [[preload("res://assets/models/npc_mudancero.glb"), Vector3(0, 0.35, 0.2), 0.85]],
 	"golden_limo": [[preload("res://assets/models/npc_sobrino_tia.glb"), Vector3(-0.5, 0.4, 1.2), 0.85]],
 	"water_truck": [[preload("res://assets/models/npc_oficinista.glb"), Vector3(-0.5, 0.45, 1.7), 0.85]],
+	"mail_van": [[preload("res://assets/models/npc_postal.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -188,6 +192,8 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "bookmobile": 24.0 / 3.6}
 	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "fish_truck": 24.0 / 3.6}
 	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "planetarium_van": 22.0 / 3.6}
+	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6,
+	"mail_van": 22.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -255,6 +261,7 @@ const PLANETARIUM_VAN := "planetarium_van"
 const BAGGAGE_TUG := "baggage_tug"
 const LIMO := "golden_limo"
 const WATER_TRUCK := "water_truck"
+const MAIL_VAN := "mail_van"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -286,6 +293,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "fish_truck": Vector3(2.3, 3.0, 6.4),
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "planetarium_van": Vector3(2.1, 2.6, 5.0),
 	"baggage_tug": Vector3(1.3, 1.4, 2.4)}
+	"baggage_tug": Vector3(1.3, 1.4, 2.4),
+	"mail_van": Vector3(2.1, 2.6, 5.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -320,6 +329,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"bookmobile": BOOKMOBILE_WHEELS}
 	"fish_truck": FISH_TRUCK_WHEELS}
 	"planetarium_van": SHUTTLE_WHEELS}
+	"mail_van": SHUTTLE_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
