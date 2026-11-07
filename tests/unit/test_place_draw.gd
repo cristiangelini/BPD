@@ -94,6 +94,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var hotel := {}
 	var gym := {}
 	var apartments := {}
+	var garage := {}
 	for i in 900:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
@@ -115,6 +116,8 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				gym[GymRaid.pick_story(case_seed, [])] = true
 			"apartments":
 				apartments[ApartmentTower.pick_story(case_seed, [])] = true
+			"garage":
+				garage[Garage.pick_story(case_seed, PackedStringArray())] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
@@ -127,6 +130,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	assert_eq(hotel.size(), HotelRaid.STORIES.size())
 	assert_eq(gym.size(), GymRaid.STORIES.size())
 	assert_eq(apartments.size(), ApartmentTower.STORIES.size())
+	assert_eq(garage.size(), Garage.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
