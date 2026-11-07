@@ -59,6 +59,21 @@ func apply_net_state(_state: Dictionary) -> void:
 	pass
 
 
+## A suspect who never gets tired and goes home (at the wedding, Tito: it's his wedding).
+func stays(_index: int) -> bool:
+	return false
+
+
+## Dresses the culprit's getaway once the chase starts (at the wedding, the newlyweds' car with its cans).
+func dress_getaway(_chase: ChaseCase) -> void:
+	pass
+
+
+## The cops accused a suspect at the board (by index), rightly or not. At the wedding, Rosa reacts.
+func accused(_index: int, _right: bool) -> void:
+	pass
+
+
 ## A cop shouted (VoiceChat): the witness may take offense.
 func shouted_by(_cop: Cop) -> void:
 	pass

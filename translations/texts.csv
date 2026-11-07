@@ -5452,6 +5452,136 @@ HINT_MAZE_CAUGHT,"¡Atrapado entre los ligustros! Con capa y todo.","Caught amon
 HINT_MAZE_ESCAPED,"Salió por la reja del fondo del laberinto. Se escapó.","Out the gate at the end of the maze. Got away.","Saiu pelo portão do fundo do labirinto. Escapou."
 MEMBER_CAUGHT,"¡Elemental! Me atraparon.","Elementary! You got me.","Elementar! Me pegaram."
 HINT_SEARCH_NOTHING_dusty_trunk,"Telarañas, un sombrero de copa y novelas del Detective Pipa. Nada más.","Cobwebs, a top hat and Detective Pipa novels. Nothing else.","Teias de aranha, uma cartola e romances do Detetive Pipa. Mais nada."
+WEDDING_BANNER,"¡Vivan los novios!","Long live the newlyweds!","Vivam os noivos!"
+PROMPT_WEDDING_TALK,E: hablar,E: talk,E: conversar
+PROMPT_WEDDING_BRIDE,E: hablar con Rosa,E: talk to Rosa,E: falar com a Rosa
+PROMPT_WEDDING_DJ,E: hablar con el DJ,E: talk to the DJ,E: falar com o DJ
+PROMPT_WEDDING_GRANDMA,E: hablar con la abuela Chola,E: talk to grandma Chola,E: falar com a vovó Chola
+WEDDING_GROOM_LINE_0,Yo soy el novio. El del clavel blanco. No me confundas.,I'm the groom. The one with the white carnation. Don't mix me up.,Eu sou o noivo. O do cravo branco. Não me confunda.
+WEDDING_GROOM_LINE_1,Rosa dice que fui yo. Rosa dice muchas cosas.,Rosa says it was me. Rosa says a lot of things.,A Rosa diz que fui eu. A Rosa diz muitas coisas.
+WEDDING_GROOM_LINE_2,"El traje es alquilado. Si se mancha, lo pagas tú.","The tux is rented. If it gets stained, you pay for it.","O terno é alugado. Se manchar, você paga."
+WEDDING_GROOM_LINE_3,¿Ya empezó el vals? Escóndeme.,Has the waltz started? Hide me.,A valsa já começou? Me esconde.
+WEDDING_GROOMSMAN_LINE_0,Soy padrino. Los cinco somos padrinos. Tito tiene muchos amigos.,I'm a groomsman. All five of us are. Tito has a lot of friends.,Sou padrinho. Nós cinco somos padrinhos. O Tito tem muitos amigos.
+WEDDING_GROOMSMAN_LINE_1,Nos alquilaron el mismo traje. Hasta mi madre me confunde.,They rented us all the same tux. Even my mother mixes me up.,Alugaram o mesmo terno pra todos. Até minha mãe me confunde.
+WEDDING_GROOMSMAN_LINE_2,Yo estaba en la mesa del pastel. Mirándolo. Nada más.,I was by the cake table. Looking at it. That's all.,Eu estava na mesa do bolo. Olhando. Só isso.
+WEDDING_GROOMSMAN_LINE_3,"¿La galera? Me queda chica, pero combina.","The top hat? It's too small, but it matches.","A cartola? Fica pequena, mas combina."
+WEDDING_GROOMSMAN_LINE_4,Preparé un discurso de veinte páginas. ¿Quieres oírlo?,I wrote a twenty page speech. Want to hear it?,Preparei um discurso de vinte páginas. Quer ouvir?
+WEDDING_GROOMSMAN_LINE_5,"Yo no fui. Bueno, el que fue tampoco te lo diría.","It wasn't me. Well, whoever did it wouldn't tell you either.","Não fui eu. Bom, quem foi também não ia te contar."
+WEDDING_BRIDE_LINE_0,¡Fue Tito! ¡Siempre fue un cobarde!,It was Tito! He was always a coward!,Foi o Tito! Ele sempre foi um covarde!
+WEDDING_BRIDE_LINE_1,¡Revisen sus bolsillos!,Check his pockets!,Revistem os bolsos dele!
+WEDDING_BRIDE_LINE_2,¡Anoche hablaba dormido de huir!,Last night he was talking in his sleep about running away!,Ontem à noite ele falava dormindo em fugir!
+WEDDING_BRIDE_LINE_3,"¡Mírale la cara de culpable! ¡Bueno, es su cara de siempre!","Look at his guilty face! Well, it's his usual face!","Olha a cara de culpado dele! Bom, é a cara de sempre!"
+WEDDING_BRIDE_LINE_4,Mi madre me lo dijo. Me lo dijo cuarenta veces.,My mother told me. She told me forty times.,Minha mãe me avisou. Me avisou quarenta vezes.
+WEDDING_BRIDE_LINE_5,"¡Tito, devuelve lo que te llevaste!","Tito, give back what you took!","Tito, devolve o que você levou!"
+WEDDING_BRIDE_LINE_6,Lleva una hora sin mirarme a los ojos. ¡Sospechoso!,He hasn't looked me in the eye for an hour. Suspicious!,Faz uma hora que ele não me olha nos olhos. Suspeito!
+WEDDING_BRIDE_LINE_7,"¡Arréstalo! Después nos casamos igual, no te preocupes.","Arrest him! We'll still get married after, don't worry.","Prende ele! Depois a gente casa igual, não se preocupe."
+WEDDING_BRIDE_LINE_8,¡Tito sudaba en el vals! ¡Los inocentes no sudan!,Tito was sweating in the waltz! Innocent people don't sweat!,O Tito suava na valsa! Inocente não sua!
+WEDDING_BRIDE_LINE_9,Yo sé que fue él. Lo sé desde el primer día.,I know it was him. I've known since day one.,Eu sei que foi ele. Sei desde o primeiro dia.
+WEDDING_DJ_LINE_0,¡DJ Bombo en la casa! ¿Pido un aplauso para la policía?,DJ Bombo in the house! Round of applause for the police?,DJ Bombo na área! Uma salva de palmas pra polícia?
+WEDDING_DJ_LINE_1,Tengo el vals listo. Y la cumbia. Y el vals otra vez.,I've got the waltz ready. And the cumbia. And the waltz again.,Tenho a valsa pronta. E a cumbia. E a valsa de novo.
+WEDDING_DJ_LINE_2,Yo no vi nada. Llevo los auriculares puestos desde 2009.,I didn't see a thing. I've had these headphones on since 2009.,Eu não vi nada. Estou com esses fones desde 2009.
+WEDDING_DJ_LINE_3,¿Pedidos? Solo canciones de amor. O de patrulleros.,Requests? Love songs only. Or patrol car songs.,Pedidos? Só música de amor. Ou de viatura.
+WEDDING_GRANDMA_LINE_0,"¿Eh? ¿Qué? No te oigo, querido.","Eh? What? I can't hear you, dear.","Hã? O quê? Não te ouço, querido."
+WEDDING_GRANDMA_LINE_1,¿Que si quiero pastel? ¡Siempre!,Do I want cake? Always!,Se eu quero bolo? Sempre!
+WEDDING_GRANDMA_LINE_2,¿Policía? ¡Qué lindo uniforme! ¿Eres el novio?,Police? What a nice uniform! Are you the groom?,Polícia? Que uniforme bonito! Você é o noivo?
+WEDDING_GRANDMA_LINE_3,"¡Habla más fuerte, que la música no me deja!","Speak up, I can't hear over the music!","Fala mais alto, que a música não deixa!"
+WEDDING_GUEST_LINE_0,"¡Qué linda boda! Bueno, hasta lo del robo.","What a lovely wedding! Well, until the robbery.","Que casamento lindo! Bom, até o roubo."
+WEDDING_GUEST_LINE_1,Yo vine por el pastel. Y por el chisme.,I came for the cake. And the gossip.,Eu vim pelo bolo. E pela fofoca.
+WEDDING_GUEST_LINE_2,Los padrinos son todos iguales. ¿Son quintillizos?,The groomsmen all look the same. Are they quintuplets?,Os padrinhos são todos iguais. São quíntuplos?
+WEDDING_GUEST_LINE_3,"Les doy seis meses. Al matrimonio, digo.","I give them six months. The marriage, I mean.","Dou seis meses pra eles. Pro casamento, digo."
+WEDDING_GUEST_LINE_4,¿Cuándo sirven la comida? Llevo tres horas con el moño.,When do they serve the food? I've had this bow tie on for three hours.,Quando servem a comida? Estou há três horas com essa gravata.
+WEDDING_GUEST_LINE_5,Rosa grita mucho. Siempre gritó mucho.,Rosa yells a lot. She always did.,A Rosa grita muito. Sempre gritou muito.
+PROMPT_TUXEDO_FEED,E: darle de comer (sus dientes para la ficha),E: feed him (his teeth for the file),E: dar comida (os dentes para a ficha)
+PROMPT_TUXEDO_SNIFF,E: olerlo de cerca (su colonia para la ficha),E: sniff him up close (his cologne for the file),E: cheirar de perto (a colônia para a ficha)
+PROMPT_TUXEDO_HAT,E: pedirle que se saque la galera,E: ask him to take off the top hat,E: pedir para tirar a cartola
+TUXEDO_SNIFFED,"¡Eh, qué haces!","Hey, what are you doing!","Ei, o que você está fazendo!"
+TUXEDO_SMELLS,(Huele a %s.),(He smells of %s.),(Tem cheiro de %s.)
+COLOGNE_lavender,lavanda,lavender,lavanda
+COLOGNE_lemon,limón,lemon,limão
+COLOGNE_cinnamon,canela,cinnamon,canela
+TUXEDO_HAT_NO,"¡No! ¡Me despeino para la foto! Bueno... por algo de comer, capaz.","No! It'll mess up my hair for the photo! Well... for a snack, maybe.","Não! Vou despentear para a foto! Bom... por um lanche, talvez."
+TUXEDO_HAT_OFF,"Ahí está. Tres horas de gel, para nada.","There. Three hours of gel, for nothing.","Pronto. Três horas de gel, pra nada."
+TUXEDO_PHOTO,"¿Salgo bien? ¡Saca otra, que cerré los ojos!","Do I look good? Take another, I blinked!","Saí bem? Tira outra, que eu pisquei!"
+WEDDING_NO_DONUTS,La caja está vacía. Pídele pastel a la abuela.,The box is empty. Ask grandma for cake.,A caixa está vazia. Peça bolo para a vovó.
+HINT_FILE_cologne,Colonia de %s para la ficha.,%s's cologne for the file.,Colônia de %s para a ficha.
+FILE_COLOGNE,Colonia: %s,Cologne: %s,Colônia: %s
+HINT_GO_WEDDING,"La boda es en el Salón Gala, el salón de fiestas de la ciudad. Vayan de traje. Bueno, de uniforme.","The wedding is at the Salón Gala, the city's party hall. Dress up. Well, wear your uniform.","O casamento é no Salón Gala, o salão de festas da cidade. Vão de terno. Bom, de uniforme."
+HINT_WEDDING_LOOK,"Los seis de traje son iguales. A Tito lo reconoces por el clavel blanco; a los otros cinco, de cerca.","The six in tuxedos look the same. You can tell Tito by his white carnation; the other five, only up close.","Os seis de terno são iguais. O Tito você reconhece pelo cravo branco; os outros cinco, só de perto."
+OBJ_WEDDING_GO,Ir a la boda,Go to the wedding,Ir ao casamento
+OBJ_WEDDING_FILES,Armar la ficha de cada uno de traje (%d de %d),Make each tuxedo's file (%d of %d),Montar a ficha de cada um de terno (%d de %d)
+HINT_TUXEDO_LEFT,%s se cansó de la fiesta y se fue a su casa. Su ficha queda como está.,%s got tired of the party and went home. His file stays as it is.,%s cansou da festa e foi para casa. A ficha fica como está.
+BRIEF_CRIME_WEDDING_B,Hay seis de traje negro y galera: Tito y sus cinco padrinos. La novia dice que fue Tito. La novia dice muchas cosas.,There are six in black tuxedos and top hats: Tito and his five groomsmen. The bride says it was Tito. The bride says a lot of things.,Tem seis de terno preto e cartola: o Tito e os cinco padrinhos. A noiva diz que foi o Tito. A noiva diz muitas coisas.
+BRIEF_CRIME_WEDDING_C,Quiero un nombre en el tablero antes de que se termine la fiesta. Y no se coman el pastel.,I want a name on the board before the party ends. And don't eat the cake.,Quero um nome no quadro antes de a festa acabar. E não comam o bolo.
+BRIEF_CRIME_WEDDING_A_ring,"¡Novatos! Hoy se casan Rosa y Tito en el Salón Gala, y justo antes del brindis desapareció el anillo. Rosa jura que fue Tito, que se arrepintió.","Rookies! Rosa and Tito are getting married today at the Salón Gala, and right before the toast the ring vanished. Rosa swears it was Tito, that he got cold feet.","Novatos! Hoje a Rosa e o Tito se casam no Salón Gala, e bem antes do brinde o anel sumiu. A Rosa jura que foi o Tito, que ele se arrependeu."
+BRIEF_CRIME_WEDDING_A_envelopes,"¡Novatos! Hoy se casan Rosa y Tito en el Salón Gala, y justo antes del brindis desapareció la caja de los sobres de regalo. Con todos los sobres. Rosa jura que fue Tito.","Rookies! Rosa and Tito are getting married today at the Salón Gala, and right before the toast the gift envelopes' box vanished. With every envelope. Rosa swears it was Tito.","Novatos! Hoje a Rosa e o Tito se casam no Salón Gala, e bem antes do brinde sumiu a caixa dos envelopes de presente. Com todos os envelopes. A Rosa jura que foi o Tito."
+BRIEF_CRIME_WEDDING_A_sugar_couple,"¡Novatos! Hoy se casan Rosa y Tito en el Salón Gala, y justo antes del brindis desaparecieron los novios de azúcar de arriba del pastel. Eran de la abuela. Rosa jura que fue Tito.","Rookies! Rosa and Tito are getting married today at the Salón Gala, and right before the toast the sugar couple on top of the cake vanished. They were grandma's. Rosa swears it was Tito.","Novatos! Hoje a Rosa e o Tito se casam no Salón Gala, e bem antes do brinde sumiram os noivinhos de açúcar de cima do bolo. Eram da vovó. A Rosa jura que foi o Tito."
+OBJ_WEDDING_LOOT_ring,Encontrar el anillo (+100),Find the ring (+100),Encontrar o anel (+100)
+OBJ_WEDDING_LOOT_envelopes,Encontrar la caja de los sobres (+100),Find the envelopes' box (+100),Encontrar a caixa dos envelopes (+100)
+OBJ_WEDDING_LOOT_sugar_couple,Encontrar los novios de azúcar (+100),Find the sugar couple (+100),Encontrar os noivinhos de açúcar (+100)
+HINT_LOOT_FOUND_ring,"¡El anillo! Estaba ahí escondido. A la bolsa de evidencia, que Rosa no lo vea.","The ring! It was hidden there. Into an evidence bag, before Rosa sees it.","O anel! Estava escondido aí. Para o saco de evidência, antes que a Rosa veja."
+HINT_LOOT_FOUND_envelopes,"¡La caja de los sobres! Todavía tiene los sobres. Bueno, casi todos.","The envelopes' box! The envelopes are still in it. Well, almost all.","A caixa dos envelopes! Ainda tem os envelopes. Bom, quase todos."
+HINT_LOOT_FOUND_sugar_couple,"¡Los novios de azúcar! Un poco pegajosos, pero enteros.","The sugar couple! A bit sticky, but in one piece.","Os noivinhos de açúcar! Um pouco grudentos, mas inteiros."
+PROMPT_SEARCH_cake,E: cortar el pastel (¿hay algo adentro?),E: cut the cake open (anything inside?),E: cortar o bolo (tem algo dentro?)
+PROMPT_SEARCH_coats,E: revisar los bolsillos de los sacos,E: check the coats' pockets,E: revistar os bolsos dos casacos
+PROMPT_SEARCH_centerpiece,E: revisar el centro de mesa,E: check the centerpiece,E: revistar o arranjo de mesa
+HINT_SEARCH_NOTHING_cake,Solo pastel. Mucho pastel. Ahora hundido.,Just cake. Lots of cake. Caved in now.,Só bolo. Muito bolo. Agora afundado.
+HINT_SEARCH_NOTHING_coats,"Pañuelos, caramelos y un ticket de estacionamiento. Nada más.","Tissues, candy and a parking ticket. Nothing else.","Lenços, balas e um tíquete de estacionamento. Mais nada."
+HINT_SEARCH_NOTHING_centerpiece,"Flores, agua y un caracol muy elegante.","Flowers, water and a very fancy snail.","Flores, água e um caracol muito elegante."
+PROMPT_RING_BOX,E: agarrar la cajita del anillo,E: pick up the ring box,E: pegar a caixinha do anel
+HINT_RING_BOX_TOUCHED,¡La tocaste! Ahora tus huellas están en el terciopelo.,You touched it! Now your prints are on the velvet.,Você tocou! Agora suas digitais estão no veludo.
+HINT_RING_BOX_EMPTY,"Una cajita de terciopelo. Vacía. Como el corazón de Rosa, dice Rosa.","A velvet box. Empty. Like Rosa's heart, says Rosa.","Uma caixinha de veludo. Vazia. Como o coração da Rosa, diz a Rosa."
+PRINTS_RING_BOX,¡Una huella en la cajita! Es del culpable.,A fingerprint on the box! It's the culprit's.,Uma digital na caixinha! É do culpado.
+PRINTS_RING_BOX_SMUDGED,"Hay una huella en la cajita, pero tus huellas la taparon.","There's a print on the box, but yours covered it.","Tem uma digital na caixinha, mas as suas cobriram."
+PROMPT_VIDEO_play,E: botón verde (ver el video de la boda),E: green button (play the wedding video),E: botão verde (ver o vídeo do casamento)
+PROMPT_VIDEO_delete,E: botón rojo,E: red button,E: botão vermelho
+HINT_VIDEO_GLASSES,"En el video, uno de traje se lleva algo de la mesa. Usa anteojos.","In the video, someone in a tuxedo takes something off the table. He wears glasses.","No vídeo, um de terno leva algo da mesa. Ele usa óculos."
+HINT_VIDEO_NO_GLASSES,"En el video, uno de traje se lleva algo de la mesa. No usa anteojos.","In the video, someone in a tuxedo takes something off the table. He wears no glasses.","No vídeo, um de terno leva algo da mesa. Ele não usa óculos."
+HINT_VIDEO_NOTHING,Tres horas de la tía bailando. Nada más.,Three hours of the aunt dancing. Nothing else.,Três horas da tia dançando. Mais nada.
+HINT_VIDEO_DELETED,El video está borrado. La tía no va a poder verse bailar.,The video is deleted. The aunt won't get to see herself dance.,O vídeo foi apagado. A tia não vai poder se ver dançando.
+PROMPT_TRUMPET_GIVE,E: darle la corneta a la abuela,E: give grandma her ear trumpet,E: dar a corneta para a vovó
+GRANDMA_HEARS,"¡Ahora sí te oigo, querido!","Now I can hear you, dear!","Agora sim eu te ouço, querido!"
+GRANDMA_SMELLED,"¿El que se lo llevó? Pasó al lado mío. Olía a %s, como el arroz con leche.","The one who took it? He walked right past me. He smelled of %s, like rice pudding.","O que levou? Passou do meu lado. Tinha cheiro de %s, como arroz-doce."
+GRANDMA_NOTHING,"Yo no vi nada, querido. Pero el pastel está riquísimo.","I didn't see a thing, dear. But the cake is delicious.","Eu não vi nada, querido. Mas o bolo está uma delícia."
+GRANDMA_OFFENDED,¡A mí no me esposa nadie! No digo nada más.,Nobody cuffs me! I'm not saying another word.,Ninguém me algema! Não falo mais nada.
+CLUE_CRIME_WEDDING_prints,Huellas en la cajita del anillo,Fingerprints on the ring box,Digitais na caixinha do anel
+CLUE_CRIME_WEDDING_footprint,Pisada en el arroz: talle %d,Footprint in the rice: shoe size %d,Pegada no arroz: número %d
+CLUE_CRIME_WEDDING_hair,Un pelo en el glaseado del pastel: pelo %s,A hair in the cake's frosting: %s hair,Um fio de cabelo na cobertura do bolo: cabelo %s
+CLUE_CRIME_WEDDING_bite,Un mordisco en el pastel de bodas: %s,A bite out of the wedding cake: %s,Uma mordida no bolo de casamento: %s
+CLUE_CRIME_WEDDING_recording_glasses,El video de la boda: el que se lo lleva usa anteojos,The wedding video: the thief wears glasses,O vídeo do casamento: quem leva usa óculos
+CLUE_CRIME_WEDDING_recording_no_glasses,El video de la boda: el que se lo lleva no usa anteojos,The wedding video: the thief wears no glasses,O vídeo do casamento: quem leva não usa óculos
+CLUE_CRIME_WEDDING_witness,La abuela Chola: el culpable olía a %s,Grandma Chola: the culprit smelled of %s,A vovó Chola: o culpado tinha cheiro de %s
+CLUE_CRIME_WEDDING_RUINED_prints,Huellas en la cajita: tapadas por las tuyas,Prints on the box: covered by yours,Digitais na caixinha: cobertas pelas suas
+CLUE_CRIME_WEDDING_RUINED_footprint,Pisada en el arroz: borrada o barrida,Footprint in the rice: wiped out or swept up,Pegada no arroz: apagada ou varrida
+CLUE_CRIME_WEDDING_RUINED_hair,Un pelo en el glaseado: se fue con el pastel cortado,A hair in the frosting: gone with the cut cake,Um fio de cabelo na cobertura: foi com o bolo cortado
+CLUE_CRIME_WEDDING_RUINED_bite,El mordisco del pastel: lo cortaron,The bite out of the cake: it got cut,A mordida no bolo: cortaram
+CLUE_CRIME_WEDDING_RUINED_recording,El video de la boda: borrado,The wedding video: deleted,O vídeo do casamento: apagado
+CLUE_CRIME_WEDDING_RUINED_witness,La abuela Chola: ofendida,Grandma Chola: offended,A vovó Chola: ofendida
+HINT_CRIME_WEDDING_RUINED_prints,Tocaste la cajita. Tus huellas quedaron encima de las del culpable.,You touched the box. Your prints are on top of the culprit's.,Você tocou a caixinha. Suas digitais ficaram por cima das do culpado.
+HINT_CRIME_WEDDING_RUINED_footprint,La pisada del arroz ya no está.,The footprint in the rice is gone.,A pegada no arroz sumiu.
+HINT_CRIME_WEDDING_RUINED_hair,Cortaste el pastel y el pelo del glaseado se perdió.,You cut the cake and the hair in the frosting got lost.,Você cortou o bolo e o fio de cabelo da cobertura se perdeu.
+HINT_CRIME_WEDDING_RUINED_bite,"Cortaste el pastel. Y con él, el mordisco.",You cut the cake. And the bite with it.,Você cortou o bolo. E a mordida junto.
+HINT_CRIME_WEDDING_RUINED_recording,Borraste el video de la boda. Rosa no te lo va a perdonar.,You deleted the wedding video. Rosa will never forgive you.,Você apagou o vídeo do casamento. A Rosa não vai te perdoar.
+HINT_CRIME_WEDDING_RUINED_witness,La abuela se ofendió. No va a decir nada más.,Grandma is offended. She won't say anything else.,A vovó se ofendeu. Não vai dizer mais nada.
+TUXEDO_WALTZ_NOW,"¡Ahora no, es el vals!","Not now, it's the waltz!","Agora não, é a valsa!"
+BRIDE_DONE,No me hables. Estoy ocupada odiando a Tito.,Don't talk to me. I'm busy hating Tito.,Não fala comigo. Estou ocupada odiando o Tito.
+BRIDE_KNEW_IT,"¡LO SABÍA! ¡Toma tu ramo, Tito!","I KNEW IT! Here's your bouquet, Tito!","EU SABIA! Toma o teu buquê, Tito!"
+BRIDE_WEDDING_OFF,"¿Y ahora? ¡Se suspende la boda! ¡Toma el ramo igual, Tito!","And now what? The wedding's off! Take the bouquet anyway, Tito!","E agora? O casamento foi cancelado! Toma o buquê mesmo assim, Tito!"
+BRIDE_LOVES_DANCE,"¡Jajaja! ¡Ese policía sí sabe bailar! Bueno, se perdona algo.","Hahaha! That cop can really dance! Fine, I'll forgive a bit.","Hahaha! Esse policial sabe dançar! Tá bom, eu perdoo um pouco."
+WEDDING_BRIDE_PROOF_0,¿Pruebas? ¡Tito odia los anillos! Una vez perdió uno a propósito.,Proof? Tito hates rings! He lost one on purpose once.,Provas? O Tito odeia anéis! Uma vez perdeu um de propósito.
+WEDDING_BRIDE_PROOF_1,Tito compró dos pasajes. ¡Dos! ¿Para quién es el otro?,Tito bought two tickets. Two! Who's the other one for?,O Tito comprou duas passagens. Duas! Para quem é a outra?
+WEDDING_BRIDE_PROOF_2,En la iglesia dijo «sí» muy bajito. Sospechoso.,"At the church he said ""I do"" very quietly. Suspicious.",Na igreja ele disse «sim» bem baixinho. Suspeito.
+WEDDING_BRIDE_PROOF_3,Tiene las manos en los bolsillos desde las ocho. ¿Qué esconde?,He's had his hands in his pockets since eight. What's he hiding?,Ele está com as mãos nos bolsos desde as oito. O que ele esconde?
+WEDDING_BRIDE_PROOF_4,Su horóscopo de hoy decía «cuidado con los objetos brillantes».,"His horoscope today said ""beware of shiny things"".",O horóscopo dele hoje dizia «cuidado com objetos brilhantes».
+WEDDING_BRIDE_PROOF_5,Mi gato no lo quiere. Mi gato nunca se equivoca.,My cat doesn't like him. My cat is never wrong.,Meu gato não gosta dele. Meu gato nunca erra.
+WEDDING_DJ_WALTZ,"¡Atención, atención! ¡Llegó la hora del vals!","Attention, attention! It's time for the waltz!","Atenção, atenção! Chegou a hora da valsa!"
+WEDDING_DJ_SUSPENDED,Eh... se suspende la fiesta. Gracias por venir.,Uh... the party's off. Thanks for coming.,Hã... a festa foi cancelada. Obrigado por virem.
+OBJ_CRIME_COMPLAINT,Denuncia de la familia: -$%d del sueldo,The family's complaint: -$%d off the salary,Denúncia da família: -$%d do salário
+HINT_ESCAPE_tuxedo,"¡%s se subió al auto de los novios y se escapa! ¡Al patrullero, y cuidado con las latas!","%s jumped into the newlyweds' car and is getting away! To the patrol car, and watch out for the cans!","%s entrou no carro dos noivos e está fugindo! Para a viatura, e cuidado com as latas!"
+CHASE_TUXEDO_LINE_1,¡El traje es alquilado! ¡No me lo arruguen!,The tux is rented! Don't wrinkle it!,O terno é alugado! Não amassem!
+CHASE_TUXEDO_LINE_2,¡Solo quería un recuerdo de la boda!,I just wanted a souvenir from the wedding!,Eu só queria uma lembrança do casamento!
+CHASE_TUXEDO_LINE_3,"Está bien, me rindo. ¿Llego al pastel?","Fine, I give up. Can I still make it to the cake?","Tá bom, eu me rendo. Ainda dá tempo do bolo?"
+CRIME_owner_tuxedo,"¡Novatos! Ayer acusaron a uno de traje de la boda de Rosa y Tito, y está en la sala de interrogatorio. Todavía tiene la galera puesta. Que confiese.","Rookies! Yesterday you accused one of the tuxedos at Rosa and Tito's wedding, and he's in the interrogation room. He still has his top hat on. Get a confession.","Novatos! Ontem vocês acusaram um dos de terno do casamento da Rosa e do Tito, e ele está na sala de interrogatório. Ainda está de cartola. Façam ele confessar."
+CONFESS_owner_tuxedo,"¡Está bien! ¡Fui yo! Siempre soy el padrino, nunca el novio. Quería algo de la boda para mí.","Fine! It was me! I'm always the groomsman, never the groom. I wanted something from the wedding for myself.","Tá bom! Fui eu! Sempre sou o padrinho, nunca o noivo. Queria algo do casamento pra mim."
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."

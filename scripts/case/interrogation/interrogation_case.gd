@@ -83,6 +83,8 @@ const SUSPECT_MODELS := {
 	"owner_magician": "res://assets/models/npc_mago.glb",
 	# The mansion's culprit (escena-mansion.md), accused at the board.
 	"owner_member": "res://assets/models/npc_socio_club.glb",
+	# The wedding's culprit (escena-boda.md), accused at the board: Tito or a groomsman.
+	"owner_tuxedo": "res://assets/models/npc_tuxedo.glb",
 	# The hotel's culprit (escena-hotel.md), accused at the board.
 	"owner_guest": "res://assets/models/npc_huesped.glb",
 	# The Monedero mansion's culprit (escena-gato.md), accused at the board.

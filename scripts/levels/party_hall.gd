@@ -110,10 +110,11 @@ func _ready() -> void:
 	variant = "party"
 	take_seed()
 	_build = PlaceBuilder.new($Built)
-	_build_shell()
-	_build_hall()
+	build_shell(_build, $Built, BALLOONS)
+	build_dance_floor(_build)
+	_build_food_table()
 	_build_steps()
-	_build_rooms()
+	build_rooms(_build)
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_Z)
 	add_child(office_door)
@@ -338,48 +339,53 @@ func in_restroom(at: Vector3) -> bool:
 	return local.x > RESTROOM_X and local.x < HALF_X and local.z > RESTROOM_Z and local.z < HALF_Z and local.y < ROOF
 
 
-## Floor, outer walls with the entrance, the roof, the sign, balloons by the door and the lights.
-func _build_shell() -> void:
-	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
-	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
-	_build.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
-	_build.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
+## Floor, outer walls with the entrance, the roof, the sign, balloons of `balloons` by the door and the lights. The
+## wedding crime scene (WeddingHall) builds the same hall.
+static func build_shell(build: PlaceBuilder, built: Node3D, balloons: Array[Color]) -> void:
+	build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
+	build.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
+	build.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	build.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	build.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
 	var sign_label := Label3D.new()
 	sign_label.text = "PLACE_PARTY_HALL"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
 	sign_label.position = Vector3(0, ROOF + 0.6, HALF_Z + 0.1)
-	$Built.add_child(sign_label)
+	built.add_child(sign_label)
 	# A bunch of balloons on each side of the door, so it reads as a party from the street.
 	for side: float in [-1.0, 1.0]:
 		for i in 4:
 			var balloon := SphereMesh.new()
 			balloon.radius = 0.22
 			balloon.height = 0.5
-			_build.mesh(balloon, Vector3(side * (1.6 + (i % 2) * 0.35), 1.9 + floorf(i / 2.0) * 0.45, HALF_Z + 0.35),
-				BALLOONS[i])
+			build.mesh(balloon, Vector3(side * (1.6 + (i % 2) * 0.35), 1.9 + floorf(i / 2.0) * 0.45, HALF_Z + 0.35),
+				balloons[i % balloons.size()])
 	for x: float in [-7.0, 0.0, 7.0]:
 		for z: float in [-8.0, -3.5, 1.0, 6.5]:
-			_build.light(Vector3(x, ROOF - 0.6, z))
+			build.light(Vector3(x, ROOF - 0.6, z))
 
 
-## The checkered dance floor with the mirror ball over it, and the long food table with its plates and the punch bowl.
-func _build_hall() -> void:
+## The checkered dance floor with the mirror ball over it.
+static func build_dance_floor(build: PlaceBuilder) -> void:
 	var columns := roundi(DANCE.size.x / TILE)
 	var rows := roundi(DANCE.size.y / TILE)
 	for i in columns:
 		for j in rows:
 			var at := Vector3(DANCE.position.x + (i + 0.5) * TILE, FLOOR_TOP + 0.005, DANCE.position.y + (j + 0.5) * TILE)
-			_build.mesh_box(at, Vector3(TILE, 0.01, TILE), TILE_A if (i + j) % 2 == 0 else TILE_B)
+			build.mesh_box(at, Vector3(TILE, 0.01, TILE), TILE_A if (i + j) % 2 == 0 else TILE_B)
 	var middle := DANCE.get_center()
 	var ball := SphereMesh.new()
 	ball.radius = 0.3
 	ball.height = 0.6
-	_build.mesh(ball, Vector3(middle.x, ROOF - 0.6, middle.y), MIRROR)
-	_build.mesh_box(Vector3(middle.x, ROOF - 0.25, middle.y), Vector3(0.02, 0.3, 0.02), TILE_B)
+	build.mesh(ball, Vector3(middle.x, ROOF - 0.6, middle.y), MIRROR)
+	build.mesh_box(Vector3(middle.x, ROOF - 0.25, middle.y), Vector3(0.02, 0.3, 0.02), TILE_B)
+
+
+## The long food table with its plates and the punch bowl.
+func _build_food_table() -> void:
 	_build.box(FOOD_TABLE_AT + Vector3(0, FLOOR_TOP + FOOD_TABLE_SIZE.y / 2, 0), FOOD_TABLE_SIZE, TABLECLOTH)
 	var top := FLOOR_TOP + FOOD_TABLE_SIZE.y
 	for i in 6:
@@ -420,21 +426,21 @@ func _build_steps() -> void:
 
 
 ## The coat check with its counter and coat rail, the restroom and the office.
-func _build_rooms() -> void:
+static func build_rooms(build: PlaceBuilder) -> void:
 	# Coat check: the counter across its front, a rail of coats along the west wall.
-	_build.box(Vector3(COAT_CHECK.position.x + COAT_CHECK.size.x / 2, FLOOR_TOP + 0.5, COAT_COUNTER_Z),
+	build.box(Vector3(COAT_CHECK.position.x + COAT_CHECK.size.x / 2, FLOOR_TOP + 0.5, COAT_COUNTER_Z),
 		Vector3(COAT_CHECK.size.x, 1.0, 0.5), WOOD)
-	_build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.7, 8.3), Vector3(0.04, 0.04, 3.0), TILE_B)
+	build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.7, 8.3), Vector3(0.04, 0.04, 3.0), TILE_B)
 	for i in 7:
-		_build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.15, 7.0 + i * 0.42), Vector3(0.5, 1.0, 0.12),
+		build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.15, 7.0 + i * 0.42), Vector3(0.5, 1.0, 0.12),
 			BALLOONS[i % 4].darkened(0.4))
 	# Restroom: walls, a toilet and a sink.
-	_build.wall("z", RESTROOM_X, RESTROOM_Z, HALF_Z, 0, [RESTROOM_DOOR_Z], INSIDE)
-	_build.wall("x", RESTROOM_Z, RESTROOM_X, HALF_X, 0, [], INSIDE)
-	_build.box(Vector3(11.3, FLOOR_TOP + 0.22, 9.2), Vector3(0.5, 0.44, 0.7), TILE_A)
-	_build.box(Vector3(11.5, FLOOR_TOP + 0.45, 6.9), Vector3(0.6, 0.9, 0.5), TILE_A)
+	build.wall("z", RESTROOM_X, RESTROOM_Z, HALF_Z, 0, [RESTROOM_DOOR_Z], INSIDE)
+	build.wall("x", RESTROOM_Z, RESTROOM_X, HALF_X, 0, [], INSIDE)
+	build.box(Vector3(11.3, FLOOR_TOP + 0.22, 9.2), Vector3(0.5, 0.44, 0.7), TILE_A)
+	build.box(Vector3(11.5, FLOOR_TOP + 0.45, 6.9), Vector3(0.6, 0.9, 0.5), TILE_A)
 	# Office: walls, a desk and the safe.
-	_build.wall("x", OFFICE_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
-	_build.wall("z", OFFICE_X, -HALF_Z, OFFICE_Z, 0, [], INSIDE)
-	_build.box(Vector3(8.0, FLOOR_TOP + 0.4, -9.0), Vector3(2.0, 0.8, 0.9), WOOD)
-	_build.box(Vector3(11.3, FLOOR_TOP + 0.5, -9.3), Vector3(0.8, 1.0, 0.8), Color(0.3, 0.32, 0.35))
+	build.wall("x", OFFICE_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
+	build.wall("z", OFFICE_X, -HALF_Z, OFFICE_Z, 0, [], INSIDE)
+	build.box(Vector3(8.0, FLOOR_TOP + 0.4, -9.0), Vector3(2.0, 0.8, 0.9), WOOD)
+	build.box(Vector3(11.3, FLOOR_TOP + 0.5, -9.3), Vector3(0.8, 1.0, 0.8), Color(0.3, 0.32, 0.35))

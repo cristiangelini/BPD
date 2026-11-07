@@ -89,6 +89,18 @@ const VARIANTS := {
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "hair", "midnight"],
 	},
+	# The wedding (escena-boda.md, decision 290): Tito and five groomsmen in the same tuxedo; a file knows what the
+	# cops got from each, his cologne included. The texts come with the case (step 4).
+	"wedding": {
+		"shift": "crime_wedding", "story": "wedding",
+		"brief": ["BRIEF_CRIME_WEDDING_A_", "BRIEF_CRIME_WEDDING_B", "BRIEF_CRIME_WEDDING_C"], "go": "HINT_GO_WEDDING",
+		"go_row": "OBJ_WEDDING_GO", "look": "HINT_WEDDING_LOOK", "files_row": "OBJ_WEDDING_FILES",
+		"clue_line": "CLUE_CRIME_WEDDING_", "ruined_hint": "HINT_CRIME_WEDDING_RUINED_", "left": "HINT_TUXEDO_LEFT",
+		"who": "tuxedo", "getaway": WeddingHall.GETAWAY, "loot_row": "OBJ_WEDDING_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "glasses",
+			"witness": "cologne"},
+		"parts": ["photo", "prints", "teeth", "hair", "cologne"],
+	},
 	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
 	# them, and the concierge swapped two rooms.
 	"hotel": {
@@ -138,6 +150,9 @@ const NEPHEW_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "
 ## At the mansion, the traits each part of a member's file tells.
 const MEMBER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"midnight": ["room"]}
+## At the wedding, the traits each part of a tuxedo's file tells.
+const TUXEDO_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"cologne": ["cologne"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -167,6 +182,8 @@ var frames_broken := 0
 var spent := 0
 ## Other fines off the salary (the Monedero mansion's: the comisario's scared calls, the vases).
 var fines := 0
+## The family's complaint, off the salary too: at the wedding, when the cops call it off (WeddingHall.accused).
+var complaint := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -265,6 +282,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return MagicianTraits.draw(case_seed)
 	if texts() == VARIANTS.mansion:
 		return MemberTraits.draw(case_seed)
+	if texts() == VARIANTS.wedding:
+		return WeddingTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
 	if texts() == VARIANTS.cat:
@@ -325,8 +344,8 @@ func magician_part(magician_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md) or a club member (escena-mansion.md):
-## it goes to their file with what it says about them.
+## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md) or a
+## tuxedo (escena-boda.md): it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
@@ -336,6 +355,8 @@ func guard_part(index: int, part: String) -> void:
 		table = NEPHEW_PART_TRAITS
 	elif texts() == VARIANTS.mansion:
 		table = MEMBER_PART_TRAITS
+	elif texts() == VARIANTS.wedding:
+		table = TUXEDO_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -427,7 +448,8 @@ func _refresh_rooms() -> void:
 
 
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
-## sign, or at the museum what they got from the guard, or at the hotel that and what their room's things say.
+## sign, or at the museum and the wedding what they got from the suspect, or at the hotel that and what their room's
+## things say.
 func file_traits(id: int) -> Dictionary:
 	if texts() == VARIANTS.hotel:
 		var known: Dictionary = captured.get(id, {}).duplicate()
@@ -436,7 +458,8 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office]:
+	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
+			VARIANTS.wedding]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -468,6 +491,8 @@ func accuse(id: int) -> void:
 		wrong_guesses += 1
 		lost = wrong_guesses >= MAX_WRONG
 		_comisario_says("BOARD_WRONG_LOST" if lost else "BOARD_WRONG")
+	if place:
+		place.accused(accused_index(id), accused)
 	checklist.show_rows(rows())
 	verdict.emit(accused, lost)
 	if accused and runs_off() and _run_off():
@@ -523,6 +548,7 @@ func _run_off() -> bool:
 	for i in via.size():
 		chase.truck.points.insert(1 + i, via[i])
 	chase.ended.connect(_on_chase_ended)
+	place.dress_getaway(chase)
 	_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 	return true
 
@@ -567,8 +593,8 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent + fines,
-		wrong_guesses)
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent + fines
+		+ complaint, wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
@@ -612,7 +638,7 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "spent": spent, "fines": fines,
+		"frames": frames_broken, "spent": spent, "fines": fines, "complaint": complaint,
 		"rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
@@ -635,6 +661,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	frames_broken = state.get("frames", 0)
 	spent = state.get("spent", 0)
 	fines = state.get("fines", 0)
+	complaint = state.get("complaint", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -693,7 +720,7 @@ func _tire() -> void:
 		order[i] = order[j]
 		order[j] = swap
 	for index: int in order:
-		if not gone.has(index):
+		if not gone.has(index) and not (place and place.stays(index)):
 			gone.append(index)
 			_hint_all(tr(texts().left) % cooks[index].name)
 			if place:
@@ -768,6 +795,8 @@ func clue_line(kind: String) -> String:
 		return _train_clue_line(kind)
 	if texts() == VARIANTS.mansion:
 		return _mansion_clue_line(kind)
+	if texts() == VARIANTS.wedding:
+		return _wedding_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
 	if texts() == VARIANTS.cat:
@@ -821,6 +850,24 @@ func _circus_clue_line(kind: String) -> String:
 		"recording":
 			return tr("CLUE_CIRCUS_recording") % tr("HONK_" + str(who.honk))
 	return tr("CLUE_CIRCUS_" + kind)
+
+
+## At the wedding: the footprint in the rice, the hair in the frosting, the bite out of the cake, the video and grandma
+## Chola.
+func _wedding_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_CRIME_WEDDING_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_CRIME_WEDDING_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_CRIME_WEDDING_bite") % tr("TEETH_" + str(who.teeth))
+		"recording":
+			return tr("CLUE_CRIME_WEDDING_recording_glasses" if who.glasses else "CLUE_CRIME_WEDDING_recording_no_glasses")
+		"witness":
+			return tr("CLUE_CRIME_WEDDING_witness") % tr("COLOGNE_" + str(who.cologne))
+	return tr("CLUE_CRIME_WEDDING_" + kind)
 
 
 ## At the museum: the footprint on the waxed floor, the hair on the rope, the bitten sandwich, the recording, the
@@ -939,6 +986,8 @@ func file_text(index: int) -> String:
 		return _magician_file_text(index, who)
 	if texts() == VARIANTS.mansion:
 		return _member_file_text(index, who)
+	if texts() == VARIANTS.wedding:
+		return _tuxedo_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
 	if texts() == VARIANTS.cat:
@@ -1023,6 +1072,21 @@ func _guard_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_MUSTACHE_UNKNOWN"))
 	lines.append(tr("FILE_ALIBI") % (tr("ALIBI_SHORT_" + str(who.detail)) if who.has("detail") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A tuxedo's file: his name and number, and what the cops got from him so far.
+func _tuxedo_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_COLOGNE") % (tr("COLOGNE_" + str(who.cologne)) if who.has("cologne") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
@@ -1139,6 +1203,8 @@ func rows() -> Array[Dictionary]:
 	if wrong_guesses > 0:
 		list.append({"text": tr("OBJ_CRIME_WRONG") % [wrong_guesses, MAX_WRONG], "done": false, "optional": false,
 			"status": true})
+	if complaint > 0:
+		list.append({"text": tr("OBJ_CRIME_COMPLAINT") % complaint, "done": false, "optional": false, "status": true})
 	list.append({"text": "OBJ_CRIME_CAREFUL", "done": false, "optional": false, "status": true})
 	return list
 

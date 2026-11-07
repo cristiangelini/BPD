@@ -3,17 +3,19 @@ extends StaticBody3D
 
 ## The empty frame where the stolen piece hung (escena-museo.md, "Las pistas"). If the prints are one of the case's
 ## clues, the print kit (PrintKit, `dusted`) finds the culprit's on the gilt; a cop who touches it first (E) leaves his
-## own on top, like the circus's fish bucket. At the hotel (`look` "SAFE") it's the suite's open safe.
+## own on top, like the circus's fish bucket. The wedding's empty ring box and the hotel suite's open safe work the same
+## with their own texts (`keys`).
 
 var case: CrimeSceneCase
 var has_prints := false
-## What it is, in its texts' keys: "FRAME" (PROMPT_EMPTY_FRAME, HINT_FRAME_..., PRINTS_FRAME...) or "SAFE".
-var look := "FRAME"
 ## A cop touched it.
 var touched := false
+## Its texts: the prompt, the hints on E and what the print kit shows.
+var keys := {"prompt": "PROMPT_EMPTY_FRAME", "touched": "HINT_FRAME_TOUCHED", "empty": "HINT_FRAME_EMPTY",
+	"smudged": "PRINTS_FRAME_SMUDGED", "prints": "PRINTS_FRAME"}
 
 
-## `size` is the frame's width and height; it hangs flat against the wall.
+## `size` is the frame's width and height; it hangs flat against the wall (the ring box's, its width and height).
 func _init(size := Vector2(2.0, 1.4)) -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
@@ -23,7 +25,7 @@ func _init(size := Vector2(2.0, 1.4)) -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_EMPTY_" + look
+	return keys.prompt
 
 
 ## E: the cop runs a finger along the gilt and leaves his prints on it.
@@ -32,7 +34,7 @@ func use(cop: Cop) -> void:
 	touched = true
 	if spoils:
 		case.ruin("prints")
-	cop.show_hint("HINT_%s_%s" % [look, "TOUCHED" if spoils else "EMPTY"])
+	cop.show_hint(keys.touched if spoils else keys.empty)
 
 
 ## The print kit dusted it: what it shows (tr() key), and the clue if it's still clean.
@@ -40,6 +42,6 @@ func dusted(_cop: Cop) -> String:
 	if not has_prints:
 		return "PRINTS_COPS_ONLY" if touched else ""
 	if touched and not case.clues_found.has("prints"):
-		return "PRINTS_%s_SMUDGED" % look
+		return keys.smudged
 	case.found("prints")
-	return "PRINTS_" + look
+	return keys.prints
