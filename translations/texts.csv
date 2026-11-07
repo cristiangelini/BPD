@@ -5714,3 +5714,15 @@ PROMPT_SAMPLE_PIZZA,E: mirar la pizza de muestra,E: look at the sample pizza,E: 
 CLUE_SAMPLE_PIZZA,El queso de la pizza de muestra se estira 3 metros sin cortarse,The sample pizza's cheese stretches 3 meters without breaking,O queijo da pizza de amostra estica 3 metros sem arrebentar
 HINT_CHEESE_SNAP,"¡El queso se estiró de más y la pizza volvió sola al mostrador!","The cheese stretched too far and the pizza flew back to the counter!","O queijo esticou demais e a pizza voltou sozinha para o balcão!"
 CHEESE_BOING,¡BOING!,BOING!,BOING!
+BRIEF_GIANT_PIZZA_B,"Don Muzza imprime billetes falsos y los da de vuelto con cada pizza. La caja fuerte está en algún lugar de la pizzería.","Don Muzza prints fake bills and gives them as change with every pizza. The safe is somewhere in the pizzeria.","Don Muzza imprime notas falsas e dá de troco com cada pizza. O cofre está em algum lugar da pizzaria."
+BRIEF_GIANT_PIZZA_C,"Traigan los billetes falsos de la caja fuerte en el baúl del patrullero.","Bring the fake bills from the safe in the patrol car's trunk.","Tragam as notas falsas do cofre no porta-malas da viatura."
+BRIEF_GIANT_PIZZA_D,"Si encuentran la plancha de imprimir billetes o la servilleta con la combinación, mejor.","If you find the bill printing plate or the napkin with the combination, even better.","Se acharem a chapa de imprimir notas ou o guardanapo com a combinação, melhor."
+OBJ_FIND_FAKE_BILLS,Llevarse los billetes falsos de la caja fuerte,Take the fake bills from the safe,Levar as notas falsas do cofre
+OBJ_EXTRA_PRINTING_PLATE,Extra: la plancha de imprimir billetes,Extra: the bill printing plate,Extra: a chapa de imprimir notas
+OBJ_EXTRA_COMBO_NAPKIN,Extra: la servilleta con la combinación,Extra: the napkin with the combination,Extra: o guardanapo com a combinação
+TITO_CLUE_giant_pizza,"«Mmm… Vi a Don Muzza esconder algo %s. Y le habla a la pizza grande de la pared. Yo lo vi.»","“Mmm… I saw Don Muzza hide something %s. And he talks to the big pizza on the wall. I saw him.”","“Hmm… Vi Don Muzza esconder algo %s. E ele fala com a pizza grande da parede. Eu vi.”"
+LOC_pizza_safe,en la caja fuerte detrás de la pizza gigante,in the safe behind the giant pizza,no cofre atrás da pizza gigante
+GIANT_PIZZA_SIGN,Récord del barrio,Neighborhood record,Recorde do bairro
+PROMPT_PEPPERONI_LOCK,E: mirar la rodaja de pepperoni,E: look at the pepperoni slice,E: olhar a rodela de pepperoni
+CLUE_PEPPERONI_LOCK,La pizza gigante de la pared tiene una cerradura en una rodaja de pepperoni,The giant pizza on the wall has a lock in a pepperoni slice,A pizza gigante da parede tem uma fechadura numa rodela de pepperoni
+GIANT_PIZZA_CREAK,¡ÑIIIC!,CREEEAK!,NHEEEC!

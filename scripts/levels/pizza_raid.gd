@@ -66,6 +66,7 @@ const STORIES := {
 		"rig": preload("res://scripts/case/pizza/oven_tunnel_rig.gd"),
 		# Not in a hiding spot: at the far end of the tunnel under the oven (OvenTunnelRig).
 		"main_at": OvenTunnelRig.BAG_AT,
+		"main_where": "LOC_pizza_oven_tunnel",
 	},
 	"phone_backpack": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_PHONES_B", "BRIEF_PHONES_C", "BRIEF_PHONES_D"],
@@ -86,6 +87,19 @@ const STORIES := {
 		"heavy": [true, false, false],
 		"extra_keys": ["OBJ_EXTRA_PLASTIC_PELLETS", "OBJ_EXTRA_MUZZARELLA_LABELS"],
 		"rig": preload("res://scripts/case/pizza/plastic_cheese_rig.gd"),
+	},
+	"giant_pizza": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GIANT_PIZZA_B", "BRIEF_GIANT_PIZZA_C", "BRIEF_GIANT_PIZZA_D"],
+		"find": "OBJ_FIND_FAKE_BILLS",
+		"hidden": [preload("res://scenes/props/fake_bills_stack.tscn"),
+			preload("res://scenes/props/pizza_printing_plate.tscn"), preload("res://scenes/props/combo_napkin.tscn")],
+		"half_heights": [0.1, 0.04, 0.005],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_PRINTING_PLATE", "OBJ_EXTRA_COMBO_NAPKIN"],
+		"rig": preload("res://scripts/case/pizza/giant_pizza_rig.gd"),
+		# In the safe behind the giant pizza on the dining room's wall.
+		"main_at": Vector3(SAFE_X, FLOOR_TOP + SAFE_BOTTOM + 0.16, DINING_Z - 0.4),
+		"main_where": "LOC_pizza_safe",
 	},
 }
 ## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
@@ -109,6 +123,11 @@ const BACK_DOOR_X := 0.0
 const DINING_Z := 2.0
 const KITCHEN_OPENING_X := -3.0
 const OFFICE_OPENING_X := 5.0
+## The safe's window in that wall, behind the giant pizza "Récord del barrio" (GiantPizzaDoor): the safe itself sits
+## on the kitchen's side.
+const SAFE_X := 0.5
+const SAFE_BOTTOM := 0.66
+const SAFE_SIZE := Vector3(1.0, 1.0, 0.6)
 ## The wall between the kitchen (west) and the office and the cold room (east), and the cold room's wall behind the
 ## office, with its locked door.
 const KITCHEN_X := 2.0
@@ -231,6 +250,8 @@ var _seen_floured := {}
 var oven: PizzaOven
 ## The clay oven's look: the tunnel story puts its fire out.
 var oven_model: Node3D
+## The giant pizza on the dining room's wall, over the safe (the giant pizza story swings it open).
+var giant_pizza: GiantPizzaDoor
 var tito: PizzaTito
 var slices: Array[Grabbable] = []
 var _build: PlaceBuilder
@@ -373,9 +394,11 @@ func _give_clues() -> void:
 	tito.told.connect(raid.add_clue)
 
 
-## Where the story's hidden item `index` is, in words: its spot, or the tunnel under the oven.
+## Where the story's hidden item `index` is, in words: its spot, or the story's own place ("main_where").
 func where_is(index: int) -> String:
-	return tr("LOC_pizza_oven_tunnel") if hidden_spots[index] < 0 else tr("LOC_" + SPOTS[hidden_spots[index]].id)
+	if hidden_spots[index] < 0:
+		return tr(STORIES[story_id].main_where)
+	return tr("LOC_" + SPOTS[hidden_spots[index]].id)
 
 
 ## Red brick walls, the shop window with the entrance, the ceiling, the roof and the sign; behind, the yard's floor.
@@ -408,8 +431,17 @@ func _build_shell() -> void:
 ## The dining room: the counter with the phone, the tray of slices and the tower of boxes, the tables, the drinks
 ## fridge and the trunk of tablecloths.
 func _build_dining_room() -> void:
-	var openings: Array = [Vector3(KITCHEN_OPENING_X, OPENING_WIDTH * 1.2, 2.4), Vector3(OFFICE_OPENING_X, OPENING_WIDTH, 2.4)]
+	var openings: Array = [Vector3(KITCHEN_OPENING_X, OPENING_WIDTH * 1.2, 2.4),
+		Vector3(SAFE_X, SAFE_SIZE.x, SAFE_BOTTOM + SAFE_SIZE.y), Vector3(OFFICE_OPENING_X, OPENING_WIDTH, 2.4)]
 	_wall("x", DINING_Z, -HALF_X, HALF_X, openings, CREAM)
+	_wall_box("x", DINING_Z, SAFE_X - SAFE_SIZE.x / 2, SAFE_X + SAFE_SIZE.x / 2, 0.0, SAFE_BOTTOM, CREAM)
+	var safe_at := Vector3(SAFE_X, SAFE_BOTTOM, DINING_Z - PlaceBuilder.WALL / 2 - SAFE_SIZE.z / 2)
+	_build.open_box(safe_at, SAFE_SIZE, "+z", STEEL.darkened(0.4))
+	_build.box(Vector3(SAFE_X, SAFE_BOTTOM / 2, safe_at.z), Vector3(SAFE_SIZE.x, SAFE_BOTTOM, SAFE_SIZE.z), STEEL.darkened(0.4))
+	giant_pizza = GiantPizzaDoor.new()
+	giant_pizza.position = Vector3(SAFE_X - GiantPizzaDoor.DIAMETER / 2, SAFE_BOTTOM + SAFE_SIZE.y / 2,
+		DINING_Z + PlaceBuilder.WALL / 2 + 0.005)
+	add_child(giant_pizza)
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
 	phone = PizzaPhone.new()
 	phone.position = PHONE_AT

@@ -22,7 +22,7 @@ func apply_net_state(_state: Variant) -> void:
 
 
 ## A thing lying at `at` (the pizzeria's space) that E looks at and puts on the checklist the first time: the
-## story's own clue.
+## story's own clue. With no `model` it's unseen, part of something else's look.
 func clue_item(item_name: String, model: PackedScene, size: Vector3, at: Vector3, prompt: String, text_key: String) \
 		-> ClueNote:
 	var item := ClueNote.new()
@@ -37,7 +37,8 @@ func clue_item(item_name: String, model: PackedScene, size: Vector3, at: Vector3
 	box.size = size
 	shape.shape = box
 	item.add_child(shape)
-	item.add_child(model.instantiate())
+	if model:
+		item.add_child(model.instantiate())
 	item.position = at
 	item.read.connect(pizzeria.raid.add_clue)
 	pizzeria.add_child(item)

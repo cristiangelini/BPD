@@ -239,9 +239,50 @@ export const models = {
 		}
 		return b.build();
 	},
+	// The giant pizza story's main evidence: a stack of banded bundles of fake bills from the safe. 0.4 x 0.2 x 0.26 m.
+	fake_bills_stack() {
+		const b = new Builder('fake_bills_stack');
+		const green = C('bill_green', 0x6a9a60, { roughness: 0.8 });
+		const band = C('bill_band', 0xe8d8a0);
+		for (let i = 0; i < 6; i++) {
+			const x = (i % 2) * 0.2 - 0.1, y = Math.floor(i / 2) * 0.065 + 0.0325;
+			b.add('bundles', green, new THREE.BoxGeometry(0.18, 0.06, 0.24), { pos: V(x, y, 0), rot: [0, (i % 3) * 0.05, 0] });
+			b.add('bands', band, new THREE.BoxGeometry(0.04, 0.062, 0.242), { pos: V(x, y, 0), rot: [0, (i % 3) * 0.05, 0] });
+		}
+		return b.build();
+	},
+	// A paper napkin with the safe's combination written on it in pen. 0.2 x 0.004 x 0.2 m.
+	combo_napkin() {
+		const b = new Builder('combo_napkin');
+		b.add('napkin', C('napkin', 0xf8f8f4, { roughness: 1.0 }), new THREE.BoxGeometry(0.2, 0.003, 0.2), { pos: V(0, 0.0015, 0), rot: [0, 0.2, 0] });
+		const ink = C('pen_ink', 0x2030a0);
+		for (let i = 0; i < 3; i++) b.add('numbers', ink, new THREE.BoxGeometry(0.035, 0.001, 0.012), { pos: V(-0.05 + i * 0.05, 0.0035, 0) });
+		return b.build();
+	},
+	// The giant pizza "Récord del barrio" hanging on the dining room's wall, 1.5 m across, its back toward -Z and its
+	// hinge on the left edge (x = 0, the center at x = 0.75): one of its pepperoni slices has a keyhole.
+	giant_pizza_door() {
+		const b = new Builder('giant_pizza_door');
+		const turn = { rot: [Math.PI / 2, 0, 0] };
+		b.add('crust', dough, new THREE.CylinderGeometry(0.75, 0.75, 0.05, 24), { pos: V(0.75, 0, 0.025), ...turn });
+		b.add('sauce', C('pizza_sauce', 0xc03020), new THREE.CylinderGeometry(0.68, 0.68, 0.01, 24), { pos: V(0.75, 0, 0.052), ...turn });
+		b.add('cheese', C('pizza_cheese', 0xf0c040), new THREE.CylinderGeometry(0.64, 0.64, 0.012, 24), { pos: V(0.75, 0, 0.058), ...turn });
+		const pepperoni = C('pepperoni', 0xb02820);
+		for (const [x, y] of [[0.4, 0.3], [-0.3, 0.35], [0.1, -0.4], [-0.4, -0.15], [0.35, -0.2], [0, 0.05], [-0.1, 0.5], [0.5, 0.05]]) {
+			b.add('pepperoni', pepperoni, new THREE.CylinderGeometry(0.07, 0.07, 0.012, 10), { pos: V(0.75 + x, y, 0.066), ...turn });
+		}
+		b.add('keyhole', C('keyhole_steel', 0xc0c4c8, { metalness: 0.7 }), new THREE.CylinderGeometry(0.035, 0.035, 0.014, 10), { pos: V(1.15, 0.3, 0.072), ...turn });
+		b.add('keyhole', C('keyhole_dark', 0x101010), new THREE.BoxGeometry(0.012, 0.03, 0.004), { pos: V(1.15, 0.29, 0.08) });
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_giant: {
+		items: [{ name: 'giant_pizza_door', pos: [-1.2, 0.8, -0.6] }, { name: 'fake_bills_stack', pos: [-0.2, 0, 0.3] },
+			{ name: 'printing_plate', pos: [0.5, 0, 0.2] }, { name: 'combo_napkin', pos: [0.2, 0, 0.6] }],
+		cam: { pos: [0.0, 1.2, 3.2], target: [0.0, 0.5, 0], fov: 40 },
+	},
 	pizza_story_cheese: {
 		items: [{ name: 'plastic_cheese_mold', pos: [-0.35, 0, 0] }, { name: 'plastic_pellets', pos: [0.15, 0, 0.1] },
 			{ name: 'muzzarella_labels', pos: [0.45, 0, 0.15] }, { name: 'sample_pizza', pos: [0.2, 0, -0.35] }],
