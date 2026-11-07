@@ -33,7 +33,7 @@ func test_the_bell_sends_him_to_the_stock_room() -> void:
 	boss.start_at(4)
 	boss.fix_time = 3.0
 	await wait_physics_frames(5)
-	var bell: CounterBell = place.size_bell.get_child(0)
+	var bell: CostumeCounterBell = place.size_bell.get_child(0)
 	assert_eq(bell.prompt_key(place.get_node("Cop")), "PROMPT_COSTUME_BELL")
 	bell.use(place.get_node("Cop"))
 	assert_true(place.size_bell.is_jammed, "rung")
