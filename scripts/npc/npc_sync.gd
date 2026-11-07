@@ -78,15 +78,15 @@ static func is_npc(node: Node) -> bool:
 		or node is GardenPlant \
 		or node is CityInspector or node is AirportStaff \
 		or node is TowerElevator or node is HangingScaffold or node is NosyNeighbor or node is MessengerPigeon \
-		or node is OfficePerson or node is RobotVacuum or node is ChaseJug
-		or node is PartyKid
-		or node is CinemaUsher or node is CinemaSpectator
-		or node is SuperCustomer or node is SuperStocker
-		or node is FarmGoat or node is FarmPig or node is FarmCow or node is FarmNephew
-		or node is DonaRosa
-		or node is BowlPlayer or node is ShoeBoy
-		or node is Lucho or node is IceVisitor
-		or node is KaraokeSinger or node is SoundGuy
+		or node is OfficePerson or node is RobotVacuum or node is ChaseJug \
+		or node is PartyKid \
+		or node is CinemaUsher or node is CinemaSpectator \
+		or node is SuperCustomer or node is SuperStocker \
+		or node is FarmGoat or node is FarmPig or node is FarmCow or node is FarmNephew \
+		or node is DonaRosa \
+		or node is BowlPlayer or node is ShoeBoy \
+		or node is Lucho or node is IceVisitor \
+		or node is KaraokeSinger or node is SoundGuy \
 		or node is CostumeCustomer or node is CostumeNiece
 
 

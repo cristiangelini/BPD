@@ -186,6 +186,7 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## The clown car does 30, honking all the way, and a parade float 28, wide and slow. The loaded cement mixer does 28 and nearly stops in the curves.
 ## The library's bookmobile, full of books, does 24.
 ## The aquarium's frozen fish truck, loaded with ice, does 24.
+## The planetarium's van, the mail van and the theater's scenery truck do 22.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "floor_polisher": 14.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
@@ -193,13 +194,8 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
 	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6,
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "bookmobile": 24.0 / 3.6}
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "fish_truck": 24.0 / 3.6}
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "planetarium_van": 22.0 / 3.6}
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6,
-	"mail_van": 22.0 / 3.6}
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6,
-	"scenery_truck": 22.0 / 3.6}
+	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "bookmobile": 24.0 / 3.6,
+	"fish_truck": 24.0 / 3.6, "planetarium_van": 22.0 / 3.6, "mail_van": 22.0 / 3.6, "scenery_truck": 22.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
