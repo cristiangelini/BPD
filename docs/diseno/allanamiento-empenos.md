@@ -149,3 +149,8 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   tercera sospecha ("¿Usted vino a vender o a mirar?"), suma 10 y no lo compra. Su denuncia suma 5 por cada queja de
   un cliente, 10 por lo que se llevan sin pagar, y lo de siempre (empujones, la puerta del depósito, la caja, las
   vitrinas y la armadura si las ve romperse). Capturas en `/mnt/project-files/allanamiento-empenos/paso3-*.png`.
+- Paso 4: Chicharra, el loro, cuelga en su jaula al lado del mostrador (un poco más bajo, para alcanzarlo). El frasco
+  de galletitas da una por policía (E). Con la galletita en la mano, E en la jaula: Chicharra se la come y repite lo
+  que oyó de noche (la pista de la historia, desde el paso 5), una vez por policía. Sin galletita solo pide una
+  ("¡Galletita! ¡Galletita!"), y cada 20 s grita algo que oyó de día ("¡Con intereses! ¡Con intereses!"). Captura en
+  `/mnt/project-files/allanamiento-empenos/paso4-chicharra.png`.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Pawn shop raid, step 4: Chicharra the parrot. The cookie jar on the counter gives each cop one cookie, and fed one, Chicharra repeats what he heard Don Regateo say at night (the story's clue from step 5), once per cop; without a cookie he asks for one, and every 20 s he squawks something he heard by day.
 - Pawn shop raid, step 3: Don Regateo walks behind his counter; something to pawn sends him to appraise it 15 s with his back to the shop before he pays (45 s rest, the third time he catches on, adds 10 and won't buy), and the customers' complaints, what leaves unpaid and what breaks reach his complaint.
 - Pawn shop raid, step 2: everything has a price. What a cop leaves on the counter is bought if it was for sale, or pawned (evidence too) and put up for sale on a glass case at twice the appraisal; something for sale that leaves the shop unpaid counts as taken. The shop sells a trophy, a radio and a cuckoo clock, and 3 customers take turns haggling at the counter and complain when a cop is in their spot or something breaks near them.
 - Pawn shop raid, step 1: "Empeños La Última Oferta" on lot (0, 5) north, with the barred counter and its till (the stock room's key), the cookie jar and the parrot's cage, 3 glass cases that break (fine 20 each), 4 shelves of pawned things, the knight's armor that falls apart (fine 15), the stuffed crocodile, the old TV, the guitar case, the locked stock room with the big safe, and 12 hiding spots.
