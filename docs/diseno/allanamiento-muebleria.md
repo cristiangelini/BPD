@@ -152,3 +152,15 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
     la pone la historia en el paso 4; mientras tanto dice que no vio nada raro). El estante queda atornillado 8 s
     mientras habla, y después se vuelve a soltar para el próximo policía. Una vez por policía.
   - Capturas `paso3-*.png` y `tablita.png` (modelos) en la carpeta `muebleria/` del proyecto.
+- **Paso 4 (el caso, los sillones rellenos):** la mueblería ya es un caso de allanamiento como el taller y el gimnasio.
+  - El comisario da la denuncia de las ofertas de hace 20 años, y hay 3 sospechas entre las 6 historias (notas en el
+    piso del salón).
+  - Don Cajón suelta dónde están las cosas cuando le preguntas con R y llama al abogado en 100. Tablita cuenta dónde lo
+    vio esconder algo.
+  - **Los sillones rellenos:** el almohadón lleno de billetes (6 kg, 1000, en un escondite para cosas pesadas), el
+    libro de la otra caja (0,5 kg, 300) y la aguja de tapicero (0,2 kg, 200). Uno de los dos sillones (sorteado) cruje
+    como papel ("¡Crunch!") cuando un policía lo prueba, y la primera vez es la pista. Cada vez que alguien se sienta,
+    saltan 6 billetes de juguete que vuelan por el aire y desaparecen a los 6 s.
+  - Si Don Cajón escapa, se va en auto como los otros dueños, y si lo atrapan, el turno siguiente es su
+    interrogatorio.
+  - Capturas `paso4-*.png` y `stuffed_sofas.png` (modelos).

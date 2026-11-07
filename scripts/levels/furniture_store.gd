@@ -10,7 +10,8 @@ extends Node3D
 ## pushed, and a wardrobe tips over when two cops pull it together. Step 2: Don Cajón walks among the setups filling the
 ## complaint, and comes to sell the sofa or the bed a cop tries out (E), his back to the shop, until the pitch ends or
 ## the cop gets up. Step 3: Tablita puts a bookcase together in the middle of the shop and tells whoever holds its
-## shelf up for 5 s what he saw.
+## shelf up for 5 s what he saw. The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase
+## as the other places (step 4).
 
 signal good_broken(index: int)
 signal wardrobe_tipped(index: int)
@@ -27,6 +28,34 @@ const CHAIR_MODEL := preload("res://assets/models/dining_chair.glb")
 const BOX_MODEL := preload("res://assets/models/flatpack_box.glb")
 const CAJON_SCENE := preload("res://scenes/npc/don_cajon.tscn")
 const BOOKCASE_MODEL := preload("res://assets/models/half_bookcase.glb")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the store can be suspected of (allanamiento-muebleria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["stuffed_sofas", "cardboard_wood", "wardrobe_hotel", "fake_antiques", "comisario_chair",
+	"endless_installments"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_FURNITURE_TIP_B", "BRIEF_TIP_C",
+	"BRIEF_FURNITURE_TIP_D", "BRIEF_FURNITURE_TIP_E"]
+## The stories the store can tell, like Garage.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows
+## of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"stuffed_sofas": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STUFFED_SOFAS_B", "BRIEF_STUFFED_SOFAS_C", "BRIEF_STUFFED_SOFAS_D"],
+		"find": "OBJ_FIND_MONEY_CUSHION",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/money_cushion.tscn"), preload("res://scenes/props/other_ledger.tscn"),
+			preload("res://scenes/props/upholstery_needle.tscn")],
+		"half_heights": [0.15, 0.025, 0.025],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_OTHER_LEDGER", "OBJ_EXTRA_NEEDLE"],
+		"rig": preload("res://scripts/case/furniture/stuffed_sofas_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the shop's floor, in the open between the setups.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-4.0, FLOOR_TOP, 9.0), Vector3(2.0, FLOOR_TOP, 5.0), Vector3(-3.5, FLOOR_TOP, -4.5),
+	Vector3(1.5, FLOOR_TOP, -9.0), Vector3(5.5, FLOOR_TOP, 0.5), Vector3(-11.0, FLOOR_TOP, 0.5),
+]
 const HALF_X := 14.0
 const HALF_Z := 12.0
 ## The shop's ceiling, and the closed roof over it up to the lot's height.
@@ -136,10 +165,22 @@ var chair_tower: ChairTower
 var goods: Array[StaticBody3D] = []
 var broken: Array[int] = []
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the lamps and the mirror.
-var fines := 0
-## Same seed, same store (the stories and the hiding spots come from it, step 4).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same store, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: FurnitureRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 ## Each cop's falling speed in the frame before it touched down (by instance id).
 var _falling := {}
@@ -151,6 +192,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_living()
@@ -172,6 +226,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "furniture", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = cajon
+	raid.owner_id = "furniture"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The store's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_FURNITURE",
+		"guess_key": "OBJ_GUESS_FURNITURE",
+		"broken_key": "OBJ_BROKEN_FURNITURE",
+		"complaint_key": "OBJ_COMPLAINT_FURNITURE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": cajon.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Cajón lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Tablita saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		cajon.slips.append(tr("CAJON_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	cajon.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	tablita.clue = tr("CLUE_TABLITA") % where
+	tablita.clue_speech = tr("TABLITA_CLUE_" + story_id) % where
+	tablita.told.connect(raid.add_clue)
 
 
 ## The parquet, the walls with the doorway and the two shop windows, the roof and the signs.
@@ -314,6 +449,7 @@ func _place_cajon() -> void:
 	for seat: ShowroomSeat in sofas + beds:
 		seat.tried.connect(func(cop: Cop) -> void: try_out(seat, cop))
 	stock_door.broken.connect(cajon.door_broken)
+	cajon.lawyer_called.connect(func() -> void: raid.fail("CASE_FAILED_LAWYER_FURNITURE"))
 	till.opened.connect(func(at: Vector3) -> void: cajon.saw(at, FloorBoss.SAW_TILL))
 	good_broken.connect(func(index: int) -> void:
 		cajon.saw(to_global(goods[index].position + Vector3.UP), SAW_GOOD, "CAJON_GOOD"))
@@ -412,6 +548,7 @@ func break_good(index: int) -> void:
 	broken_goods += 1
 	fines += GOOD_FINE
 	var body := goods[index]
+	raid.float_label("-%d" % GOOD_FINE, body.global_position + Vector3.UP * 2.0, Color(1, 0.3, 0.25))
 	if GOODS[index].kind == "lamp":
 		body.rotation.x = PI / 2
 		body.position.y = FLOOR_TOP + 0.2

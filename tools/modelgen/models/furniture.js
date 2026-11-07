@@ -206,9 +206,48 @@ export function buildBookcaseShelf() {
 	return b.build();
 }
 
+// The stuffed sofas' evidence: a mustard sofa cushion 0.6 × 0.3 × 0.5 m bulging with bills, its seam half open with a
+// wad of them peeking out and the thick thread still in it.
+export function buildMoneyCushion() {
+	const b = new Builder('money_cushion');
+	const cloth = mat('sofa_cushion', 0xe2b44e), bill = mat('bill_green', 0x5aa35a);
+	b.add('cushion', cloth, ellipsoid(0.3, 0.15, 0.25, 12, 6), { pos: V(0, 0.15, 0) });
+	box(b, 'seam', mat('seam_thread', 0x7a3a1a), 0.42, 0.012, 0.012, 0, 0.21, 0.2);
+	for (let i = 0; i < 5; i++) box(b, 'bills', bill, 0.16, 0.02, 0.07, -0.12 + i * 0.06, 0.23 + (i % 2) * 0.015, 0.2, [0.4, 0.2 * (i - 2), 0]);
+	return b.build();
+}
+
+// The other till's book: a fat black ledger 0.22 × 0.05 × 0.3 m with a red ribbon and "LA OTRA" on a white label.
+export function buildOtherLedger() {
+	const b = new Builder('other_ledger');
+	box(b, 'cover', mat('ledger_black', 0x1e1e24), 0.22, 0.05, 0.3, 0, 0.025, 0);
+	box(b, 'pages', M.white, 0.2, 0.04, 0.29, 0.012, 0.025, 0);
+	box(b, 'label', mat('ledger_label', 0xf6f2e6), 0.12, 0.004, 0.06, 0, 0.052, -0.05);
+	box(b, 'ribbon', mat('ledger_ribbon', 0xd23a3a), 0.015, 0.004, 0.12, 0.05, 0.051, 0.16);
+	return b.build();
+}
+
+// The upholsterer's needle: a curved steel needle 0.25 m long with a yellow thread wound on a wooden spool.
+export function buildUpholsteryNeedle() {
+	const b = new Builder('upholstery_needle');
+	b.add('needle', mat('needle_steel', 0xc8ccd2, { metalness: 0.8, roughness: 0.3 }), new THREE.TorusGeometry(0.1, 0.006, 4, 12, Math.PI), { pos: V(0, 0.01, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('spool', mat('spool_wood', 0xb07a44), new THREE.CylinderGeometry(0.025, 0.025, 0.05, 8), { pos: V(0.13, 0.025, 0) });
+	b.add('thread', mat('thread_yellow', 0xf2d23a), new THREE.CylinderGeometry(0.03, 0.03, 0.035, 8), { pos: V(0.13, 0.025, 0) });
+	return b.build();
+}
+
+// A toy bill that flies out of the crunchy sofa: 0.24 × 0.11 m (big, so it shows in the air), green with a big smile where the face should be.
+export function buildToyBill() {
+	const b = new Builder('toy_bill');
+	box(b, 'paper', mat('bill_green', 0x5aa35a), 0.24, 0.004, 0.11, 0, 0.002, 0);
+	b.add('smile', M.white, ellipsoid(0.03, 0.003, 0.03, 8, 3), { pos: V(0, 0.004, 0) });
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
-	bookcase_shelf: buildBookcaseShelf,
+	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
+	upholstery_needle: buildUpholsteryNeedle, toy_bill: buildToyBill,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -231,6 +270,11 @@ export const views = {
 	tablita: {
 		items: [{ name: 'npc_tablita', pos: [-0.7, 0, 0.3] }, { name: 'half_bookcase', pos: [0.5, 0, 0] }, { name: 'bookcase_shelf', pos: [0.5, 1.1, 0.4] }],
 		cam: { pos: [0, 1.4, 3.6], target: [0, 0.9, 0], fov: 45 },
+	},
+	stuffed_sofas: {
+		items: [{ name: 'money_cushion', pos: [-0.6, 0, 0] }, { name: 'other_ledger', pos: [0.2, 0, 0.1] },
+			{ name: 'upholstery_needle', pos: [0.6, 0, 0.2] }, { name: 'toy_bill', pos: [0.35, 0, 0.5] }],
+		cam: { pos: [0, 0.9, 1.6], target: [0, 0.1, 0.1], fov: 40 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],

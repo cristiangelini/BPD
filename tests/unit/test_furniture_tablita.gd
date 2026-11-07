@@ -88,11 +88,12 @@ func test_walking_off_drops_it() -> void:
 	assert_signal_not_emitted(store.shelf, "held")
 
 
-func test_with_no_story_yet_he_saw_nothing() -> void:
+func test_with_nothing_to_tell_he_saw_nothing() -> void:
 	var store := _store()
 	await wait_physics_frames(2)
 	var cop := _by_the_shelf(store)
 	await wait_physics_frames(10)
+	store.tablita.clue_speech = ""
 	store.shelf.use(cop)
 	await wait_seconds(BookcaseShelf.HOLD_TIME + 0.3)
 	assert_true(store.tablita.listeners.has(cop))

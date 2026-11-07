@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Furniture store raid, step 4: the store is now a raid case with three suspicions among its six stories, and the first story, the stuffed sofas: the cushion full of bills is hidden with the other till's book and the upholsterer's needle, one sofa crunches like paper (the clue) and throws toy bills when tried, Don Cajón lets slip where things are, Tablita tells where he saw him hide one, and Don Cajón gets away in a car if he sees the evidence.
 - Furniture store raid, step 3: Tablita, the assembler, puts a bookcase together in the middle of the shop; a cop who holds its loose shelf up (E) for 5 s without moving hears what he saw, once per cop; letting go or walking off drops it ("Oops! Again...").
 - Furniture store raid, step 2: Don Cajón, the salesman, walks among the showroom setups filling the complaint; a cop who tries a sofa or a bed (E) brings him over to sell it for 15 s with his back to the shop, getting up cuts the pitch short, the third try he sees through (+10), and he minds broken lamps and mirrors (+10), tipped wardrobes and the fallen chair tower (+5).
 - Furniture store raid, step 1b: the mattresses bounce a cop who lands on them (up to 1.5 m), the tower of 12 chairs by the door comes down when a cop walks into it or something hits it hard and its chairs fly loose, and a wardrobe tips over onto its front when two cops pull it (E) within 1.5 s; one cop alone can't.
