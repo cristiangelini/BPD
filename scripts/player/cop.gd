@@ -191,7 +191,8 @@ func current_prompt() -> String:
 				or aimed is BankVine \
 				or aimed is CellHeater \
 				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
-				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)):
+				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)) \
+				or (takes_food(aimed) and ($Grabber.held is DonutBox or $Grabber.held is Bread)):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
@@ -555,7 +556,7 @@ func use() -> bool:
 	if belt.held_tool() is Handcuffs and (belt.held_tool() as Handcuffs).take_offer():
 		return true
 	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook
-			or _usable_target() is CircusClown):
+			or _usable_target() is CircusClown or takes_food(_usable_target())):
 		act("use", _usable_target())
 		return true
 	# The circus's clowns take the sponge and the loaves from the hand too (escena-circo.md).
@@ -687,6 +688,12 @@ func _crouched_partner() -> Cop:
 func boost_on(partner: Cop) -> void:
 	warp(Transform3D(global_basis, partner.global_position + Vector3.UP * BOOST_UP))
 	show_hint("HINT_BOOSTED")
+
+
+## The crime scenes' suspects who bite a donut from the box (or a loaf) in the cop's hand, for their file, instead of
+## the cop eating it: the museum's guards and the hotel's guests.
+static func takes_food(target: Node) -> bool:
+	return target is MuseumGuard or target is HotelGuest
 
 
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
