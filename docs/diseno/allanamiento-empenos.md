@@ -178,3 +178,6 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   pista. El cocodrilo contrabandista: el cocodrilo de la tienda (14 kg, con el cartel "No se vende") es la evidencia;
   la etiqueta de la aduana y el recibo del barco están escondidos. Tintinea cuando se mueve (la primera vez es la
   pista) y si se mueve fuerte se le cae una perla de la boca, una sola vez.
+- Paso 7: "Jugar" sortea la casa de empeños entre los allanamientos. Si Don Regateo ve que un policía agarra la
+  evidencia principal cerca, se escapa en su auto (estacionado delante del patrullero) y empieza la persecución;
+  atrapado, es el dueño que va al interrogatorio ("¿Cuánto me dan por la confesión? ¿Ni cinco?").
