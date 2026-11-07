@@ -77,6 +77,18 @@ const VARIANTS := {
 		# Nobody goes home on a moving train: the hurry is the last station (Train, end_of_line).
 		"tire": false,
 	},
+	# The Candelabro mansion (escena-mansion.md, decision 270): six Mystery Club members alike as Detective Pipa; a file
+	# knows what the cops got from its member, the room of their alibi included.
+	"mansion": {
+		"shift": "crime_mansion", "story": "mansion",
+		"brief": ["BRIEF_MANSION_A_", "BRIEF_MANSION_B", "BRIEF_MANSION_C"], "go": "HINT_GO_MANSION",
+		"go_row": "OBJ_MANSION_GO", "look": "HINT_MANSION_LOOK", "files_row": "OBJ_MANSION_FILES",
+		"clue_line": "CLUE_MANSION_", "ruined_hint": "HINT_MANSION_RUINED_", "left": "HINT_MEMBER_LEFT",
+		"who": "member", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MANSION_LOOT_", "catch_row": "OBJ_MANSION_CATCH",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "bells": "room",
+			"witness": "glasses"},
+		"parts": ["photo", "prints", "teeth", "hair", "midnight"],
+	},
 	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
 	# them, and the concierge swapped two rooms.
 	"hotel": {
@@ -111,6 +123,9 @@ const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "t
 ## At the Monedero mansion, the traits each part of a nephew's file tells.
 const NEPHEW_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"scratch": ["scratch"], "tic": ["tic"]}
+## At the mansion, the traits each part of a member's file tells.
+const MEMBER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"midnight": ["room"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -170,6 +185,8 @@ var gone: Array[int] = []
 var custody := {}
 ## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
 var chase: ChaseCase
+## Or, at the mansion, the culprit running off on foot through the maze (MazeGetaway).
+var runner: MazeGetaway
 var escaped := false
 ## Online (docs/diseno/online.md): the host's case decides and a guest's follows it (CaseSync); `online` is that sync.
 var follower := false
@@ -231,6 +248,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuardTraits.draw(case_seed)
 	if texts() == VARIANTS.train:
 		return MagicianTraits.draw(case_seed)
+	if texts() == VARIANTS.mansion:
+		return MemberTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
 	if texts() == VARIANTS.cat:
@@ -289,13 +308,17 @@ func magician_part(magician_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md), or a nephew (escena-gato.md): it goes to his file with what it
-## says about him.
+## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md) or a club member (escena-mansion.md):
+## it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	var table := NEPHEW_PART_TRAITS if texts() == VARIANTS.cat else GUARD_PART_TRAITS
+	var table := GUARD_PART_TRAITS
+	if texts() == VARIANTS.cat:
+		table = NEPHEW_PART_TRAITS
+	elif texts() == VARIANTS.mansion:
+		table = MEMBER_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -386,7 +409,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.train or texts() == VARIANTS.cat:
+	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -446,8 +469,15 @@ func runs_off() -> bool:
 
 
 ## The culprit gets in his getaway by the scene (the pastry cook's delivery bike) and the chase starts (decision 96).
-## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead).
+## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead). A place with
+## a foot_getaway (the mansion's maze) runs him off on foot there instead.
 func _run_off() -> bool:
+	if place and place.has_method("foot_getaway"):
+		runner = place.foot_getaway(plan.culprit)
+		runner.follower = follower
+		runner.ended.connect(_on_chase_ended)
+		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
+		return true
 	if place and place.run_off(plan.culprit):
 		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 		return true
@@ -563,6 +593,9 @@ func snapshot() -> Dictionary:
 	# The culprit who ran off on his bike, and the chase after him.
 	if chase:
 		state.chase = chase.snapshot()
+	# Or the one who ran off on foot (the mansion's maze).
+	if runner:
+		state.runner = runner.snapshot()
 	return state
 
 
@@ -602,7 +635,7 @@ func apply_snapshot(state: Dictionary) -> void:
 		place.offend_witness()
 	if state.accused and not accused:
 		accused = true
-		if state.has("chase"):
+		if state.has("chase") or state.has("runner"):
 			_run_off()
 		elif place and runs_off() and place.run_off(plan.culprit):
 			# The place runs his getaway itself (the train's roofs) and follows the host's.
@@ -611,6 +644,8 @@ func apply_snapshot(state: Dictionary) -> void:
 			_send_off(place.suspect(plan.culprit))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
+	if runner and state.has("runner"):
+		runner.apply_snapshot(state.runner)
 	if board:
 		board.refresh()
 	checklist.show_rows(rows())
@@ -704,6 +739,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.train:
 		return _train_clue_line(kind)
+	if texts() == VARIANTS.mansion:
+		return _mansion_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
 	if texts() == VARIANTS.cat:
@@ -799,6 +836,22 @@ func _train_clue_line(kind: String) -> String:
 ## Money off the salary for something bought during the case.
 func spend(amount: int) -> void:
 	spent += amount
+## At the mansion: the prints on the safe, the footprint in a passage's dust, the hair on the armour, the bitten
+## chocolate, the bell that rang at midnight and Lorenzo.
+func _mansion_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_MANSION_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_MANSION_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_MANSION_bite") % tr("TEETH_" + str(who.teeth))
+		"bells":
+			return tr("CLUE_MANSION_bells") % tr("MANSION_ROOM_" + str(who.room))
+		"witness":
+			return tr("CLUE_MANSION_witness_glasses" if who.glasses else "CLUE_MANSION_witness_no_glasses")
+	return tr("CLUE_MANSION_" + kind)
 
 
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
@@ -838,6 +891,8 @@ func file_text(index: int) -> String:
 		return _guard_file_text(index, who)
 	if texts() == VARIANTS.train:
 		return _magician_file_text(index, who)
+	if texts() == VARIANTS.mansion:
+		return _member_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
 	if texts() == VARIANTS.cat:
@@ -884,6 +939,22 @@ func _nephew_file_text(index: int, who: Dictionary) -> String:
 	lines.append(tr("FILE_SCRATCH_" + (str(who.scratch).to_upper() if who.scratch != "" else "NONE")) if who.has("scratch")
 		else tr("FILE_SCRATCH_UNKNOWN"))
 	lines.append(tr("FILE_TIC") % (tr("NEPHEW_TIC_%d" % who.tic) if who.has("tic") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+
+## A club member's file: their name and number, and what the cops got from them so far.
+func _member_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_MIDNIGHT") % (tr("MANSION_ROOM_" + str(who.room)) if who.has("room") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
@@ -993,6 +1064,8 @@ func rows() -> Array[Dictionary]:
 			"status": false})
 	if chase:
 		list.append(_row("OBJ_CRIME_CATCH", chase.case_solved))
+	elif runner:
+		list.append(_row(texts().catch_row, runner.caught))
 	if not gone.is_empty():
 		var names := gone.map(func(index: int) -> String: return cooks[index].name)
 		list.append({"text": tr("OBJ_CRIME_GONE") % ", ".join(names), "done": false, "optional": false, "status": true})

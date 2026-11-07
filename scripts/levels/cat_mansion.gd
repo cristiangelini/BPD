@@ -133,7 +133,7 @@ const SUITCASE_COLORS: Array[Color] = [
 var case: CrimeSceneCase
 var nephews: Array[MansionNephew] = []
 var lady: MansionLady
-var parrot: MansionParrot
+var parrot: CatParrot
 ## The five cats; cats[duchess] is the real Duquesa (drawn with the case seed).
 var cats: Array[MansionCat] = []
 var duchess := 0
@@ -400,7 +400,7 @@ func _people() -> void:
 	lady.got_wrong_cat.connect(_on_wrong_cat)
 	lady.position = LADY_AT + Vector3(0, FLOOR_TOP, 0)
 	add_child(lady)
-	parrot = MansionParrot.new()
+	parrot = CatParrot.new()
 	parrot.name = "Parrot"
 	parrot.position = PARROT_AT
 	add_child(parrot)

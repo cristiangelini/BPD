@@ -1,6 +1,6 @@
 extends GutTest
 
-## The people of the Monedero mansion (escena-gato.md, step 2; NephewTraits, MansionNephew, MansionLady, MansionParrot).
+## The people of the Monedero mansion (escena-gato.md, step 2; NephewTraits, MansionNephew, MansionLady, CatParrot).
 
 
 func test_six_nephews_alike_but_each_their_own() -> void:

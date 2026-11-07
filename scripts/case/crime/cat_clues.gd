@@ -62,7 +62,7 @@ func _clue_item(kind: String, at: Vector3) -> void:
 	var item := CrimeClueItem.new()
 	item.name = "Clue_" + kind
 	item.kind = kind
-	item.look = "mansion"
+	item.look = "cat_mansion"
 	item.case = case
 	item.hair_color = CookTraits.HAIRS[case.culprit().hair]
 	item.position = at

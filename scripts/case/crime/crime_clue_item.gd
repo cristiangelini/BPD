@@ -7,9 +7,10 @@ extends Grabbable
 ## (CoffeeCup) ends up on it. At the circus (`look` "circus") the hair is a loose one on the pool's floor (not food; the
 ## pool's tap washes it away, Circus.open_tap) and the bite is in a raw fish. At the museum (`look` "museum") the hair is
 ## loose too, on the velvet rope's post, and the bite is in the guards' sandwich. At the hotel (`look` "hotel") the
-## hair is loose on the suite's pillow and the bite is in the bonbon left on it. At the Monedero mansion (`look`
-## "mansion") the hair is loose on Duquesa's velvet armchair and the bite is in a fish-shaped cat biscuit. Every number
-## here is (propuesta).
+## hair is loose on the suite's pillow and the bite is in the bonbon left on it. At the mansion (`look` "mansion") the
+## hair is loose on the armour and the bite is in one of doña Clotilde's chocolates. At the Monedero mansion (`look`
+## "cat_mansion") the hair is loose on Duquesa's velvet armchair and the bite is in a fish-shaped cat biscuit. Every
+## number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -24,10 +25,11 @@ const FISH_BELLY := Color(0.9, 0.9, 0.85)
 const CHOCOLATE := Color(0.35, 0.2, 0.12)
 const FOIL := Color(0.85, 0.68, 0.3)
 const BISCUIT := Color(0.72, 0.48, 0.25)
+const DARK_CHOCOLATE := Color(0.24, 0.13, 0.08)
 
 ## "hair", "bite" or "recipe".
 var kind := "hair"
-## "pastry", "circus", "museum", "hotel" or "mansion": what the clue looks like.
+## "pastry", "circus", "museum", "hotel", "mansion" or "cat_mansion": what the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -51,6 +53,8 @@ func _ready() -> void:
 	elif look == "hotel":
 		size = Vector3(0.08, 0.05, 0.08)
 	elif look == "mansion":
+		size = Vector3(0.08, 0.06, 0.08)
+	elif look == "cat_mansion":
 		size = Vector3(0.09, 0.04, 0.15)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
@@ -65,8 +69,19 @@ func _ready() -> void:
 	if look == "hotel":
 		_bonbon(builder)
 		return
-	if look == "mansion":
+	if look == "cat_mansion":
 		_biscuit()
+		return
+	if look == "mansion" and kind == "bite":
+		_eaten_part = Node3D.new()
+		add_child(_eaten_part)
+		var chocolate := PlaceBuilder.new(_eaten_part)
+		var ball := SphereMesh.new()
+		ball.radius = 0.035
+		ball.height = 0.05
+		chocolate.mesh(ball, Vector3(0, 0.025, 0), DARK_CHOCOLATE)
+		# The bite: a pale notch in its side, the liqueur showing.
+		chocolate.mesh_box(Vector3(0.022, 0.03, 0), Vector3(0.02, 0.03, 0.04), CREAM)
 		return
 	match kind:
 		"hair":
@@ -140,7 +155,7 @@ func _biscuit() -> void:
 
 ## The circus's look: its loose hair and its fish. The museum's, the hotel's and the mansion's hair are loose too.
 func _loose() -> bool:
-	return look == "circus" or (look in ["museum", "hotel", "mansion"] and kind == "hair")
+	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion"] and kind == "hair")
 
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.

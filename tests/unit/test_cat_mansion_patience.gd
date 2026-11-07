@@ -1,7 +1,7 @@
 extends GutTest
 
 ## Señora Ofelia's patience and Don Plumas the witness (escena-gato.md, step 5, third part; CatPatience,
-## MansionParrot, ParrotCrackers).
+## CatParrot, ParrotCrackers).
 
 const COP_SCENE := preload("res://scenes/player/cop.tscn")
 

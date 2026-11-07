@@ -119,8 +119,8 @@ export const models = {
 		f(b);
 		return b.build();
 	}])),
-	mansion_parrot: () => {
-		const b = new Builder('mansion_parrot');
+	cat_parrot: () => {
+		const b = new Builder('cat_parrot');
 		loro(b);
 		return b.build();
 	},
@@ -131,7 +131,7 @@ export const models = {
 export const views = {
 	cat_mansion_people: {
 		items: [{ name: 'npc_ofelia', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_sobrino_tia', pos: [0, 0, 0], rotY: 0.2 },
-			{ name: 'npc_sobrino_tia', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'mansion_parrot', pos: [2.2, 0.9, 0], rotY: -0.5 }],
+			{ name: 'npc_sobrino_tia', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'cat_parrot', pos: [2.2, 0.9, 0], rotY: -0.5 }],
 		cam: { pos: [0.45, 1.4, 6.0], target: [0.45, 0.85, 0], fov: 38 },
 	},
 	golden_limo: {

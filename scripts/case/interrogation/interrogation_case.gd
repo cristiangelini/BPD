@@ -81,6 +81,8 @@ const SUSPECT_MODELS := {
 	"owner_guard": "res://assets/models/npc_guardia_museo.glb",
 	# The train's culprit (escena-tren.md), caught on the roofs or giving up.
 	"owner_magician": "res://assets/models/npc_mago.glb",
+	# The mansion's culprit (escena-mansion.md), accused at the board.
+	"owner_member": "res://assets/models/npc_socio_club.glb",
 	# The hotel's culprit (escena-hotel.md), accused at the board.
 	"owner_guest": "res://assets/models/npc_huesped.glb",
 	# The Monedero mansion's culprit (escena-gato.md), accused at the board.

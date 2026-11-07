@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bv05l5wwjum5o"
-path="res://.godot/imported/mansion_parrot.glb-0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f.scn"
+uid="uid://b5h8pounu18"
+path="res://.godot/imported/parrot_cage.glb-7007ba916f95fb042decbeeda626d12b.scn"
 
 [deps]
 
-source_file="res://assets/models/mansion_parrot.glb"
-dest_files=["res://.godot/imported/mansion_parrot.glb-0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f.scn"]
+source_file="res://assets/models/parrot_cage.glb"
+dest_files=["res://.godot/imported/parrot_cage.glb-7007ba916f95fb042decbeeda626d12b.scn"]
 
 [params]
 

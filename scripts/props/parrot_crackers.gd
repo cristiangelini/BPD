@@ -5,7 +5,7 @@ extends StaticBody3D
 
 const TIN := Color(0.85, 0.3, 0.25)
 
-var parrot: MansionParrot
+var parrot: CatParrot
 
 
 func _ready() -> void:

@@ -1,111 +1,91 @@
 class_name MansionParrot
-extends StaticBody3D
+extends MansionPerson
 
-## Don Plumas, the parrot of the drawing room (escena-gato.md, "Las pistas"), on the stand of his cage: the witness.
-## He saw who took Duquesa and heard him talk. Given one of his crackers (ParrotCrackers, by the cage), E on him
-## repeats the culprit's catchphrase twice, if the witness is one of the case's clues. Shouted at close by, or with
-## something thrown near him, he's scared for the whole case and only says "¡Lorito bonito!". Every number here is
-## (propuesta).
+## Lorenzo, doña Clotilde's parrot (escena-mansion.md, "La gente"), on his perch in the brass cage in the lounge. Every
+## so often he squawks something he heard in the house; E on him, too. He's the witness (step 5b): give him a chocolate
+## from the box and, if he saw it, he repeats what the culprit said ("¡Mis anteojos!" or "¡Qué bien veo!"). Shouted at,
+## he's offended for good and only says insults. Every number here is (propuesta).
 
-const MODEL := preload("res://assets/models/mansion_parrot.glb")
-const SHOUT_REACH := 5.0
-## Something flying faster than this, this close to him, scares him.
-const THROW_SPEED := 3.0
-const THROW_REACH := 0.9
+const CAGE := preload("res://assets/models/parrot_cage.glb")
+const BIRD := preload("res://assets/models/loro.glb")
+## Seconds between squawks on his own.
+const SQUAWK_EVERY := 12.0
+## His perch's height in the cage.
+const PERCH := 1.25
+## A shout counts from this close, in meters.
+const SHOUT_REACH := 6.0
+const INSULTS := 3
 
 var case: CrimeSceneCase
-## He heard the culprit (the witness is one of the case's clues).
+## The witness is one of the case's clues.
 var knows := false
-var fed := false
-var scared := false
-var _bubble: Label3D
-var _bubble_left := 0.0
+var offended := false
+var _squawk_left := SQUAWK_EVERY
+
+
+func _init() -> void:
+	model = CAGE
+	height = 2.0
+	prompt = "PROMPT_MANSION_PARROT"
+	line_key = "PARROT_LINE_"
+	lines = 4
 
 
 func _ready() -> void:
+	super()
 	add_to_group("mansion_parrot")
-	collision_layer = 8
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(0.3, 0.4, 0.3)
-	shape.shape = box
-	shape.position.y = 0.2
-	add_child(shape)
-	add_child(MODEL.instantiate())
-	_bubble = MarketShopper.make_bubble()
-	_bubble.position.y = 0.7
-	add_child(_bubble)
+	var bird := BIRD.instantiate()
+	bird.name = "Lorenzo"
+	bird.position = Vector3(0, PERCH, 0)
+	add_child(bird)
 
 
-func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_PARROT"
+func prompt_key(cop: Cop) -> String:
+	return "PROMPT_PARROT_FEED" if _chocolates(cop) and not offended else prompt
 
 
-func use(_cop: Cop) -> void:
-	if scared:
-		say("PARROT_SCARED")
-	elif not fed:
-		say("PARROT_PRETTY")
-	elif knows and case:
-		var tic := tr("NEPHEW_TIC_%d" % case.culprit().tic)
-		say("%s %s" % [tic, tic], 5.0)
-		case.found("witness")
+## E on him: with the box of chocolates in hand, he eats one and tells what he saw; otherwise a squawk.
+func use(cop: Cop) -> void:
+	var box := _chocolates(cop)
+	if box and not offended:
+		feed(box)
 	else:
-		say("PARROT_NOTHING")
+		say_next()
 
 
-## A cracker from the tin: he's happy to talk now.
-func feed() -> void:
-	fed = true
-	say("PARROT_CRACKER")
-
-
-## A cop shouted: if he was close, it scares him.
-func shouted_by(cop: Cop) -> void:
-	if cop.global_position.distance_to(global_position) <= SHOUT_REACH:
-		scare()
-
-
-func scare() -> void:
-	if scared:
+func feed(box: DonutBox) -> void:
+	if not box.eat_one():
+		say("PARROT_LINE_1")
 		return
-	scared = true
-	say("PARROT_SCARED")
+	if knows and case:
+		case.found("witness")
+		say("PARROT_SAW_GLASSES" if case.culprit().glasses else "PARROT_SAW_NO_GLASSES", 6.0)
+	else:
+		say("PARROT_SAW_NOTHING")
+
+
+## Shouted at: offended for good, and the witness is lost.
+func offend() -> void:
+	if offended:
+		return
+	offended = true
+	line_key = "PARROT_INSULT_"
+	lines = INSULTS
+	say_next()
 	if knows and case:
 		case.ruin("witness")
 
 
-func said() -> String:
-	return _bubble.text if _bubble.visible else ""
-
-
-func say(text: String, seconds := 3.0) -> void:
-	_bubble.text = text
-	_bubble.show()
-	_bubble_left = seconds
+func _chocolates(cop: Cop) -> DonutBox:
+	if not cop:
+		return null
+	var held: Node = cop.get_node("Grabber").held
+	return held as DonutBox if held is ChocolateBox else null
 
 
 func _physics_process(delta: float) -> void:
-	_bubble_left -= delta
-	if _bubble.visible and _bubble_left <= 0.0:
-		_bubble.hide()
-	if scared or not case or case.follower:
-		return
-	if _something_thrown_near():
-		scare()
-
-
-## Something loose (layer 4: props, cats) flying fast close to him.
-func _something_thrown_near() -> bool:
-	var query := PhysicsShapeQueryParameters3D.new()
-	var sphere := SphereShape3D.new()
-	sphere.radius = THROW_REACH
-	query.shape = sphere
-	query.transform = global_transform
-	query.collision_mask = 4
-	for hit in get_world_3d().direct_space_state.intersect_shape(query, 8):
-		var body := hit.collider as RigidBody3D
-		if body and not (body is Grabbable and (body as Grabbable).is_held()) \
-				and body.linear_velocity.length() > THROW_SPEED:
-			return true
-	return false
+	super(delta)
+	_squawk_left -= delta
+	if _squawk_left <= 0.0:
+		_squawk_left = SQUAWK_EVERY
+		say_next()
