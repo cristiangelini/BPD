@@ -5307,6 +5307,17 @@ CLUE_BITTEN_SLICE,Una porción mordida en el tacho tiene un anillo de oro en el 
 PROMPT_TOWER_LIFT,E: levantar una caja de la torre,E: lift a box from the tower,E: levantar uma caixa da torre
 TOWER_COINS,¡Clinc! ¡Clinc!,Clink! Clink!,Plim! Plim!
 CLUE_TOWER_COINS,Una caja de la torre del mostrador suena a monedas,A box in the counter's tower clinks like coins,Uma caixa da torre do balcão faz barulho de moedas
+BRIEF_YEAST_B,"Don Muzza mete súper levadura de contrabando y se la vende a las panaderías: los panes salen del tamaño de un auto.","Don Muzza smuggles super yeast and sells it to bakeries: the loaves come out the size of a car.","Don Muzza contrabandeia superfermento e vende para as padarias: os pães saem do tamanho de um carro."
+BRIEF_YEAST_C,"Traigan el bidón de súper levadura en el baúl del patrullero. Pesa 20 kilos: entre dos.","Bring the drum of super yeast in the patrol car's trunk. It weighs 20 kilos: carry it between two.","Tragam o galão de superfermento no porta-malas da viatura. Pesa 20 quilos: carreguem em dois."
+BRIEF_YEAST_D,"Si encuentran las pastillas de levadura o la factura de «Panaderías Infladas», mejor. Y lejos de los bollos: cuando revientan, pegan.","If you find the yeast pills or the «Inflated Bakeries» invoice, even better. And stay away from the dough balls: when they burst, they stick.","Se acharem as pastilhas de fermento ou a nota das «Padarias Infladas», melhor. E longe das bolas de massa: quando estouram, grudam."
+OBJ_FIND_YEAST_DRUM,Llevarse el bidón de súper levadura,Take the drum of super yeast,Levar o galão de superfermento
+OBJ_EXTRA_YEAST_PILLS,Extra: las pastillas de levadura,Extra: the yeast pills,Extra: as pastilhas de fermento
+OBJ_EXTRA_INFLATED_INVOICE,Extra: la factura de «Panaderías Infladas»,Extra: the «Inflated Bakeries» invoice,Extra: a nota das «Padarias Infladas»
+TITO_CLUE_crazy_yeast,"«Mmm… Vi a Don Muzza esconder algo %s. Y el otro día la masa se escapó sola de la cocina. Yo la vi.»","“Mmm… I saw Don Muzza hide something %s. And the other day the dough escaped from the kitchen on its own. I saw it.”","“Hmm… Vi Don Muzza esconder algo %s. E outro dia a massa fugiu sozinha da cozinha. Eu vi.”"
+PROMPT_DOUGH_PUDDLE,E: mirar la masa del piso,E: look at the dough on the floor,E: olhar a massa no chão
+CLUE_DOUGH_PUDDLE,Sale masa por debajo de la puerta de la cámara de frío,Dough is oozing out from under the cold room's door,Está saindo massa por baixo da porta da câmara fria
+DOUGH_PLOF,¡PLOF!,PLOF!,PLOFT!
+HINT_DOUGH_STUCK,"¡Te reventó un bollo encima! Quedaste pegado en la masa.","A dough ball burst on you! You're stuck in the dough.","Uma bola de massa estourou em você! Você ficou grudado na massa."
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"

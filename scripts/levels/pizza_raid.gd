@@ -45,6 +45,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_JEWELER_LOUPE", "OBJ_EXTRA_SPECIAL_CLIENTS"],
 		"rig": preload("res://scripts/case/pizza/jewels_rig.gd"),
 	},
+	"crazy_yeast": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_YEAST_B", "BRIEF_YEAST_C", "BRIEF_YEAST_D"],
+		"find": "OBJ_FIND_YEAST_DRUM",
+		"hidden": [preload("res://scenes/props/yeast_drum.tscn"), preload("res://scenes/props/yeast_pills.tscn"),
+			preload("res://scenes/props/inflated_invoice.tscn")],
+		"half_heights": [0.26, 0.07, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_YEAST_PILLS", "OBJ_EXTRA_INFLATED_INVOICE"],
+		"rig": preload("res://scripts/case/pizza/crazy_yeast_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
 ## the furniture.
@@ -179,6 +189,8 @@ var hidden_spots: Array = []
 var extras: Array[Evidence] = []
 ## The boxes of the counter's tower, bottom to top (the jewels story lifts them).
 var tower_boxes: Array[Node3D] = []
+## The dough balls on the dough table (the crazy yeast story makes them grow).
+var dough_balls: Array[Node3D] = []
 var muzza: FloorBoss
 var phone: PizzaPhone
 var complaint_bar: ProgressBar
@@ -394,7 +406,7 @@ func _build_kitchen() -> void:
 	var table := _build.body(DOUGH_TABLE_AT + Vector3(0, DOUGH_TABLE_SIZE.y - 0.03, 0))
 	_build.shape(table, Vector3(DOUGH_TABLE_SIZE.x, 0.06, DOUGH_TABLE_SIZE.z))
 	for x: float in [-0.6, -0.25, 0.1]:
-		_model(DOUGH_MODEL, DOUGH_TABLE_AT + Vector3(x, DOUGH_TABLE_SIZE.y, -0.2))
+		dough_balls.append(_model(DOUGH_MODEL, DOUGH_TABLE_AT + Vector3(x, DOUGH_TABLE_SIZE.y, -0.2)))
 	_build.light(Vector3(-5.0, 2.9, -2.0))
 	_build.light(Vector3(-1.0, 2.9, 0.0))
 
