@@ -106,6 +106,22 @@ func traps_open() -> bool:
 	return is_on() and CHANGE_SECONDS - change_left < TRAP_SECONDS
 
 
+## Online, a guest's show follows the host's: [seconds of the change left, seconds to the next, changes, patience]. A
+## new change starts here too (the flat, the trapdoors, the turn), and the ghosts' marks come with the theater's state.
+func follow(state: Array) -> void:
+	if state[2] > changes:
+		changes = state[2] - 1
+		start_change()
+	elif is_on() and state[0] <= 0.0:
+		end_change()
+	change_left = state[0]
+	until_change = state[1]
+	changes = state[2]
+	patience = state[3]
+	if not traps_open():
+		_open_traps(false)
+
+
 ## "¡Cambio de escena!": the turntable starts its half turn, the trapdoors open, the next flat comes down and what's
 ## loose on the turntable goes behind the backdrop.
 func start_change() -> void:

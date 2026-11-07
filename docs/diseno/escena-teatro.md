@@ -232,3 +232,10 @@ Mientras tanto se avanza con lo recomendado.
    - El culpable se baja como fantasma y se lo interroga como tal ("owner_ghost").
    - Capturas: `teatro/paso7-camion.png` y `teatro/scenery_truck.png`.
 8. El sorteo de "Jugar" y el online.
+   **Hecho así:** el teatro entra en el sorteo de las escenas del crimen, que ahora son cinco: un quinto para cada
+   una (pastelería, circo, museo, hotel y teatro).
+   - **Online:** el teatro de los invitados sigue al del anfitrión. Copia los fantasmas (la sábana, la nota, la
+     pastilla y dónde quedan después de cada cambio), la función y la paciencia del director, a Don Susurro y las
+     pastillas, la Máscara de Oro, el vidrio de la vitrina, el bombón del palco y las pistas que se arruinaron.
+   - Si los otros casos que se están haciendo (correo, biblioteca, acuario, planetario) entran antes, la lista del
+     sorteo se junta al mergear.

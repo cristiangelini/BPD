@@ -239,13 +239,72 @@ func uncover_mask() -> void:
 func reveal_loot() -> void:
 	if loot_found:
 		return
+	_mask_back()
+	if case:
+		case.found_loot()
+
+
+## The Golden Mask in its case, out of reach.
+func _mask_back() -> void:
 	uncover_mask()
 	loot_found = true
 	mask.position = MASK_CASE_AT + Vector3(0, 1.22, 0)
 	mask.rotation = Vector3.ZERO
 	mask.collision_layer = 0
-	if case:
-		case.found_loot()
+
+
+## Online, what the guests' theater takes from the host's: the ghosts (what they said, the sheet, the song, the
+## lozenge, where they stand after a change), the show and the director's patience, Don Susurro and the lozenges, the
+## Golden Mask (found, back), the case's glass, the bonbon in the box and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"ghosts": ghosts.map(func(ghost: TheaterGhost) -> Array:
+		return [ghost.talked, ghost.sheet_on, ghost.sang, ghost.cleared, ghost.position, ghost.rotation.y])}
+	if not case:
+		return state
+	state.show = [performance.change_left, performance.until_change, performance.changes, performance.patience]
+	state.prompter = [prompter.offended, lozenges.map(func(lozenge: HoneyLozenge) -> bool: return lozenge.eaten)]
+	state.mask = [mask_uncovered, loot_found]
+	state.clues = [clues.case_glass.touched, clues.case_glass.has_prints, clues.bonbon_out]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for ghost in ghosts:
+		var look: Array = state.ghosts[ghost.index]
+		ghost.talked = look[0]
+		if not look[1] and ghost.sheet_on:
+			ghost.sheet_on = false
+			ghost.part("sheet").visible = false
+		ghost.sang = look[2]
+		ghost.cleared = look[3]
+		ghost.position = look[4]
+		ghost.rotation.y = look[5]
+	if not case or not state.has("show"):
+		return
+	performance.follow(state.show)
+	if state.prompter[0] and not prompter.offended:
+		prompter.offend()
+	for i in lozenges.size():
+		if state.prompter[1][i] and not lozenges[i].eaten:
+			lozenges[i].eat()
+	if state.mask[1] and not loot_found:
+		_mask_back()
+	elif state.mask[0] and not mask_uncovered:
+		uncover_mask()
+	clues.case_glass.touched = state.clues[0]
+	clues.case_glass.has_prints = state.clues[1]
+	if state.clues[2] and not clues.bonbon_out:
+		clues.searched("box")
+	for kind: String in ["hair", "bite"]:
+		var item := case.items.get(kind) as CrimeClueItem
+		if not item and kind == "bite":
+			item = clues.bonbon
+		if case.ruined.has(kind) and item:
+			item.spoiled = true
+			item.visible = false
+			item.collision_layer = 0
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
 
 
 ## The ghost by index (the order of the case's traits).
