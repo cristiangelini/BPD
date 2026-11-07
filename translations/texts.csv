@@ -5628,3 +5628,12 @@ RENGLON_CAUGHT_ON,"¿Otro pedido urgente? ¡Si es mi propio número!","Another u
 RENGLON_FOOTPRINTS,"¡Me están llenando todo de huellas!","You're getting footprints all over the place!","Vocês estão enchendo tudo de pegadas!"
 RENGLON_BARREL,"¡Mi tinta! ¡Eso no sale ni con aguarrás!","My ink! That won't come off even with turpentine!","Minha tinta! Isso não sai nem com aguarrás!"
 PROMPT_PRINT_SHOP_FAX,"E: apretar ""enviar prueba"" en el fax","E: press ""send test"" on the fax","E: apertar ""enviar teste"" no fax"
+PROMPT_TIPITO,E: hablar con Tipito,E: talk to Tipito,E: falar com o Tipito
+TIPITO_ASK,"¿Me traes la %s? Se me cayó por ahí. Es de madera, grandota.","Can you bring me the %s? I dropped it somewhere. It's wooden, a big one.","Você me traz o %s? Caiu por aí. É de madeira, bem grande."
+TIPITO_WRONG,"Esa no, esa es la %s.","Not that one, that's the %s.","Esse não, esse é o %s."
+TIPITO_AGAIN,"¡Ya te conté todo! Ahora déjame ordenar.","I already told you everything! Now let me sort.","Já te contei tudo! Agora me deixa organizar."
+TIPITO_THANKS,"¡Gracias! Ahora sí está completo el abecedario.","Thanks! Now the alphabet is complete.","Obrigado! Agora o alfabeto está completo."
+TIPITO_NOTHING,"¡Gracias! Pero no vi nada raro. Solo letras, todo el día letras.","Thanks! But I didn't see anything weird. Just letters, letters all day.","Obrigado! Mas não vi nada estranho. Só letras, o dia inteiro letras."
+TIPITO_IDLE_1,"A, B, C... ¿y la que sigue? Siempre me falta una.","A, B, C... and the next one? I'm always missing one.","A, B, C... e a próxima? Sempre me falta uma."
+TIPITO_IDLE_2,"Don Renglón dice que un buen aprendiz no pierde letras. Yo pierdo una por día.","Don Renglón says a good apprentice never loses letters. I lose one a day.","O Seu Renglón diz que um bom aprendiz não perde letras. Eu perco uma por dia."
+TIPITO_IDLE_3,"Psst, oficial... si me trae lo que me falta, le cuento un secreto.","Psst, officer... bring me what I'm missing and I'll tell you a secret.","Psiu, policial... se me trouxer o que me falta, eu conto um segredo."

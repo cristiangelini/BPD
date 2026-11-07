@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 5: Tipito, the apprentice, stands by the chibalete missing one of the six wooden letters lying around the shop (drawn by the seed); the cop who brings him the right one gets told what he saw (once per cop), any other gets "Esa no, esa es la Q".
 - Print shop raid, step 4: Don Renglón walks between the counter and the press, adds 5 to his complaint for each cop he sees leaving footprints (once per cop) and 10 for each barrel he sees tip over, and the fax's "enviar prueba" sends him to set an urgent order at the chibalete for 20 s, twice; the third time he catches on.
 - Print shop raid, step 3: an ink barrel hit hard or bumped by a running cop tips over and leaves a puddle of its color for 30 s (a broken ink jar leaves one too), and a cop who steps in a puddle leaves footprints of that color for 20 s.
 - Print shop raid, step 2: the rotativa runs 12 s every 45 s or with its red lever; its belt carries things and cops (a railing stops cops before the rollers), what goes through comes out on the tray with the run's ink and the "LA TINTA LOCA" stamp, anything over 10 kg jams it 5 s, and it throws sheets of paper into the air while it runs.

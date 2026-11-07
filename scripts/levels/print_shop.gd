@@ -9,7 +9,8 @@ extends Node3D
 ## east wall the shelf of ink jars. At the back, the paper store (reams and rolls), the fax, the recycling basket and
 ## the owner's office, locked with the till's key. Something thrown hard at a display pane or at an ink jar breaks it,
 ## a fine each. Don Renglón walks between the counter and the press and fills his complaint; the fax's "enviar prueba"
-## sends him to the chibalete with an urgent order (step 4). Every number here is (propuesta).
+## sends him to the chibalete with an urgent order (step 4). Tipito, the apprentice, sorts type by the chibalete and
+## wants one of the six wooden letters lying around (step 5). Every number here is (propuesta).
 
 signal pane_broken(index: int)
 signal jar_broken(index: int)
@@ -106,6 +107,13 @@ const SAW_FOOTPRINTS := 5.0
 const SAW_BARREL := 10.0
 ## The third urgent order: it's his own number.
 const CAUGHT_ON := 10.0
+## Tipito by the chibalete, facing the shop, and the six wooden letters lying around: the one he wants is drawn by
+## the seed. One of them lies on the press's belt.
+const KID_AT := Vector3(-12.0, FLOOR_TOP, 3.4)
+const LETTERS: Array[String] = ["Ñ", "Q", "G", "R", "A", "Z"]
+const LETTER_SPOTS: Array[Vector3] = [Vector3(-5.5, FLOOR_TOP + 0.3, 6.0), Vector3(6.0, FLOOR_TOP + 0.3, 4.5),
+	Vector3(-3.0, BELT_TOP + 0.25, 0.0), Vector3(8.5, FLOOR_TOP + 0.3, -1.5), Vector3(-10.0, FLOOR_TOP + 0.3, -4.5),
+	Vector3(2.0, FLOOR_TOP + 0.3, -6.0)]
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
@@ -151,6 +159,9 @@ var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
 ## The cops he already saw leaving footprints (id -> true).
 var footprints_seen := {}
+## Tipito and the wooden letters (step 5).
+var kid: PrintShopKid
+var letters: Array[WoodenLetter] = []
 ## The display's panes (each a body with its glass), the broken ones by index, and the ink jars.
 var panes: Array[StaticBody3D] = []
 var cracked: Array[int] = []
@@ -180,6 +191,7 @@ func _ready() -> void:
 	_build_west()
 	_build_back()
 	_place_owner()
+	_place_kid()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("print_shop")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -430,6 +442,29 @@ func _place_owner() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Tipito by the chibalete, missing the letter the seed draws, and the six wooden letters around the shop.
+func _place_kid() -> void:
+	kid = PrintShopKid.new()
+	kid.name = "Tipito"
+	kid.position = KID_AT
+	kid.rotation.y = PI / 2
+	kid.wanted = LETTERS[absi(case_seed) % LETTERS.size()]
+	add_child(kid)
+	for i in LETTERS.size():
+		var letter := WoodenLetter.new()
+		letter.name = "Letter%d" % i
+		letter.letter = LETTERS[i]
+		letter.position = LETTER_SPOTS[i]
+		letter.rotation.y = i * 1.1
+		add_child(letter)
+		letters.append(letter)
+
+
+## The wooden letter Tipito is missing.
+func wanted_letter() -> WoodenLetter:
+	return letters[LETTERS.find(kid.wanted)]
 
 
 ## A cop left a footprint: "¡Me están llenando todo de huellas!", once per cop, if he sees it.
