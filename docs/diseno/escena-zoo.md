@@ -177,3 +177,10 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   3 s y `Zoo.washed` avisa qué se lavó (las pistas del paso 6). Con la paciencia en 0, Doña Jaula pone al policía más
   cercano a darles de comer a los pingüinos 10 s y vuelve a la mitad de su paciencia. El trencito (`ZooTrain`) da la
   vuelta a 3 m/s y empuja para un costado al que se le cruza, que suelta lo que lleva.
+- **Paso 6:** `ZooClues` pone las pistas del plan (4 de 7): las huellas en el vidrio de los pingüinos (del lado de
+  los visitantes; un cuidador lo limpia a los 240 s), la pisada en el barro junto a la pileta (el avestruz suelto la
+  pisotea), el pelo en una gorra perdida junto al témpano y la galletita mordida en el mostrador de la boletería (el
+  mono suelto se las lleva), la manta de Copito sobre el témpano (`ZooBlanket`, E para olerla; mojada por el
+  elefante huele a perro mojado), el picotazo (se encuentra al ver un curita) y Don Pico, que con el balde de maní
+  del avestruz en la mano repite el olor del culpable. Un flash en la cara y solo dice "¡Flash!". Todo lo que moja
+  el elefante (`Zoo.washed`) se pierde.

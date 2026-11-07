@@ -73,7 +73,7 @@ func test_the_elephant_sprays_and_washes() -> void:
 	elephant._spray_clock = ZooAnimal.SPRAY_EVERY - 0.05
 	await wait_frames(10)
 	assert_signal_emitted(zoo, "washed", "it sprayed")
-	var cop := _cop_at(zoo, Vector3(5, 0, 5))
+	var cop := _cop_at(zoo, Vector3(-8, 0, 10))
 	zoo.spray(cop.global_position + Vector3(1, 0, 0), 3.0)
 	assert_true(cop.is_staggered(), "soaked, it slips")
 	assert_eq(cop.get_node("Hud/Hint").text, "HINT_ZOO_SOAKED")
