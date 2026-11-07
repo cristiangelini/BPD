@@ -127,6 +127,14 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   cada queja de un cliente y por la puerta rota, y 10 si ve abrir la caja o romperse el espejo o la vitrina.
   Para no chocar con el callejón de la cuadra, el lote de la tienda tiene 18 m de fondo (no 20). Capturas
   `paso3-*.png`.
+- Paso 4: Mimí, disfrazada de gallina como los maniquíes (con su soporte), pero con la cara, los cachetes y dos
+  colitas que asoman de la capucha. Se esconde en uno de 6 lugares sorteados con la semilla: las dos puntas de la
+  fila de maniquíes, tres detrás de la fila (dos tapados por los percheros de adelante) y entre los dos maniquíes de
+  adelante. Escondida muestra el mismo aviso que un maniquí ("agarrar"); con E o al intentar agarrarla, la
+  encuentras. Cada 20 s se le escapa "¡Jiji!". Al policía que la encuentra le cuenta lo que vio esconder a su tío
+  (la pista la pone la historia en el paso 5; sin historia dice "Mi tío no escondió nada hoy… creo"), una vez por
+  policía ("¡Ya me encontraste! Ahora busca a otro."). A los 30 s de que la encuentran se esconde en otro lugar.
+  Capturas `paso4-*.png` (el modelo junto a un maniquí gallina en `paso4-modelo.png`).
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

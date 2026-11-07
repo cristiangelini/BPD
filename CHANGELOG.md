@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 4: Mimí, Don Fantoche's niece, plays hide and seek dressed as a chicken mannequin on one of six spots drawn with the seed; she passes for a mannequin, giggles every 20 s, tells the cop who finds her (E, or trying to grab her) what she saw her uncle hide, once per cop, and hides on another spot 30 s later.
 - Costume shop raid, step 3: Don Fantoche, the pirate owner, walks his round; the counter bell sends him to the stock room for 15 s with his back to the shop, rests 45 s and gives the cops away on the third ring (+10 complaint); customers' complaints, the broken door and what he sees broken or opened fill his complaint bar.
 - Costume shop raid, step 2: eight 12 kg mannequins in costume that fall like bowling pins (one tipping over or coming in fast knocks over the one it hits), and four customers who take turns trying costumes on in the fitting rooms and complain when a cop is inside or a mannequin falls next to them.
 - Costume shop raid, step 1: the costume shop "Disfraces El Bigote Postizo" on its lot in the city, with the counter and its till (the office key), five costume racks, three fitting rooms, the giant mirror and the mask display case that break (fines 30 and 15), the stock room, the locked office with its safe and 12 hiding spots; "Costume shop (raid, test)" in the menu.

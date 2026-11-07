@@ -223,6 +223,27 @@ export function buildFantoche() {
 	return b.build();
 }
 
+// Mimí, Don Fantoche's niece, playing hide and seek dressed as one of the chicken mannequins, stand and all: from
+// afar she's one more, but her chicken hood leaves a round face with eyes and rosy cheeks, and two brown pigtails stick
+// out of it. The game scales her small.
+export function buildMimi() {
+	const b = new Builder('npc_mimi');
+	b.add('stand', mat('mannequin_stand', 0x6a6a70, { metalness: 0.5 }), new THREE.CylinderGeometry(0.28, 0.3, 0.04, 12), { pos: V(0, 0.02, 0.05) });
+	const feathers = mat('chicken_yellow', 0xf6dc4a);
+	pearBody(b, feathers, { shirt: feathers, pants: feathers, shoes: mat('chicken_feet', 0xf28a1e), belted: false, onePiece: true });
+	b.add('crest', mat('chicken_crest', 0xe0302a), new THREE.BoxGeometry(0.04, 0.12, 0.18), { pos: V(0, 1.55, 0.02) });
+	b.add('face', mat('skin_mimi', 0xf0c49a), ellipsoid(0.13, 0.14, 0.06, 10, 6), { pos: V(0, 1.3, 0.17) });
+	eyes(b, 1.33, 0.21, 0.05, 0.035);
+	const cheek = mat('mimi_cheek', 0xf08a8a);
+	const hair = mat('mimi_hair', 0x6a3a1e);
+	for (const s of [-1, 1]) {
+		b.add('face', cheek, ellipsoid(0.025, 0.02, 0.01, 6, 4), { pos: V(s * 0.08, 1.26, 0.215) });
+		b.add('hair', hair, ellipsoid(0.05, 0.1, 0.05, 6, 4), { pos: V(s * 0.22, 1.24, 0.0), rot: [0, 0, s * 0.5] });
+	}
+	b.add('beak', mat('chicken_feet', 0xf28a1e), new THREE.ConeGeometry(0.04, 0.09, 6), { pos: V(0, 1.47, 0.18), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -230,7 +251,7 @@ export const models = {
 	stock_shelf: buildStockShelf, box_pile: buildBoxPile, wig_trunk: buildWigTrunk, sale_basket: buildSaleBasket,
 	costume_safe: buildCostumeSafe, giant_mustache: buildGiantMustache, mannequin_pirate: buildMannequinPirate,
 	mannequin_chicken: buildMannequinChicken, mannequin_astronaut: buildMannequinAstronaut, mannequin_vampire: buildMannequinVampire,
-	npc_fantoche: buildFantoche,
+	npc_fantoche: buildFantoche, npc_mimi: buildMimi,
 };
 
 export const views = {
@@ -249,6 +270,10 @@ export const views = {
 	fantoche: {
 		items: [{ name: 'npc_fantoche', pos: [0, 0, 0], rotY: 0.3, scale: [1.05, 0.88, 1.05] }],
 		cam: { pos: [0, 1.2, 3.6], target: [0, 0.8, 0], fov: 34 },
+	},
+	mimi: {
+		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],
+		cam: { pos: [0, 1.2, 3.4], target: [0, 0.8, 0], fov: 36 },
 	},
 	costume_mannequins: {
 		items: ['pirate', 'chicken', 'astronaut', 'vampire'].map((k, i) => ({ name: 'mannequin_' + k, pos: [(i - 1.5) * 1.0, 0, 0], rotY: 0.3 })),

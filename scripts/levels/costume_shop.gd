@@ -95,6 +95,10 @@ const FIRST_TURN := 3.0
 const OWNER_ROUTE: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 5.6), Vector3(0.5, FLOOR_TOP, 5.6),
 	Vector3(5.5, FLOOR_TOP, 5.0), Vector3(5.5, FLOOR_TOP, -0.6), Vector3(5.5, FLOOR_TOP, -5.5),
 	Vector3(-3.0, FLOOR_TOP, -5.5)]
+## Mimí's hiding spots among the mannequins: the ends of the row, behind it and between the two by the front racks.
+const MIMI_SPOTS: Array[Vector3] = [Vector3(-7.6, FLOOR_TOP, 0.75), Vector3(-4.25, FLOOR_TOP, 1.65),
+	Vector3(-1.25, FLOOR_TOP, 1.65), Vector3(1.75, FLOOR_TOP, 1.65), Vector3(2.3, FLOOR_TOP, 0.75),
+	Vector3(3.25, FLOOR_TOP, 2.6)]
 const BELL_ON := Vector3(7.9, FLOOR_TOP + 1.0, 6.6)
 const SIZE_SPOT := Vector3(-3.0, FLOOR_TOP, -8.7)
 ## What he notices besides what every owner does: a customer's complaint (each one's own cooldown, CostumeCustomer)
@@ -142,6 +146,7 @@ var office_door: FrontDoor
 var till: Till
 var owner_boss: FloorBoss
 var size_bell: SizeBell
+var niece: CostumeNiece
 var complaint_bar: ProgressBar
 var mannequins: Array[CostumeMannequin] = []
 var customers: Array[CostumeCustomer] = []
@@ -184,6 +189,7 @@ func _ready() -> void:
 	city_map.setup(city, "costume_shop", car)
 	# The loose mannequins once the cop is out at the station, not standing in them.
 	_build_mannequins()
+	_place_niece()
 	_build_customers()
 	_place_owner()
 
@@ -366,6 +372,15 @@ func _build_mannequins() -> void:
 		add_child(mannequin)
 		mannequin.fell.connect(_on_mannequin_fell)
 		mannequins.append(mannequin)
+
+
+## Mimí, hidden on one of her spots.
+func _place_niece() -> void:
+	niece = CostumeNiece.new()
+	niece.name = "Mimi"
+	niece.spots = MIMI_SPOTS
+	add_child(niece)
+	niece.hide_first(case_seed)
 
 
 ## The 4 customers, each in front of a rack.

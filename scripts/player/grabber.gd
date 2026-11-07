@@ -92,6 +92,10 @@ func try_grab() -> bool:
 		return false
 	var eye := _cop.camera.global_transform
 	var hit := _cop.aim_hit(GameScale.GRAB_REACH)
+	# Something that only looks grabbable (Mimí among the mannequins) hears about it.
+	if not hit.is_empty() and hit.collider.has_method("grab_tried"):
+		hit.collider.grab_tried(_cop)
+		return false
 	if hit.is_empty() or not hit.collider is Grabbable:
 		var flying := catchable_near()
 		if not flying:
