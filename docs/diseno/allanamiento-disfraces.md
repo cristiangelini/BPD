@@ -135,6 +135,14 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   (la pista la pone la historia en el paso 5; sin historia dice "Mi tío no escondió nada hoy… creo"), una vez por
   policía ("¡Ya me encontraste! Ahora busca a otro."). A los 30 s de que la encuentran se esconde en otro lugar.
   Capturas `paso4-*.png` (el modelo junto a un maniquí gallina en `paso4-modelo.png`).
+- Paso 5: el caso (RaidCase) con las 6 sospechas de la tienda y la primera historia, el oso del botín. La denuncia
+  anónima es la del barco pirata; el comisario avisa que la oficina está cerrada, que Mimí juega a las escondidas y
+  que el espejo y la vitrina se descuentan. El oso de peluche gigante (12 kg, 1000) está parado al lado del mostrador
+  con billetes asomando por las costuras: cada vez que lo agarran o se cae suelta un billete (12 como mucho). La
+  lista de alquileres de la noche del robo (300) y una máscara de payaso (200) van en escondites sorteados. Don
+  Fantoche deja escapar dónde están ("¡Yo no guardé nada detrás del mostrador, campeón!...") y Mimí cuenta dónde vio
+  a su tío esconder algo de payaso. Si la denuncia llega a 100, llama a su abogado disfrazado de juez y se pierde el
+  caso. Capturas `paso5-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

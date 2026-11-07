@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 5: the shop is now a raid case (the comisario's tip, 3 suspicions among its 6 stories, Don Fantoche's slips and lawyer, Mimí's clue) with its first story, the bear of the loot: a 12 kg bear costume stuffed with bills stands by the counter and drops a bill each time it is grabbed or falls over, and the rental list of the robbery night and a clown mask are hidden.
 - Costume shop raid, step 4: Mimí, Don Fantoche's niece, plays hide and seek dressed as a chicken mannequin on one of six spots drawn with the seed; she passes for a mannequin, giggles every 20 s, tells the cop who finds her (E, or trying to grab her) what she saw her uncle hide, once per cop, and hides on another spot 30 s later.
 - Costume shop raid, step 3: Don Fantoche, the pirate owner, walks his round; the counter bell sends him to the stock room for 15 s with his back to the shop, rests 45 s and gives the cops away on the third ring (+10 complaint); customers' complaints, the broken door and what he sees broken or opened fill his complaint bar.
 - Costume shop raid, step 2: eight 12 kg mannequins in costume that fall like bowling pins (one tipping over or coming in fast knocks over the one it hits), and four customers who take turns trying costumes on in the fitting rooms and complain when a cop is inside or a mannequin falls next to them.

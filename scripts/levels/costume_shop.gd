@@ -16,6 +16,33 @@ signal mirror_broken
 signal mask_case_broken
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the shop can be suspected of (allanamiento-disfraces.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["bear_loot", "false_fitting_room", "itchy_costumes", "theater_costumes", "smoke_bombs",
+	"neighborhood_ghost"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_COSTUME_TIP_B", "BRIEF_TIP_C", "BRIEF_COSTUME_TIP_D",
+	"BRIEF_COSTUME_TIP_E"]
+## The stories the shop can tell, like InsuranceOffice.STORIES: what the comisario says once it's guessed, its "find
+## it" row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the
+## checklist rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest
+## extras; without it the rig sets the main evidence.
+const STORIES := {
+	"bear_loot": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BEAR_LOOT_B", "BRIEF_BEAR_LOOT_C", "BRIEF_BEAR_LOOT_D"],
+		"find": "OBJ_FIND_BEAR_LOOT",
+		"hidden": [preload("res://scenes/props/rental_list.tscn"), preload("res://scenes/props/clown_mask.tscn")],
+		"half_heights": [0.0, 0.0],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_RENTAL_LIST", "OBJ_EXTRA_CLOWN_MASK"],
+		"rig": preload("res://scripts/case/costume/bear_loot_rig.gd"),
+	},
+}
+## Surfaces where the suspicions' clue notes can lie, one in each part of the shop; three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(7.0, FLOOR_TOP + 1.0, 6.4), Vector3(-7.5, FLOOR_TOP, 5.9), Vector3(-10.8, FLOOR_TOP, -0.5),
+	Vector3(-4.5, FLOOR_TOP, -7.5), Vector3(9.2, FLOOR_TOP + 0.8, -9.0), Vector3(10.4, FLOOR_TOP, 3.2),
+]
 const OWNER_SCENE := preload("res://scenes/npc/costume_owner.tscn")
 const COUNTER_MODEL := preload("res://assets/models/costume_counter.glb")
 const RACK_MODELS: Array[PackedScene] = [preload("res://assets/models/rack_pirates.glb"),
@@ -157,7 +184,19 @@ var _turn_left := FIRST_TURN
 var mirror_cracked := false
 var case_broken := false
 ## Money taken off the case pay: the mirror and the display case.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The case flow every raid shares.
+var raid: RaidCase
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: CostumeRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## Same seed, same shop (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -170,6 +209,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_counter()
@@ -182,6 +234,7 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("costume_shop")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
@@ -192,6 +245,86 @@ func _ready() -> void:
 	_place_niece()
 	_build_customers()
 	_place_owner()
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_boss
+	raid.owner_id = "costume_shop"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The shop's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_COSTUME",
+		"guess_key": "OBJ_GUESS_COSTUME",
+		"broken_key": "OBJ_BROKEN_COSTUME",
+		"complaint_key": "OBJ_COMPLAINT_COSTUME",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": int(mirror_cracked) + int(case_broken),
+		"complaint": owner_boss.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Fantoche lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Mimí saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_boss.slips.append(tr("FANTOCHE_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_boss.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	niece.clue = tr("CLUE_MIMI") % where
+	niece.clue_speech = tr("MIMI_CLUE_" + story_id) % where
+	niece.told.connect(raid.add_clue)
 
 
 ## The wooden floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its mustache.
@@ -340,6 +473,7 @@ func _place_owner() -> void:
 	customer_complained.connect(func(_customer: CostumeCustomer) -> void:
 		owner_boss.blame(CUSTOMER_COMPLAINT, "FANTOCHE_CUSTOMER"))
 	office_door.broken.connect(owner_boss.door_broken)
+	owner_boss.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_COSTUME"))
 	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
 	mirror_broken.connect(func() -> void: owner_boss.saw(to_global(MIRROR_AT), FloorBoss.SAW_BREAK, "FANTOCHE_MIRROR"))
 	mask_case_broken.connect(func() -> void:

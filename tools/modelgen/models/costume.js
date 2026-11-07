@@ -244,6 +244,54 @@ export function buildMimi() {
 	return b.build();
 }
 
+// The bear costume stuffed with the robbery's bills (the bear loot story): a shop mannequin in a big brown bear suit
+// on its stand, 1.7 m tall and wide as a wardrobe, with a cream belly and muzzle, round ears and green bills sticking
+// out of the seams at the neck, the belly and the sides.
+export function buildBearLoot() {
+	const b = new Builder('bear_loot');
+	b.add('stand', mat('mannequin_stand', 0x6a6a70, { metalness: 0.5 }), new THREE.CylinderGeometry(0.34, 0.36, 0.04, 12), { pos: V(0, 0.02, 0.05) });
+	const fur = mat('bear_fur', 0x7a4a26);
+	const cream = mat('bear_cream', 0xe8cfa0);
+	b.add('body', fur, ellipsoid(0.48, 0.62, 0.4, 12, 8), { pos: V(0, 0.68, 0) });
+	b.add('belly', cream, ellipsoid(0.32, 0.42, 0.06, 10, 6), { pos: V(0, 0.64, 0.36) });
+	b.add('head', fur, ellipsoid(0.3, 0.28, 0.27, 10, 7), { pos: V(0, 1.42, 0.02) });
+	b.add('head', cream, ellipsoid(0.13, 0.1, 0.1, 8, 5), { pos: V(0, 1.36, 0.25) });
+	b.add('head', mat('bear_nose', 0x241a14), ellipsoid(0.05, 0.035, 0.03, 6, 4), { pos: V(0, 1.4, 0.34) });
+	eyes(b, 1.5, 0.25, 0.11, 0.04);
+	for (const s of [-1, 1]) {
+		b.add('ears', fur, ellipsoid(0.09, 0.09, 0.05, 8, 5), { pos: V(s * 0.22, 1.66, 0) });
+		b.add('ears', cream, ellipsoid(0.05, 0.05, 0.02, 6, 4), { pos: V(s * 0.22, 1.66, 0.04) });
+		b.add('arms', fur, ellipsoid(0.12, 0.32, 0.12, 8, 5), { pos: V(s * 0.5, 0.82, 0.04), rot: [0, 0, s * 0.35] });
+		b.add('legs', fur, ellipsoid(0.15, 0.1, 0.2, 8, 5), { pos: V(s * 0.22, 0.12, 0.1) });
+	}
+	const bill = mat('bear_bill', 0x6ab86a);
+	const sticking = [[-0.12, 1.17, 0.3, 0.3], [0.15, 1.18, 0.28, -0.4], [0.32, 0.5, 0.33, 0.6], [-0.44, 0.75, 0.2, -0.8], [0.45, 0.95, 0.15, 0.9]];
+	for (const [x, y, z, r] of sticking) b.add('bills', bill, new THREE.BoxGeometry(0.15, 0.07, 0.01), { pos: V(x, y, z), rot: [0, 0, r] });
+	return b.build();
+}
+
+// The list of the night's rentals (bear loot extra): a white sheet with a red header and rows, 21 x 30 cm, flat.
+export function buildRentalList() {
+	const b = new Builder('rental_list');
+	b.add('sheet', mat('paper_white', 0xf4f2ea), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	b.add('header', mat('rental_red', 0xd83a30), new THREE.BoxGeometry(0.17, 0.002, 0.03), { pos: V(0, 0.005, -0.12) });
+	for (let i = 0; i < 8; i++) b.add('rows', mat('ink', 0x30303a), new THREE.BoxGeometry(0.16, 0.002, 0.008), { pos: V(0, 0.005, -0.08 + i * 0.026) });
+	return b.build();
+}
+
+// A clown mask from the robbery (bear loot extra): a white face lying on its back, red nose and smile, blue tufts.
+export function buildClownMask() {
+	const b = new Builder('clown_mask');
+	b.add('face', mat('clown_white', 0xf6f2ea), ellipsoid(0.12, 0.15, 0.05, 10, 6), { pos: V(0, 0.05, 0), rot: [-Math.PI / 2, 0, 0] });
+	b.add('nose', mat('clown_red', 0xe0302a), new THREE.SphereGeometry(0.03, 8, 6), { pos: V(0, 0.1, 0.0) });
+	b.add('smile', mat('clown_red', 0xe0302a), new THREE.BoxGeometry(0.1, 0.01, 0.02), { pos: V(0, 0.09, 0.07) });
+	for (const s of [-1, 1]) {
+		b.add('eyes', mat('clown_blue', 0x3a6ad8), new THREE.BoxGeometry(0.035, 0.01, 0.05), { pos: V(s * 0.05, 0.09, -0.04) });
+		b.add('hair', mat('clown_blue', 0x3a6ad8), ellipsoid(0.06, 0.04, 0.06, 6, 4), { pos: V(s * 0.13, 0.05, -0.08) });
+	}
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -252,6 +300,7 @@ export const models = {
 	costume_safe: buildCostumeSafe, giant_mustache: buildGiantMustache, mannequin_pirate: buildMannequinPirate,
 	mannequin_chicken: buildMannequinChicken, mannequin_astronaut: buildMannequinAstronaut, mannequin_vampire: buildMannequinVampire,
 	npc_fantoche: buildFantoche, npc_mimi: buildMimi,
+	bear_loot: buildBearLoot, rental_list: buildRentalList, clown_mask: buildClownMask,
 };
 
 export const views = {
@@ -270,6 +319,11 @@ export const views = {
 	fantoche: {
 		items: [{ name: 'npc_fantoche', pos: [0, 0, 0], rotY: 0.3, scale: [1.05, 0.88, 1.05] }],
 		cam: { pos: [0, 1.2, 3.6], target: [0, 0.8, 0], fov: 34 },
+	},
+	bear_loot: {
+		items: [{ name: 'bear_loot', pos: [-0.5, 0, 0], rotY: 0.3 }, { name: 'rental_list', pos: [0.55, 0, 0.3], rotY: 0.2 },
+			{ name: 'clown_mask', pos: [0.75, 0, -0.15] }],
+		cam: { pos: [0, 1.4, 3.6], target: [0, 0.6, 0], fov: 40 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],
