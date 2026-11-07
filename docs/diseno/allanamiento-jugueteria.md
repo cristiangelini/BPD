@@ -85,6 +85,10 @@ extras suman entre 400 y 600. El caballito es la cosa más pesada (8 kg): convie
    todo el salón: así no corta los pasillos. El trompo gira en el techo. Capturas en la carpeta del proyecto
    `jugueteria/paso1-*.png`.
 2. Lo que se dispara: los juguetes a cuerda de los estantes, el ruido y el tropiezo; el pelotero y el revolver.
+   **Hecho (paso 2):** `WindUpRig` y `WindUpToy` (un policía a más de 2 m/s a menos de 0,75 m de un estante suelta 3
+   juguetes, uno por lado al azar; el estante espera 2 s antes de volver a soltar) y `BallPitSpot`: el pelotero se
+   revuelve con E 3 veces (no mantener E 3 s, igual que cavar en la peluquería). Los juguetes rebotan en paredes y
+   muebles. Que un juguete se caiga al piso y lo dispare queda para cuando haya juguetes para agarrar.
 3. Don Cucho: la ronda, la denuncia, el oído y el tren que descarrila.
 4. Doña Ramona y el regalo.
 5. El caso (RaidCase) con la primera historia: los juguetes truchos.
