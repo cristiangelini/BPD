@@ -154,3 +154,7 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   tiene los guantes puestos (`wear_gloves`), y con E dice qué animal cuida y a qué huele. Doña Jaula (`ZooDirector`)
   y Don Pico (`ZooParrot`) dicen una frase distinta cada vez. Los modelos de los animales (mono, avestruz, elefante y
   Copito) quedan para los pasos 4 y 5, donde se usan.
+- **Paso 3:** el caso llega a los cuidadores (`Zoo.set_up_case`, variante "zoo" de `CrimeSceneCase`). La ficha de
+  cada uno se arma con la foto (las botas), las huellas, los dientes (una dona o un pan), el olor (E: qué animal
+  cuida), el pelo (E: se saca la gorra; uno, sorteado, no se la saca hasta que come) y las manos (E: curita o no; con
+  los guantes puestos no las muestra). Copito siempre picoteó al culpable, así que el culpable siempre tiene curita.

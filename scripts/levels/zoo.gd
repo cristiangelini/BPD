@@ -8,8 +8,8 @@ extends CrimeScenePlace
 ## the ostrich, east the reptile house and the elephant, and the duck pond with its pedal boat at the back. Each
 ## enclosure has a gate on the path (`gates`), shut until feeding time (step 5). The six keepers go about their work,
 ## two by the entrance, three by the enclosures and one at the lockers (step 2); Doña Jaula watches from in front of
-## the penguins' glass and Don Pico sits on his perch by the hut. The case comes in later steps. Every number here is
-## (propuesta).
+## the penguins' glass and Don Pico sits on his perch by the hut. The case reaches the keepers (step 3, set_up_case).
+## Every number here is (propuesta).
 
 ## The lot's floor, like its size in CityLayout.PLACES, and the fence just inside its edge.
 const SIZE := Vector2(54, 54)
@@ -83,6 +83,7 @@ const RAIL := Color(0.35, 0.3, 0.28)
 
 ## The enclosures' gates, by animal: shut bodies across the gap in each fence.
 var gates := {}
+var case: CrimeSceneCase
 var keepers: Array[ZooKeeper] = []
 var director: ZooDirector
 var parrot: ZooParrot
@@ -102,6 +103,16 @@ func _ready() -> void:
 	_animals()
 	_pond()
 	_people()
+
+
+## The case reaches the keepers (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
+## take off the cap until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var shy := absi(hash("shy keeper %d" % case.case_seed)) % keepers.size()
+	for keeper in keepers:
+		keeper.case = case
+		keeper.shy = keeper.index == shy
 
 
 ## The keeper by index (the order of the case's traits).
