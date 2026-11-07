@@ -41,6 +41,8 @@ const MODELS := {
 	"nephew": preload("res://assets/models/npc_sobrino_tia.glb"),
 	# The office's culprit, out of the water truck in the company's grey suit (escena-oficina.md).
 	"employee": preload("res://assets/models/npc_oficinista.glb"),
+	# The station's culprit, out of the old patrol car in uniform (escena-comisaria.md).
+	"staff": preload("res://assets/models/npc_cabo_ronquido.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

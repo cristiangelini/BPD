@@ -43,7 +43,7 @@ Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisió
 7. **Oficina:** todos usan el mismo traje y la pista es una taza de café ([escena-oficina.md](escena-oficina.md)).
 8. **Boda:** desapareció el anillo y la novia sospecha del novio. Propuesta en [escena-boda.md](escena-boda.md) (decisión 290).
 9. **Mansión de misterio:** el clásico, con pasadizos secretos y un mayordomo ([escena-mansion.md](escena-mansion.md)).
-10. **La propia comisaría:** alguien se robó la evidencia de otro caso. El culpable podría ser uno de los compañeros (gancho para Asuntos Internos).
+10. **La propia comisaría:** alguien se robó la evidencia de otro caso. El culpable podría ser uno de los compañeros (gancho para Asuntos Internos) ([escena-comisaria.md](escena-comisaria.md)).
 
 ## 4. Interrogatorio
 El sospechoso es un NPC con un medidor de nervios y otro de abogado, y se juega a policía bueno y policía malo (decisión 27).

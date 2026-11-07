@@ -9,6 +9,8 @@ const MODEL := preload("res://assets/models/npc_armero.glb")
 ## Spends the campaign's cash box when there is one (solo or hosting), else a cash box for this shift only.
 var armory := Armory.new(Campaign.current if Campaign.current else StationWallet.new())
 var menu: ArmoryMenu
+## In the station crime scene he is one of the six suspects (escena-comisaria.md): what he gives his file (StaffFile).
+var file: StaffFile
 
 
 func _ready() -> void:
@@ -24,14 +26,32 @@ func _ready() -> void:
 	add_child(menu)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if file:
+		var key := file.prompt_key(cop)
+		if key != "":
+			return key
 	return "PROMPT_ARMERO"
 
 
-## Online E on him happens on every PC, but the list only opens on the screen of the cop who asked.
+## Online E on him happens on every PC, but the list only opens on the screen of the cop who asked. In the station
+## crime scene his file comes first.
 func use(cop: Cop) -> void:
+	if file and file.use(cop):
+		return
 	if not cop.sync or cop.sync.is_multiplayer_authority():
 		menu.open(armory, cop)
+
+
+## The print kit on him (PrintKit): his prints, in the station crime scene.
+func dusted(_cop: Cop) -> String:
+	return file.dusted() if file else ""
+
+
+## The camera's flash (PhotoCamera): his photo, in the station crime scene.
+func photographed(cop: Cop) -> void:
+	if file:
+		file.photographed(cop)
 
 
 ## A row chosen on the list (ArmoryMenu), through Cop.act. The host (or solo) decides with the common cash box and

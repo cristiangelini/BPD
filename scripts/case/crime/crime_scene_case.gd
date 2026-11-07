@@ -21,6 +21,11 @@ const SHIFT_DELAY := 3.0
 const LOOT_BONUS := 100.0
 ## Each of the museum's frames broken in the chase is taken off the salary (escena-museo.md, pregunta 3).
 const FRAME_FINE := 20
+## At the station (escena-comisaria.md), internal affairs comes and takes the case this many seconds after the tip, or
+## sooner when the campaign is already under investigation (decision 191); the comisario warns IA_WARN seconds before.
+const IA_AT := 600.0
+const IA_INVESTIGATING := 360.0
+const IA_WARN := 120.0
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -137,6 +142,20 @@ const VARIANTS := {
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "coffee"],
 	},
+	# The station itself (escena-comisaria.md, decision 300): six coworkers in the cops' own uniform; their files take
+	# their prints, a bite, a signature, a photo and doña Fritanga's list of sugars. Nobody gets tired: internal affairs
+	# comes and takes the case (IA_AT), and half the culprits run off in the station's old patrol car, which loses pieces.
+	"station": {
+		"shift": "crime_station", "story": "station",
+		"brief": ["BRIEF_STATION_A_", "BRIEF_STATION_B", "BRIEF_STATION_C"], "go": "HINT_GO_EVIDENCE",
+		"go_row": "OBJ_STATION_GO", "look": "HINT_STATION_LOOK", "files_row": "OBJ_STATION_FILES",
+		"clue_line": "CLUE_STATION_", "ruined_hint": "HINT_STATION_RUINED_", "left": "HINT_STAFF_LEFT",
+		"who": "staff", "getaway": SuspectCar.OLD_PATROL, "loot_row": "OBJ_STATION_LOOT_", "tire": false,
+		"internal_affairs": true,
+		"clues": {"prints": "name", "tape": "silhouette", "book": "left", "cup": "sugar", "bite": "teeth",
+			"witness": "shoe"},
+		"parts": ["prints", "teeth", "sign", "photo", "sugar"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -160,6 +179,9 @@ const ROOM_PARTS: Array[String] = ["shoe", "hair", "glasses"]
 ## At the office, the traits each part of an employee's file tells.
 const EMPLOYEE_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"],
 	"coffee": ["coffee", "left"]}
+## At the station, the traits each part of a coworker's file tells.
+const STAFF_PART_TRAITS := {"prints": ["name"], "teeth": ["teeth"], "sign": ["left"], "photo": ["silhouette", "shoe"],
+	"sugar": ["sugar"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -215,6 +237,9 @@ var elapsed := 0.0
 var gone: Array[int] = []
 ## The culprit, caught, for the next shift's interrogation (decision 93), like the raid's owner.
 var custody := {}
+## At the station: the comisario warned that internal affairs is coming, and it came (the case is lost).
+var ia_warned := false
+var ia_arrived := false
 ## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
 var chase: ChaseCase
 ## Or, at the mansion, the culprit running off on foot through the maze (MazeGetaway).
@@ -290,6 +315,12 @@ func _draw_suspects() -> Array[Dictionary]:
 		return NephewTraits.draw(case_seed)
 	if texts() == VARIANTS.office:
 		return OfficeTraits.draw(case_seed)
+	if texts() == VARIANTS.station:
+		# Their names as the cops read them on the plates.
+		var staff := StaffTraits.draw(case_seed)
+		for person in staff:
+			person.name = tr(person.name)
+		return staff
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -368,6 +399,16 @@ func employee_part(index: int, part: String) -> void:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
 	for trait_name: String in EMPLOYEE_PART_TRAITS[part]:
+		known[trait_name] = cooks[index][trait_name]
+	file_part(index, part)
+
+
+## A coworker gave a part of their file (escena-comisaria.md): it goes to their file with what it says about them.
+func staff_part(index: int, part: String) -> void:
+	if follower:
+		return
+	var known: Dictionary = captured.get_or_add(index, {})
+	for trait_name: String in STAFF_PART_TRAITS[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -459,7 +500,7 @@ func file_traits(id: int) -> Dictionary:
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
 	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
-			VARIANTS.wedding]:
+			VARIANTS.wedding, VARIANTS.station]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -803,6 +844,8 @@ func clue_line(kind: String) -> String:
 		return _cat_clue_line(kind)
 	if texts() == VARIANTS.office:
 		return _office_clue_line(kind)
+	if texts() == VARIANTS.station:
+		return _station_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -964,6 +1007,24 @@ func _office_clue_line(kind: String) -> String:
 	return tr("CLUE_OFFICE_" + kind)
 
 
+## At the station: the shelf's prints, the camera's tape, the sign-out book, the coffee cup, the bitten donut and el
+## Chancho.
+func _station_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"tape":
+			return tr("CLUE_STATION_tape") % tr("SILHOUETTE_" + (who.silhouette as String).replace(" ", "_"))
+		"book":
+			return tr("CLUE_STATION_book_left" if who.left else "CLUE_STATION_book_right")
+		"cup":
+			return tr("CLUE_STATION_cup") % who.sugar
+		"bite":
+			return tr("CLUE_STATION_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_STATION_witness") % who.shoe
+	return tr("CLUE_STATION_" + kind)
+
+
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
 func file_text(index: int) -> String:
 	var who := file_traits(index)
@@ -994,6 +1055,8 @@ func file_text(index: int) -> String:
 		return _nephew_file_text(index, who)
 	if texts() == VARIANTS.office:
 		return _employee_file_text(index, who)
+	if texts() == VARIANTS.station:
+		return _staff_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -1133,6 +1196,28 @@ func _employee_file_text(index: int, who: Dictionary) -> String:
 	return "\n".join(lines)
 
 
+## A coworker's file: name and what the cops got: the photo (height, limp and shoes), the sugar, the teeth, the hand
+## and the prints, and where and with whom they say they were.
+func _staff_file_text(index: int, who: Dictionary) -> String:
+	var person := cooks[index]
+	var lines := PackedStringArray(["%d. %s" % [index + 1, person.name]])
+	if who.has("silhouette"):
+		lines.append(tr("SILHOUETTE_" + (who.silhouette as String).replace(" ", "_")))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_PHOTO_UNKNOWN"))
+	lines.append(tr("FILE_SUGAR") % (str(who.sugar) if who.has("sugar") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("left"):
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	else:
+		lines.append(tr("FILE_HAND_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	lines.append(tr("FILE_STAFF_ALIBI") % [tr("STAFF_PLACE_" + (person.where as String).to_upper()),
+		tr("STAFF_WITH_" + StaffTraits.IDS[person.with].to_upper())])
+	return "\n".join(lines)
+
+
 ## The concierge's list of who sleeps where, as he says it (two swapped).
 func concierge_list() -> String:
 	var said := PackedStringArray()
@@ -1190,6 +1275,10 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if texts().get("internal_affairs", false) and not accused:
+		var left := maxi(int(ia_arrival() - elapsed), 0)
+		list.append({"text": tr("OBJ_IA_CLOCK") % [left / 60, left % 60] if not ia_arrived else "OBJ_IA_ARRIVED",
+			"done": false, "optional": false, "status": true})
 	if texts().has("loot_row") and place:
 		list.append({"text": texts().loot_row + (place.loot as String), "done": loot_found, "optional": true,
 			"status": false})
@@ -1216,6 +1305,8 @@ func _physics_process(delta: float) -> void:
 		elapsed += delta
 		if texts().get("tire", true) and gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
+		if texts().get("internal_affairs", false) and not follower:
+			_internal_affairs()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):
 			if place.at_scene((cop as Node3D).global_position):
@@ -1227,6 +1318,29 @@ func _physics_process(delta: float) -> void:
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = REFRESH
 		checklist.show_rows(rows())
+
+
+## When internal affairs gets to the station, in seconds after the tip.
+func ia_arrival() -> float:
+	return IA_INVESTIGATING if InternalAffairsAgent.investigating() else IA_AT
+
+
+## The comisario's warning on the radio, and then internal affairs at the door: it takes the case, which is lost.
+func _internal_affairs() -> void:
+	var at := ia_arrival()
+	if not ia_warned and elapsed >= at - IA_WARN:
+		ia_warned = true
+		_hint_all("HINT_IA_SOON")
+	if ia_arrived or elapsed < at:
+		return
+	ia_arrived = true
+	lost = true
+	_hint_all("HINT_IA_ARRIVED")
+	if place and place.has_method("ia_arrives"):
+		place.ia_arrives()
+	checklist.show_rows(rows())
+	verdict.emit(false, true)
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## "Clara: falta foto, dientes", for a file begun but not done.

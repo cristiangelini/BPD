@@ -44,8 +44,8 @@ func test_the_hotel_is_drawn_among_the_crime_scenes() -> void:
 	var drawn := {}
 	for seed_value in range(1, 400):
 		if hash(["crime scene", seed_value]) % PlaceDraw.CRIME_EVERY == 0:
-			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % count]] = true
-	assert_eq(drawn.size(), count, "every crime scene comes up")
+			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % PlaceDraw.CRIME_SCENES.size()]] = true
+	assert_eq(drawn.size(), PlaceDraw.CRIME_SCENES.size(), "every crime scene comes up")
 
 
 func test_the_maid_and_the_card_reach_the_guest() -> void:

@@ -10,7 +10,9 @@ extends Grabbable
 ## hair is loose on the suite's pillow and the bite is in the bonbon left on it. At the mansion (`look` "mansion") the
 ## hair is loose on the armour and the bite is in one of doña Clotilde's chocolates. At the Monedero mansion (`look`
 ## "cat_mansion") the hair is loose on Duquesa's velvet armchair and the bite is in a fish-shaped cat biscuit. At the
-## office (`look` "office") the bite is in a company cookie on the thief's saucer. Every number here is (propuesta).
+## office (`look` "office") the bite is in a company cookie on the thief's saucer. At the station (`look` "station") the
+## bite is in half a donut on the evidence room's floor and the "cup" is a mug of coffee on the empty shelf, drunk by a
+## cop who drinks it and washed by don Mopa (`wash`). Every number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -26,10 +28,15 @@ const CHOCOLATE := Color(0.35, 0.2, 0.12)
 const FOIL := Color(0.85, 0.68, 0.3)
 const BISCUIT := Color(0.72, 0.48, 0.25)
 const DARK_CHOCOLATE := Color(0.24, 0.13, 0.08)
+const DOUGH := Color(0.85, 0.6, 0.32)
+const ICING := Color(1.0, 0.48, 0.7)
+const MUG := Color(0.95, 0.93, 0.86)
+const COFFEE := Color(0.3, 0.18, 0.1)
 
-## "hair", "bite" or "recipe".
+## "hair", "bite", "recipe" or, at the station, "cup".
 var kind := "hair"
-## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion" or "office": what the clue looks like.
+## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office" or "station": what the clue looks
+## like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -47,7 +54,7 @@ func _ready() -> void:
 	collision_layer = 4
 	collision_mask = 15
 	var size := {"hair": Vector3(0.32, 0.12, 0.32), "bite": Vector3(0.14, 0.1, 0.22),
-		"recipe": Vector3(0.21, 0.02, 0.3)}[kind] as Vector3
+		"recipe": Vector3(0.21, 0.02, 0.3), "cup": Vector3(0.1, 0.12, 0.1)}[kind] as Vector3
 	if _loose():
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	elif look in ["hotel", "office"]:
@@ -56,6 +63,8 @@ func _ready() -> void:
 		size = Vector3(0.08, 0.06, 0.08)
 	elif look == "cat_mansion":
 		size = Vector3(0.09, 0.04, 0.15)
+	elif look == "station":
+		size = Vector3(0.1, 0.12, 0.1) if kind == "cup" else Vector3(0.14, 0.05, 0.14)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = size
@@ -85,6 +94,9 @@ func _ready() -> void:
 		return
 	if look == "office":
 		_cookie(builder)
+		return
+	if look == "station":
+		_station_look()
 		return
 	match kind:
 		"hair":
@@ -168,6 +180,34 @@ func _cookie(builder: PlaceBuilder) -> void:
 	builder.mesh_box(Vector3(0.03, 0.007, 0), Vector3(0.02, 0.014, 0.03), WET)
 
 
+## The station's: half a pink-iced donut with the bite, or a mug of coffee.
+func _station_look() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	if kind == "cup":
+		var mug := CylinderMesh.new()
+		mug.top_radius = 0.045
+		mug.bottom_radius = 0.04
+		mug.height = 0.11
+		PlaceBuilder.new(self).mesh(mug, Vector3(0, 0.055, 0), MUG)
+		var coffee := CylinderMesh.new()
+		coffee.top_radius = 0.04
+		coffee.bottom_radius = 0.04
+		coffee.height = 0.005
+		part.mesh(coffee, Vector3(0, 0.112, 0), COFFEE)
+		return
+	var dough := TorusMesh.new()
+	dough.inner_radius = 0.022
+	dough.outer_radius = 0.065
+	part.mesh(dough, Vector3(0, 0.022, 0), DOUGH)
+	var icing := TorusMesh.new()
+	icing.inner_radius = 0.026
+	icing.outer_radius = 0.06
+	part.mesh(icing, Vector3(0, 0.032, 0), ICING)
+	# The bite: a dark notch out of one side.
+	part.mesh_box(Vector3(0.05, 0.025, 0), Vector3(0.04, 0.05, 0.05), WET)
+
 ## The circus's look: its loose hair and its fish. The museum's, the hotel's and both mansions' hair are loose too.
 func _loose() -> bool:
 	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion"] and kind == "hair")
@@ -175,7 +215,7 @@ func _loose() -> bool:
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.
 func is_food() -> bool:
-	return kind == "bite" or (kind == "hair" and look == "pastry")
+	return kind == "bite" or kind == "cup" or (kind == "hair" and look == "pastry")
 
 
 func held_prompt_key(cop: Cop) -> String:
