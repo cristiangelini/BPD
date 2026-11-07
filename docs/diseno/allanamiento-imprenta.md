@@ -134,6 +134,13 @@ suman 500.
   frente con sus 4 vidrios mirando adentro (multa 30 cada uno), y los 8 frascos de tinta en una estantería de la pared
   este (multa 10 cada uno; el charco llega con la tinta, en el paso 3). El cajón del chibalete está sacado, arriba del
   mueble. Modelos de modelgen en `tools/modelgen/models/print_shop.js`. Capturas en `imprenta/paso1-*.png`.
+- **Paso 2 (la rotativa):** `PrintingPress` (`scripts/case/print_shop/printing_press.gd`). La palanca es un botón con
+  E en el costado de la carcasa. La baranda es una barra amarilla de 45 a 70 cm sobre la cinta: las cosas chicas
+  pasan por debajo y el policía choca a la altura del pecho. Lo que llega a los rodillos aparece en la bandeja: cada
+  corrida imprime con la tinta siguiente (azul, roja, amarilla, negra), una mancha transparente encima y el sello
+  "LA TINTA LOCA" (una vez). Lo de más de 10 kg traba la máquina 5 s, vuelve a la cinta y esa corrida termina. Las
+  hojas son solo para mirar: suben desde la bandeja, planean y desaparecen a los 6 s (30 como mucho). Captura en
+  `imprenta/paso2-rotativa.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
