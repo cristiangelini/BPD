@@ -14,6 +14,7 @@ const RAID_PLACES: Array[String] = [
 	"radio",
 	"bowling",
 	"rink",
+	"ice_cream",
 ]
 
 

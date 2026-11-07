@@ -8111,3 +8111,148 @@ PROMPT_POP_PLANET,"[E] Pinchar el planeta inflable","[E] Pop the inflatable plan
 HINT_PLANET_POPPED,"¡Pum! Un planeta menos en el sistema solar.","Pop! One planet less in the solar system.","Pum! Um planeta a menos no sistema solar."
 CRIME_owner_guide,"¡Novatos! Ayer acusaron a un guía del Planetario Municipal y sigue con el traje de astronauta en la sala de interrogatorio. Dice que solo pintaba estrellas. Que confiese.","Rookies! Yesterday you accused a guide from the Municipal Planetarium, still in an astronaut suit in the interrogation room. Says they were only painting stars. Get a confession.","Novatos! Ontem vocês acusaram um guia do Planetário Municipal, ainda de traje de astronauta na sala de interrogatório. Diz que só pintava estrelas. Arranquem uma confissão."
 CONFESS_owner_guide,"¡Está bien! ¡Fui yo! Cien años mirando ese pedrusco en la vitrina... ¡yo solo quería verlo de cerca en el espacio!","Fine! It was me! A hundred years looking at that rock in the case... I just wanted to see it up close in space!","Tá bom! Fui eu! Cem anos olhando aquela pedra na vitrine... eu só queria ver de perto no espaço!"
+PLACE_ICE_CREAM,HELADERÍA PINGÜINO DERRETIDO,PINGÜINO DERRETIDO ICE CREAM,SORVETERIA PINGÜINO DERRETIDO
+ICE_SINCE,Desde siempre,Since forever,Desde sempre
+MENU_ICE_CREAM,Heladería (allanamiento) (prueba),Ice cream shop (raid) (test),Sorveteria (batida) (teste)
+CASE_FAILED_LAWYER_ICE,"Doña Nieve llamó a su abogado con la cuchara en la mano. Caso perdido.","Doña Nieve called her lawyer, scoop in hand. Case lost.","Dona Nieve ligou para o advogado com a colher na mão. Caso perdido."
+HINT_TILL_KEY_ICE,"Una llave helada con una etiqueta: «CÁMARA».","An icy key with a tag: «COLD ROOM».","Uma chave gelada com uma etiqueta: «CÂMARA FRIA»."
+ICE_FLAVOR_OF_THE_MONTH,SABOR DEL MES: PISTACHO,FLAVOR OF THE MONTH: PISTACHIO,SABOR DO MÊS: PISTACHE
+ICE_CASE_BROKEN,¡La vitrina de los sabores!,The flavors' glass case!,A vitrine dos sabores!
+ICE_PENGUIN_DOWN,¡Se cayó el pingüino!,The penguin fell over!,O pinguim caiu!
+LOC_behind_ice_counter,detrás del mostrador de los helados,behind the ice cream counter,atrás do balcão dos sorvetes
+LOC_in_ice_cold_room,"en la cámara de frío, detrás de los baldes","in the cold room, behind the buckets","na câmara fria, atrás dos baldes"
+LOC_behind_ice_desk,detrás del escritorio de la oficina,behind the office desk,atrás da mesa do escritório
+LOC_in_ice_bathroom,en el baño de la heladería,in the ice cream shop's bathroom,no banheiro da sorveteria
+LOC_behind_ice_truck,detrás del camión de helados del patio,behind the ice cream truck in the yard,atrás do caminhão de sorvete do quintal
+LOC_among_yard_buckets,entre los baldes vacíos del patio,among the empty buckets in the yard,entre os baldes vazios do quintal
+LOC_on_ice_cold_shelf,arriba de un estante de la cámara de frío,on top of a cold room shelf,em cima de uma prateleira da câmara fria
+LOC_on_soft_machine,arriba de la máquina de helado,on top of the soft-serve machine,em cima da máquina de sorvete
+LOC_under_ice_table,debajo de una mesita del salón,under a table in the salon,embaixo de uma mesinha do salão
+LOC_on_kitchen_bench,en la mesa de trabajo de la cocina,on the kitchen's work bench,na bancada da cozinha
+LOC_under_flavor_board,debajo del cuadro del sabor del mes,under the flavor of the month board,embaixo do quadro do sabor do mês
+LOC_on_ice_cashier,"en la caja, al lado de la balanza","at the till, next to the scale","no caixa, ao lado da balança"
+PROMPT_FREEZER_OPEN,E: abrir el freezer,E: open the freezer,E: abrir o freezer
+PROMPT_FREEZER_CLOSE,E: cerrar el freezer,E: shut the freezer,E: fechar o freezer
+ICE_FREEZER_MELTED_1,¡Se derritió el de chocolate!,The chocolate one melted!,O de chocolate derreteu!
+ICE_FREEZER_MELTED_2,¡Se derritió el de fresa!,The strawberry one melted!,O de morango derreteu!
+ICE_FREEZER_MELTED_3,¡Se derritió el de vainilla!,The vanilla one melted!,O de baunilha derreteu!
+ICE_FREEZER_MELTED_4,¡Mi pistacho!,My pistachio!,Meu pistache!
+ICE_COLD_ROOM_MELTED,¡Se derritió toda la cámara!,The whole cold room melted!,A câmara fria inteira derreteu!
+HINT_ICE_SLIPPED,¡Patinaste en el helado derretido!,You slipped on melted ice cream!,Você escorregou no sorvete derretido!
+PROMPT_SOFT_MACHINE,E: trabar la máquina de helado,E: jam the soft-serve machine,E: travar a máquina de sorvete
+HINT_SOFT_MACHINE_JAMMED,La máquina ya está largando helado sin parar.,The machine is already pouring nonstop.,A máquina já está soltando sorvete sem parar.
+HINT_SOFT_MACHINE_RESTING,"Si la trabas tan seguido, se va a dar cuenta. Espera un poco.","Jam it that often and she'll catch on. Wait a bit.","Se travar tão seguido, ela vai perceber. Espere um pouco."
+NIEVE_LINE_1,"¿Qué sabor les sirvo, oficiales? El de pistacho está buenísimo.","What flavor can I get you, officers? The pistachio is great.","Que sabor vou servir, policiais? O de pistache está ótimo."
+NIEVE_LINE_2,"¡Cierren los freezers, que se me derrite todo!","Shut the freezers, everything's melting!","Fechem os freezers, que está tudo derretendo!"
+NIEVE_LINE_3,"Cuarenta años vendiendo helado y nunca vi tanto policía junto.","Forty years selling ice cream and I've never seen so many cops at once.","Quarenta anos vendendo sorvete e nunca vi tanto policial junto."
+NIEVE_LINE_4,"No se apoyen en la vitrina, que es de vidrio.","Don't lean on the case, it's glass.","Não se apoiem na vitrine, é de vidro."
+NIEVE_PRINTER,"¡Otra vez la máquina! ¡Ya voy, ya voy!","The machine again! Coming, coming!","A máquina de novo! Já vou, já vou!"
+NIEVE_FIX_1,"¡Para, para, para!","Stop, stop, stop!","Para, para, para!"
+NIEVE_FIX_2,"¿Quién tocó la palanca?","Who touched the lever?","Quem mexeu na alavanca?"
+NIEVE_FIX_3,"Ya casi... ya casi deja de salir...","Almost... it's almost stopped...","Quase... quase parou de sair..."
+NIEVE_FIX_DONE,"¡Listo! Y nadie vio nada, ¿eh?","Done! And nobody saw a thing, right?","Pronto! E ninguém viu nada, né?"
+NIEVE_HURT,"¡Ay! ¡Cuidado, que tengo la cuchara!","Ouch! Careful, I've got the scoop!","Ai! Cuidado, estou com a colher!"
+NIEVE_DOOR,"¡Mi cámara! ¡Ahora se escapa todo el frío!","My cold room! Now all the cold gets out!","Minha câmara! Agora o frio todo escapa!"
+NIEVE_SAW,"¡Eso no se toca, oficial!","Hands off that, officer!","Isso não se mexe, policial!"
+NIEVE_NOTHING,"Yo solo vendo helado, oficial.","I just sell ice cream, officer.","Eu só vendo sorvete, policial."
+NIEVE_OFFENDED,"No digo nada más. Ni aunque me compren un kilo.","I'm not saying anything else. Not even if you buy a kilo.","Não digo mais nada. Nem se comprarem um quilo."
+NIEVE_LAWYER,"¡Llamo a mi abogado! Es cliente, viene todos los domingos.","I'm calling my lawyer! He's a regular, comes every Sunday.","Vou ligar para o meu advogado! Ele é cliente, vem todo domingo."
+NIEVE_FREEZER_1,"¡Mi chocolate! ¡Derretido!","My chocolate! Melted!","Meu chocolate! Derretido!"
+NIEVE_FREEZER_2,"¡La fresa! ¿Quién dejó la tapa abierta?","The strawberry! Who left the lid open?","O morango! Quem deixou a tampa aberta?"
+NIEVE_FREEZER_3,"¡La vainilla! ¡Era de esta mañana!","The vanilla! I made it this morning!","A baunilha! Era desta manhã!"
+NIEVE_FREEZER_4,"¡Mi pistacho!","My pistachio!","Meu pistache!"
+NIEVE_COLD_ROOM,"¡La cámara! ¡Se me derritió todo!","The cold room! It's all melted!","A câmara! Derreteu tudo!"
+NIEVE_CASE,"¡Mi vitrina! ¡Era de vidrio importado!","My glass case! That was fancy glass!","Minha vitrine! Era vidro fino!"
+NIEVE_PENGUIN,"¡Mi pingüino! ¡Lo tengo desde que abrí!","My penguin! I've had it since I opened!","Meu pinguim! Tenho desde que abri!"
+NIEVE_NOTICED,"¡Ya sé que me traban la máquina ustedes! ¡Déjenla en paz!","I know you're the ones jamming my machine! Leave it alone!","Eu sei que são vocês que travam a máquina! Deixem ela em paz!"
+PROMPT_TAKE_CONE,E: agarrar un cono de helado,E: take an ice cream cone,E: pegar uma casquinha
+HINT_HANDS_FULL_CONE,Tienes las manos ocupadas para el cono.,Your hands are too full for the cone.,Suas mãos estão ocupadas demais para a casquinha.
+PROMPT_GIVE_CONE,E: darle el cono a Lucho,E: give Lucho the cone,E: dar a casquinha ao Lucho
+PROMPT_TALK_LUCHO,E: hablar con Lucho,E: talk to Lucho,E: falar com o Lucho
+LUCHO_HELLO,"¡Doña Nieve! ¿Hay pedidos?","Doña Nieve! Any orders?","Dona Nieve! Tem pedidos?"
+LUCHO_BUSY,"Estoy apurado, oficial. Si me convidas un helado, capaz que me acuerdo de algo...","I'm in a hurry, officer. Treat me to an ice cream and maybe I'll remember something...","Estou com pressa, policial. Se me pagar um sorvete, talvez eu me lembre de algo..."
+LUCHO_AGAIN,"¡Gracias! Pero ya te conté todo lo que vi.","Thanks! But I already told you all I saw.","Valeu! Mas já te contei tudo o que vi."
+LUCHO_NOTHING,"¡Gracias! Pero no vi nada raro, la verdad.","Thanks! But I didn't see anything weird, honestly.","Valeu! Mas não vi nada estranho, sério."
+BRIEF_ICE_TIP_B,"Llegó una denuncia anónima: en la Heladería Pingüino Derretido pasan cosas raras, y no solo con los sabores.","We got an anonymous tip: strange things go on at the Pingüino Derretido ice cream shop, and not just with the flavors.","Chegou uma denúncia anônima: na Sorveteria Pingüino Derretido acontecem coisas estranhas, e não só com os sabores."
+BRIEF_ICE_TIP_D,"Doña Nieve atiende sola y la cámara de frío tiene llave. Lucho, el repartidor, pasa en bici a cada rato.","Doña Nieve runs the shop alone and the cold room is locked. Lucho, the delivery boy, rides by every so often.","A dona Nieve atende sozinha e a câmara fria tem chave. O Lucho, o entregador, passa de bicicleta toda hora."
+BRIEF_ICE_TIP_E,"Y ojo: un freezer abierto mucho rato se derrite, y lo que rompan o derritan lo pagan ustedes. Con Q ven la planilla.","And careful: a freezer left open too long melts, and whatever you break or melt comes out of your pay. Press Q to see your checklist.","E cuidado: um freezer aberto muito tempo derrete, e o que quebrarem ou derreterem sai do salário de vocês. Com Q vocês veem a lista."
+BRIEF_STOLEN_FLAVORS_B,Doña Nieve copia los sabores de la heladería de enfrente. Todos. Hasta el que salió mal.,Doña Nieve copies the flavors of the ice cream shop across the street. All of them. Even the one that went wrong.,A dona Nieve copia os sabores da sorveteria da frente. Todos. Até o que deu errado.
+BRIEF_STOLEN_FLAVORS_C,Traigan la caja de las recetas en el baúl del patrullero. Pesa 4 kilos: sin eso no hay caso.,Bring the recipe box back in the patrol car's trunk. It weighs 4 kilos: without it there's no case.,Tragam a caixa das receitas no porta-malas da viatura. Pesa 4 quilos: sem isso não tem caso.
+BRIEF_STOLEN_FLAVORS_D,"Si encuentran el frasco del ingrediente secreto o la foto de la otra heladería, mejor: todo suma.","If you find the secret ingredient jar or the photo of the other shop, even better: it all counts.","Se acharem o pote do ingrediente secreto ou a foto da outra sorveteria, melhor: tudo conta."
+OBJ_FIND_RECIPE_BOX,Llevarse la caja de las recetas,Take the recipe box,Levar a caixa das receitas
+OBJ_EXTRA_SECRET_JAR,Extra: el frasco del ingrediente secreto,Extra: the secret ingredient jar,Extra: o pote do ingrediente secreto
+OBJ_EXTRA_RIVAL_PHOTO,Extra: la foto de la otra heladería,Extra: the photo of the other shop,Extra: a foto da outra sorveteria
+SUSPECT_stolen_flavors,Los sabores robados,The stolen flavors,Os sabores roubados
+SUSPECT_frozen_smuggling,El contrabando en el hielo,The smuggling in the ice,O contrabando no gelo
+SUSPECT_rigged_scale,La balanza trucha,The rigged scale,A balança viciada
+SUSPECT_rigged_sticks,Los palitos premiados,The prize sticks,Os palitos premiados
+SUSPECT_frozen_cash,Los billetes congelados,The frozen cash,O dinheiro congelado
+SUSPECT_stolen_truck,El camión robado,The stolen truck,O caminhão roubado
+CLUE_SUSPECT_stolen_flavors,Un papel con la letra de doña Nieve: «Pistacho de enfrente: probar mañana con bigote falso».,A note in doña Nieve's handwriting: «Pistachio from across the street: try it tomorrow with a fake mustache».,Um papel com a letra da dona Nieve: «Pistache da frente: provar amanhã de bigode falso».
+CLUE_SUSPECT_frozen_smuggling,"Un reloj de pulsera, frío como el hielo, en un charco que no es de helado.","A wristwatch, cold as ice, in a puddle that isn't ice cream.","Um relógio de pulso, frio como gelo, numa poça que não é de sorvete."
+CLUE_SUSPECT_rigged_scale,Un imán chiquito pegado abajo de una cuchara.,A tiny magnet stuck under a scoop.,Um ímã pequenininho grudado embaixo de uma colher.
+CLUE_SUSPECT_rigged_sticks,Un palito de helado que dice «Sigue participando». Y otro. Y otro.,An ice cream stick that says «Try again». And another. And another.,Um palito de sorvete que diz «Continue participando». E outro. E outro.
+CLUE_SUSPECT_frozen_cash,"Un billete duro de frío, con olor a fresa.","A banknote stiff with cold, smelling of strawberry.","Uma nota dura de frio, com cheiro de morango."
+CLUE_SUSPECT_stolen_truck,Una brocha con pintura fresca del color del camión.,A brush with fresh paint the color of the truck.,Um pincel com tinta fresca da cor do caminhão.
+OBJ_ENTER_ICE,Entrar a la heladería (la puerta está abierta),Get into the ice cream shop (the door is open),Entrar na sorveteria (a porta está aberta)
+OBJ_GUESS_ICE,"Averiguar qué pasa en la heladería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the ice cream shop (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na sorveteria (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_ICE,Cosas rotas o derretidas: %d (multa: %d),Broken or melted things: %d (fines: %d),Coisas quebradas ou derretidas: %d (multa: %d)
+OBJ_COMPLAINT_ICE,Queja de doña Nieve: %d%%,Doña Nieve's complaint: %d%%,Queixa da dona Nieve: %d%%
+NIEVE_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿cono o vasito?»","“I didn't put anything %s!... I mean, cone or cup?”","“Eu não guardei nada %s!... Quer dizer, casquinha ou copinho?”"
+CLUE_LUCHO,Lucho vio a doña Nieve guardar algo %s,Lucho saw doña Nieve put something %s,O Lucho viu a dona Nieve guardar algo %s
+LUCHO_CLUE_stolen_flavors,«Anoche doña Nieve volvió de enfrente con una caja y la guardó %s. ¡Iba con bigote falso!»,“Last night doña Nieve came back from across the street with a box and put it %s. She had a fake mustache on!”,“Ontem à noite a dona Nieve voltou da frente com uma caixa e guardou %s. Estava de bigode falso!”
+ICE_SAME_AS_ACROSS,SABOR NUEVO: IGUALITO AL DE ENFRENTE,NEW FLAVOR: JUST LIKE ACROSS THE STREET,SABOR NOVO: IGUALZINHO AO DA FRENTE
+CLUE_SAME_AS_ACROSS,"El cartel del sabor nuevo dice «Igualito al de Enfrente». Abajo, chiquito: «receta de Enfrente».","The new flavor's sign says «Just like across the street». Below, in small print: «recipe from across the street».","A placa do sabor novo diz «Igualzinho ao da frente». Embaixo, pequenininho: «receita da frente»."
+NIEVE_NEW_FLAVOR,¿Quieren probar el sabor nuevo? ¡No se parece a ninguno!,Want to try the new flavor? It's like no other!,Querem provar o sabor novo? Não se parece com nenhum!
+HINT_ESCAPE_nieve,¡Doña Nieve vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.,Doña Nieve saw the evidence and is getting away in her car! You have one minute to catch her.,A dona Nieve viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-la.
+CRIME_owner_nieve,"¡Novatos! Ayer se trajeron a doña Nieve, la dueña de la Heladería Pingüino Derretido, y la tenemos en la sala de interrogatorio. Algo escondió en la heladería que no encontraron.","Rookies! Yesterday you brought in doña Nieve, the Pingüino Derretido ice cream shop's owner, and she's in the interrogation room. She hid something in the shop that you didn't find.","Novatos! Ontem vocês trouxeram a dona Nieve, a dona da Sorveteria Pingüino Derretido, e ela está na sala de interrogatório. Ela escondeu algo na sorveteria que vocês não acharam."
+CONFESS_owner_nieve,"¡Está bien! ¡Fui yo! Pero el helado era bueno, eso nadie me lo quita.","Fine! It was me! But the ice cream was good, nobody can take that from me.","Tá bom! Fui eu! Mas o sorvete era bom, isso ninguém me tira."
+BRIEF_FROZEN_SMUGGLING_B,En el puerto encontraron relojes de contrabando congelados en bloques de hielo. Los bloques salen de una heladería.,At the harbor they found smuggled watches frozen in blocks of ice. The blocks come from an ice cream shop.,No porto acharam relógios contrabandeados congelados em blocos de gelo. Os blocos saem de uma sorveteria.
+BRIEF_FROZEN_SMUGGLING_C,"Traigan el bloque de hielo con los relojes en el baúl del patrullero. Pesa 8 kilos: levántenlo entre dos, y rápido, que se derrite.","Bring the ice block with the watches back in the patrol car's trunk. It weighs 8 kilos: lift it together, and fast, before it melts.","Tragam o bloco de gelo com os relógios no porta-malas da viatura. Pesa 8 quilos: levantem em dois, e rápido, antes que derreta."
+BRIEF_FROZEN_SMUGGLING_D,"Si encuentran la lista de entregas o el sello falso, mejor: todo suma.","If you find the delivery list or the fake stamp, even better: it all counts.","Se acharem a lista de entregas ou o carimbo falso, melhor: tudo conta."
+OBJ_FIND_ICE_BLOCK,Llevarse el bloque de hielo con los relojes,Take the ice block with the watches,Levar o bloco de gelo com os relógios
+OBJ_EXTRA_FAKE_STAMP_ICE,Extra: el sello falso de la aduana,Extra: the fake customs stamp,Extra: o carimbo falso da alfândega
+LUCHO_CLUE_frozen_smuggling,«Anoche doña Nieve me hizo cargar un bloque de hielo que hacía tic tac. Lo dejamos %s.»,“Last night doña Nieve had me carry a block of ice that went tick tock. We left it %s.”,“Ontem à noite a dona Nieve me fez carregar um bloco de gelo que fazia tique-taque. Deixamos %s.”
+ICE_THERMOMETER,-40 °C,-40 °C,-40 °C
+CLUE_COLD_THERMOMETER,El termómetro de la cámara marca -40 °C. El helado se guarda a -18. A -40 se guarda otra cosa.,The cold room's thermometer reads -40 °C. Ice cream keeps at -18. Something else keeps at -40.,O termômetro da câmara marca -40 °C. Sorvete se guarda a -18. A -40 se guarda outra coisa.
+ICE_COLD_ARRIVED,"¿Llegó lo frío? No, helado no quiero. Lo frío.","Did the cold stuff arrive? No, I don't want ice cream. The cold stuff.","Chegou o frio? Não, sorvete eu não quero. O frio."
+BRIEF_RIGGED_SCALE_B,Los vecinos compran un kilo de helado en la Pingüino Derretido y en casa pesa medio. Todos. Siempre.,The neighbors buy a kilo of ice cream at the Pingüino Derretido and at home it weighs half. All of them. Always.,Os vizinhos compram um quilo de sorvete na Pingüino Derretido e em casa pesa meio. Todos. Sempre.
+BRIEF_RIGGED_SCALE_C,Traigan la balanza arreglada en el baúl del patrullero. Pesa 5 kilos... o eso dice ella.,Bring the rigged scale back in the patrol car's trunk. It weighs 5 kilos... or so it says.,Tragam a balança viciada no porta-malas da viatura. Pesa 5 quilos... ou é o que ela diz.
+BRIEF_RIGGED_SCALE_D,"Si encuentran el imán o el cuaderno de quejas que escondió, mejor: todo suma.","If you find the magnet or the complaints notebook she hid, even better: it all counts.","Se acharem o ímã ou o caderno de reclamações que ela escondeu, melhor: tudo conta."
+OBJ_FIND_ICE_SCALE,Llevarse la balanza arreglada,Take the rigged scale,Levar a balança viciada
+OBJ_EXTRA_SCALE_MAGNET,Extra: el imán de la balanza,Extra: the scale's magnet,Extra: o ímã da balança
+OBJ_EXTRA_COMPLAINTS_NOTEBOOK,Extra: el cuaderno de quejas,Extra: the complaints notebook,Extra: o caderno de reclamações
+LUCHO_CLUE_rigged_scale,«Doña Nieve me pesó a mí en la balanza y salí de cuarenta kilos. Después la escondió %s.»,“Doña Nieve weighed me on the scale and I came out at forty kilos. Then she hid it %s.”,“A dona Nieve me pesou na balança e deu quarenta quilos. Depois ela escondeu %s.”
+ICE_ONE_KILO,1 KG,1 KG,1 KG
+CLUE_TINY_KILO,El cartel de «1 kg» está pegado arriba de un pote chiquito. Ahí no entra ni un cuarto.,The «1 kg» sign is stuck over a tiny tub. Not even a quarter fits in there.,A placa de «1 kg» está colada em cima de um pote pequenininho. Ali não cabe nem um quarto.
+ICE_NOT_A_KILO,¡Esto no es un kilo! ¡En casa lo pesé y es medio!,This isn't a kilo! I weighed it at home and it's half!,Isso não é um quilo! Pesei em casa e é meio!
+BRIEF_RIGGED_STICKS_B,Los palitos de la Pingüino Derretido prometen premio. Nadie en el barrio ganó nunca. Ni uno.,The Pingüino Derretido's sticks promise a prize. Nobody in the neighborhood has ever won. Not one.,Os palitos da Pingüino Derretido prometem prêmio. Ninguém no bairro ganhou nunca. Nem um.
+BRIEF_RIGGED_STICKS_C,Traigan la caja de los palitos premiados en el baúl del patrullero. Esos nunca se venden.,Bring the box of prize sticks back in the patrol car's trunk. Those never get sold.,Tragam a caixa dos palitos premiados no porta-malas da viatura. Esses nunca são vendidos.
+BRIEF_RIGGED_STICKS_D,"Si encuentran la máquina de grabar palitos o la lista de «ganadores», mejor: todo suma.","If you find the stick engraving machine or the list of «winners», even better: it all counts.","Se acharem a máquina de gravar palitos ou a lista de «ganhadores», melhor: tudo conta."
+OBJ_FIND_PRIZE_STICKS,Llevarse la caja de los palitos premiados,Take the box of prize sticks,Levar a caixa dos palitos premiados
+OBJ_EXTRA_STICK_ENGRAVER,Extra: la máquina de grabar palitos,Extra: the stick engraving machine,Extra: a máquina de gravar palitos
+OBJ_EXTRA_ICE_WINNERS_LIST,Extra: la lista de «ganadores»,Extra: the list of «winners»,Extra: a lista de «ganhadores»
+LUCHO_CLUE_rigged_sticks,«Una vez abrí una caja de palitos y todos decían PREMIO. Doña Nieve me la sacó de las manos y la guardó %s.»,“Once I opened a box of sticks and they all said PRIZE. Doña Nieve snatched it from my hands and put it %s.”,“Uma vez abri uma caixa de palitos e todos diziam PRÊMIO. A dona Nieve tirou das minhas mãos e guardou %s.”
+PROMPT_STICK_BIN,E: mirar el cesto,E: look in the bin,E: olhar o cesto
+CLUE_LOSING_STICKS,El cesto está lleno de palitos que dicen «Sigue participando». Cientos. Ninguno dice otra cosa.,The bin is full of sticks that say «Try again». Hundreds. Not one says anything else.,O cesto está cheio de palitos que dizem «Continue participando». Centenas. Nenhum diz outra coisa.
+ICE_NOTHING_AGAIN,"¡Otra vez nada! ¡Sigue participando, sigue participando!","Nothing again! Try again, try again!","De novo nada! Continue participando, continue participando!"
+BRIEF_FROZEN_CASH_B,"Según sus papeles, la Pingüino Derretido vende 900 kilos de helado por día. Nadie la vio nunca con más de dos clientes.","According to its papers, the Pingüino Derretido sells 900 kilos of ice cream a day. Nobody has ever seen it with more than two customers.","Segundo os papéis, a Pingüino Derretido vende 900 quilos de sorvete por dia. Ninguém nunca a viu com mais de dois clientes."
+BRIEF_FROZEN_CASH_C,Traigan el balde de helado lleno de billetes en el baúl del patrullero. Pesa 4 kilos y está helado.,Bring the ice cream bucket full of bills back in the patrol car's trunk. It weighs 4 kilos and it's freezing.,Tragam o balde de sorvete cheio de notas no porta-malas da viatura. Pesa 4 quilos e está gelado.
+BRIEF_FROZEN_CASH_D,"Si encuentran el cuaderno de ventas o el sello de «vendido», mejor: todo suma.","If you find the sales notebook or the «sold» stamp, even better: it all counts.","Se acharem o caderno de vendas ou o carimbo de «vendido», melhor: tudo conta."
+OBJ_FIND_CASH_BUCKET,Llevarse el balde lleno de billetes,Take the bucket full of bills,Levar o balde cheio de notas
+OBJ_EXTRA_SALES_NOTEBOOK,Extra: el cuaderno de ventas,Extra: the sales notebook,Extra: o caderno de vendas
+OBJ_EXTRA_SOLD_STAMP,Extra: el sello de «vendido»,Extra: the «sold» stamp,Extra: o carimbo de «vendido»
+LUCHO_CLUE_frozen_cash,"«Le pedí a doña Nieve un balde de fresa y me dijo que ese no, que ese no es de helado. Lo guardó %s.»","“I asked doña Nieve for a bucket of strawberry and she said not that one, that one isn't ice cream. She put it %s.”","“Pedi à dona Nieve um balde de morango e ela disse que esse não, que esse não é de sorvete. Guardou %s.”"
+ICE_TILL_900,HOY: 900 KG VENDIDOS,TODAY: 900 KG SOLD,HOJE: 900 KG VENDIDOS
+CLUE_TILL_900,La caja dice que hoy se vendieron 900 kilos de helado. En la heladería no hay nadie.,The till says 900 kilos of ice cream were sold today. There's nobody in the shop.,O caixa diz que hoje foram vendidos 900 quilos de sorvete. Na sorveteria não tem ninguém.
+NIEVE_COVER_FREEZERS,"¡Ay, entró alguien! ¡Tapas cerradas, tapas cerradas!","Oh, someone came in! Lids shut, lids shut!","Ai, entrou alguém! Tampas fechadas, tampas fechadas!"
+BRIEF_STOLEN_TRUCK_B,"A la heladería del otro lado del río le robaron el camión de helados. Ayer apareció uno igualito en el patio de la Pingüino Derretido, recién pintado.","The ice cream shop across the river had its ice cream truck stolen. Yesterday an identical one showed up in the Pingüino Derretido's yard, freshly painted.","Roubaram o caminhão de sorvete da sorveteria do outro lado do rio. Ontem apareceu um igualzinho no pátio da Pingüino Derretido, recém-pintado."
+BRIEF_STOLEN_TRUCK_C,"Traigan la placa original del camión en el baúl del patrullero. Sin la placa, el camión es de cualquiera.","Bring the truck's original plate back in the patrol car's trunk. Without the plate, the truck could be anybody's.","Tragam a placa original do caminhão no porta-malas da viatura. Sem a placa, o caminhão é de qualquer um."
+BRIEF_STOLEN_TRUCK_D,"Si encuentran el tarro de pintura o los papeles del camión, mejor: todo suma.","If you find the paint can or the truck's papers, even better: it all counts.","Se acharem a lata de tinta ou os papéis do caminhão, melhor: tudo conta."
+OBJ_FIND_TRUCK_PLATE,Llevarse la placa original del camión,Take the truck's original plate,Levar a placa original do caminhão
+OBJ_EXTRA_FRESH_PAINT,Extra: el tarro de pintura fresca,Extra: the can of fresh paint,Extra: a lata de tinta fresca
+OBJ_EXTRA_TRUCK_PAPERS,Extra: los papeles del camión,Extra: the truck's papers,Extra: os papéis do caminhão
+LUCHO_CLUE_stolen_truck,«Anoche ayudé a doña Nieve a pintar el camión. Me dio una placa para que la escondiera %s. ¡Yo no sabía nada!»,“Last night I helped doña Nieve paint the truck. She gave me a plate to hide %s. I didn't know anything!”,“Ontem à noite ajudei a dona Nieve a pintar o caminhão. Ela me deu uma placa para esconder %s. Eu não sabia de nada!”
+ICE_WET_PAINT,¡PINTURA FRESCA!,WET PAINT!,TINTA FRESCA!
+CLUE_FRESH_PAINT,"La pintura del camión está fresca, y abajo se ve otro color y otro nombre: «Helados del Río».","The truck's paint is fresh, and underneath there's another color and another name: «Helados del Río».","A tinta do caminhão está fresca, e embaixo aparece outra cor e outro nome: «Helados del Río»."
+ICE_TRUCK_JINGLE,"♪ ¡Helados del Río, los más fríos! ♪","♪ Helados del Río, the coldest around! ♪","♪ Helados del Río, os mais gelados! ♪"

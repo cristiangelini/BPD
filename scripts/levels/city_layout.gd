@@ -85,6 +85,8 @@ const PLACES := [
 	{"id": "bowling", "block": Vector2i(8, 2), "side": "s", "along": 0.0, "size": Vector3(30, 7, 24), "color": Color(0.95, 0.55, 0.25), "sign": "PLACE_BOWLING"},
 	# The ice rink "Patinódromo Resbalón" on the east edge (allanamiento-pista.md).
 	{"id": "rink", "block": Vector2i(8, 3), "side": "n", "along": 0.0, "size": Vector3(44, 9, 30), "color": Color(0.78, 0.86, 0.92), "sign": "PLACE_RINK"},
+	# The ice cream shop "Pingüino Derretido", its fenced yard at the back (allanamiento-heladeria.md).
+	{"id": "ice_cream", "block": Vector2i(5, 5), "side": "n", "along": 0.0, "size": Vector3(20, 5, 20), "color": Color(0.98, 0.84, 0.9), "sign": "PLACE_ICE_CREAM"},
 ]
 
 ## The plaza fills its block.
