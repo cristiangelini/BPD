@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 6: the itchy costumes story: the drum of itching powder is hidden with the "No-Itch" cream jars and the pharmacy flyer, the bunny costume in the sale basket makes the cop who grabs it drop it and scratch for 3 s (the clue), and the customers come out of the fitting rooms scratching.
 - Costume shop raid, step 6: the fitting room with a false back story: fitting room 3 is out of order and the customers skip it, a cop inside hears a sewing machine behind its mirror (the clue), and E on the mirror lifts it and shows the 15 kg sewing machine; the fake brand labels and the costume pattern are hidden.
 - Costume shop raid, step 5: the shop is now a raid case (the comisario's tip, 3 suspicions among its 6 stories, Don Fantoche's slips and lawyer, Mimí's clue) with its first story, the bear of the loot: a 12 kg bear costume stuffed with bills stands by the counter and drops a bill each time it is grabbed or falls over, and the rental list of the robbery night and a clown mask are hidden.
 - Costume shop raid, step 4: Mimí, Don Fantoche's niece, plays hide and seek dressed as a chicken mannequin on one of six spots drawn with the seed; she passes for a mannequin, giggles every 20 s, tells the cop who finds her (E, or trying to grab her) what she saw her uncle hide, once per cop, and hides on another spot 30 s later.

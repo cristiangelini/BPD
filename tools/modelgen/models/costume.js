@@ -339,6 +339,48 @@ export function buildFalseBack() {
 	return b.build();
 }
 
+// The drum of itching powder (itchy costumes main evidence): a blue plastic drum with a red band and a lid, 0.7 m tall.
+export function buildItchDrum() {
+	const b = new Builder('itch_drum');
+	b.add('drum', mat('drum_blue', 0x2a5ab8), new THREE.CylinderGeometry(0.25, 0.25, 0.66, 14), { pos: V(0, 0.33, 0) });
+	b.add('lid', mat('drum_lid', 0x1a3a80), new THREE.CylinderGeometry(0.26, 0.26, 0.04, 14), { pos: V(0, 0.68, 0) });
+	b.add('band', mat('drum_red', 0xd83a30), new THREE.CylinderGeometry(0.255, 0.255, 0.16, 14), { pos: V(0, 0.38, 0) });
+	for (let i = 0; i < 5; i++) b.add('dots', mat('drum_yellow', 0xf2c230), new THREE.SphereGeometry(0.025, 6, 4), { pos: V(Math.sin(i * 0.5 - 1) * 0.25, 0.38 + (i % 2) * 0.04 - 0.02, Math.cos(i * 0.5 - 1) * 0.25) });
+	return b.build();
+}
+
+// The jars of "Antipica" cream (itchy costumes extra): three white jars with green lids on a cardboard tray.
+export function buildCreamJars() {
+	const b = new Builder('cream_jars');
+	b.add('tray', mat('jar_tray', 0xc8a878), new THREE.BoxGeometry(0.3, 0.02, 0.12), { pos: V(0, 0.01, 0) });
+	for (const x of [-0.09, 0, 0.09]) {
+		b.add('jar', mat('jar_white', 0xf6f2ea), new THREE.CylinderGeometry(0.04, 0.04, 0.08, 10), { pos: V(x, 0.06, 0) });
+		b.add('lid', mat('jar_green', 0x3aa860), new THREE.CylinderGeometry(0.042, 0.042, 0.02, 10), { pos: V(x, 0.11, 0) });
+	}
+	return b.build();
+}
+
+// The flyer of the cousin's pharmacy (itchy costumes extra): a white sheet with a big green cross, flat.
+export function buildPharmacyFlyer() {
+	const b = new Builder('pharmacy_flyer');
+	b.add('sheet', mat('paper_white', 0xf4f2ea), new THREE.BoxGeometry(0.15, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	const green = mat('flyer_green', 0x2aa850);
+	b.add('cross', green, new THREE.BoxGeometry(0.03, 0.002, 0.09), { pos: V(0, 0.005, -0.03) });
+	b.add('cross', green, new THREE.BoxGeometry(0.09, 0.002, 0.03), { pos: V(0, 0.005, -0.03) });
+	for (let i = 0; i < 3; i++) b.add('rows', mat('ink', 0x30303a), new THREE.BoxGeometry(0.11, 0.002, 0.008), { pos: V(0, 0.005, 0.04 + i * 0.02) });
+	return b.build();
+}
+
+// The itchy costume of the sale basket (itchy costumes clue): a folded pink bunny costume with two ears and red specks.
+export function buildItchyCostume() {
+	const b = new Builder('itchy_costume');
+	const pink = mat('itchy_pink', 0xf0a0c8);
+	b.add('body', pink, new THREE.BoxGeometry(0.4, 0.1, 0.3), { pos: V(0, 0.05, 0) });
+	for (const x of [-0.06, 0.06]) b.add('ears', pink, ellipsoid(0.035, 0.02, 0.12, 6, 4), { pos: V(x, 0.1, -0.16) });
+	for (let i = 0; i < 7; i++) b.add('specks', mat('itchy_red', 0xd83a30), new THREE.BoxGeometry(0.015, 0.004, 0.015), { pos: V(-0.15 + i * 0.05, 0.101, ((i * 37) % 9 - 4) * 0.03) });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -349,7 +391,8 @@ export const models = {
 	npc_fantoche: buildFantoche, npc_mimi: buildMimi,
 	bear_loot: buildBearLoot, rental_list: buildRentalList, clown_mask: buildClownMask,
 	sewing_machine: buildSewingMachine, fake_labels: buildFakeLabels, costume_pattern: buildCostumePattern,
-	false_back: buildFalseBack,
+	false_back: buildFalseBack, itch_drum: buildItchDrum, cream_jars: buildCreamJars, pharmacy_flyer: buildPharmacyFlyer,
+	itchy_costume: buildItchyCostume,
 };
 
 export const views = {
@@ -378,6 +421,11 @@ export const views = {
 		items: [{ name: 'false_back', pos: [-0.9, 0, -0.4], rotY: -1.2 }, { name: 'sewing_machine', pos: [0.4, 0, 0.2], rotY: 0.5 },
 			{ name: 'fake_labels', pos: [0.9, 0, 0.7] }, { name: 'costume_pattern', pos: [1.2, 0, 0.2], rotY: 0.3 }],
 		cam: { pos: [0.2, 1.6, 3.8], target: [0.2, 0.7, 0], fov: 44 },
+	},
+	itchy_costumes: {
+		items: [{ name: 'itch_drum', pos: [-0.5, 0, 0] }, { name: 'cream_jars', pos: [0.2, 0, 0.3] },
+			{ name: 'pharmacy_flyer', pos: [0.6, 0, 0.2], rotY: 0.3 }, { name: 'itchy_costume', pos: [0.4, 0, -0.3], rotY: -0.2 }],
+		cam: { pos: [0, 1.2, 2.2], target: [0, 0.25, 0], fov: 40 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],

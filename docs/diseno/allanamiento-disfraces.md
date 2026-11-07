@@ -148,6 +148,10 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   ("empujar el espejo") sube como una persiana y atrás está la máquina de coser (15 kg, 1000); si Don Fantoche lo ve
   abierto, suma 10. Las etiquetas de marca falsas (300) y el molde del disfraz (200) van escondidos. Capturas
   `paso6-probador-*.png`.
+- Paso 6, los disfraces que pican: el bidón de polvo pica-pica (10 kg, 1000) va en un escondite pesado, con los
+  frascos de crema "Antipica" (300) y el folleto de la farmacia del primo (200). El disfraz de conejo rosa de la
+  canasta de ofertas hace que el policía que lo agarra lo suelte y se rasque 3 s ("¡Me pica todo!"), y la primera vez
+  es la pista. Los clientes salen del probador diciendo "¡Ay! ¡Este disfraz pica!". Capturas `paso6-pica-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

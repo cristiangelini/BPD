@@ -9,6 +9,8 @@ extends StaticBody3D
 
 ## They complained loud enough for the owner to hear it (Don Fantoche adds it to the complaint, step 3).
 signal complained(customer: CostumeCustomer)
+## They tried a costume on and are coming out of the fitting room.
+signal came_out(customer: CostumeCustomer)
 ## Their turn is over and they're back where they look at costumes.
 signal turn_over(customer: CostumeCustomer)
 
@@ -134,7 +136,9 @@ func _at_curtain() -> void:
 
 ## Done (or stopped): back out and along the aisle to where they look at costumes.
 func _end_turn() -> void:
-	trying = false
+	if trying:
+		trying = false
+		came_out.emit(self)
 	var back := shop.aisle_path(home, room)
 	back.reverse()
 	back.append(home)
