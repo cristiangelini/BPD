@@ -190,6 +190,16 @@ Mientras tanto se avanza con lo recomendado.
      opcional "Devolver la Máscara de Oro a su vitrina").
    - Capturas: `teatro/paso4-camerino.png` y `teatro/paso4-vitrina.png`.
 5. La función que sigue: el reloj, el giro, las trampillas, el decorado y la palanca con la paciencia del director.
+   **Hecho así:** TheaterShow, con la cuenta arriba de la pantalla (la paciencia del Maestro Bambalina y los segundos
+   al próximo cambio) desde que los policías llegan a la escena.
+   - **Cada 120 s:** el giratorio da media vuelta en 3 s con los policías que están arriba, y lo suelto sobre el
+     giratorio queda detrás del telón de fondo. Las trampillas se abren 3 s y baja un decorado (castillo, luna y
+     árbol, por turno) justo detrás del giratorio.
+   - **Al terminar (15 s):** cada fantasma queda en la marca de otro.
+   - **La palanca:** con E corta el cambio y frena la función 120 s, a cambio de 10 de paciencia. Con la paciencia en
+     0, cada policía en el escenario queda 10 s quieto en el foco con su papel (árbol, luna o piedra).
+   - La señal `changed(first)` queda lista para destapar la pisada de talco en el paso 6.
+   - Capturas: `teatro/paso5-cambio.png` y `teatro/paso5-arbol.png`.
 6. Las pistas y el testigo: la vitrina, la pisada, la peluca, el caramelo, el trozo de sábana y Don Susurro.
 7. El final: el tablero, el sueldo y el camión con los decorados.
 8. El sorteo de "Jugar" y el online.

@@ -5675,3 +5675,16 @@ HINT_THEATER_NOTHING_trunk_clover,"Un trébol de cuatro hojas pegado con cinta. 
 HINT_THEATER_NOTHING_tuba,"Un sándwich de jamón a medio comer. El tubista lo estaba buscando.","A half-eaten ham sandwich. The tuba player was looking for it.","Um sanduíche de presunto pela metade. O tubista estava procurando."
 HINT_THEATER_NOTHING_seat,"Chicles pegados y un boleto del estreno de 1974.","Stuck gum and a ticket from the 1974 opening night.","Chicletes grudados e um ingresso da estreia de 1974."
 HINT_THEATER_NOTHING_scenery,"Un castillo de cartón, un árbol sin hojas y una peluca de payaso.","A cardboard castle, a leafless tree and a clown wig.","Um castelo de papelão, uma árvore sem folhas e uma peruca de palhaço."
+HUD_BAMBALINA_PATIENCE,Paciencia del Maestro Bambalina,Maestro Bambalina's patience,Paciência do Maestro Bambalina
+HUD_NEXT_CHANGE,Cambio de escena en %d s,Scene change in %d s,Troca de cena em %d s
+HUD_CHANGE_ON,¡Cambio de escena!,Scene change!,Troca de cena!
+DIRECTOR_CHANGE,"¡Cambio de escena! ¡Rápido, que el público espera!","Scene change! Quick, the audience is waiting!","Troca de cena! Rápido, que o público está esperando!"
+DIRECTOR_LEVER,"¡La función debe seguir! ¿Quién tocó mi palanca?","The show must go on! Who touched my lever?","O espetáculo tem que continuar! Quem mexeu na minha alavanca?"
+DIRECTOR_ACT,"¡Basta! Si paran mi función, actúan en ella. ¡Al foco!","Enough! If you stop my show, you act in it. Into the spotlight!","Chega! Se param o meu espetáculo, atuam nele. Para o holofote!"
+PROMPT_STAGE_LEVER,"E: bajar la palanca de la tramoya","E: pull the stage lever","E: puxar a alavanca da maquinaria"
+HINT_SCENE_CHANGE,"¡Cambio de escena! El escenario gira y se abren las trampillas.","Scene change! The stage turns and the trapdoors open.","Troca de cena! O palco gira e os alçapões se abrem."
+HINT_SCENE_CHANGED,"Listo el cambio. Los fantasmas ya están en otras marcas.","Change done. The ghosts are on other marks now.","Troca feita. Os fantasmas já estão em outras marcas."
+HINT_LEVER_PULLED,"La función se frena. Al Maestro Bambalina no le gustó nada.","The show stops. Maestro Bambalina didn't like it one bit.","O espetáculo para. O Maestro Bambalina não gostou nada."
+HINT_SPOTLIGHT_0,"Estás en el foco. Tu papel: «Soy un árbol». No te muevas.","You're in the spotlight. Your part: ""I am a tree."" Don't move.","Você está no holofote. Seu papel: ""Sou uma árvore."" Não se mexa."
+HINT_SPOTLIGHT_1,"Estás en el foco. Tu papel: «Soy la luna». Brilla y no te muevas.","You're in the spotlight. Your part: ""I am the moon."" Shine and don't move.","Você está no holofote. Seu papel: ""Sou a lua."" Brilhe e não se mexa."
+HINT_SPOTLIGHT_2,"Estás en el foco. Tu papel: «Soy una piedra». Lo haces muy bien.","You're in the spotlight. Your part: ""I am a rock."" You're doing great.","Você está no holofote. Seu papel: ""Sou uma pedra."" Está indo muito bem."

@@ -8,7 +8,8 @@ extends CrimeScenePlace
 ## rooms (one per sheet embroidery) and the props workshop. The six ghosts rehearse two on the stage, two in the hall
 ## and two by the dressing rooms (step 2); Maestro Bambalina directs from the aisle and Don Susurro stands in the pit
 ## under his shell. The case reaches the ghosts (step 3, set_up_case). The Golden Mask is hidden in one of nine spots
-## (step 4) and the props book tells which dressing room. Every number here is (propuesta).
+## (step 4) and the props book tells which dressing room. Every two minutes the scene changes (step 5, TheaterShow),
+## and the stage lever behind the curtain stops it. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(36, 32)
@@ -112,6 +113,9 @@ var loot_found := false
 var loot_spots := {}
 var mask: GoldenMask
 var book: PropsBook
+## The show that goes on (step 5), and the stage lever that stops it.
+var performance: TheaterShow
+var lever: StageLever
 ## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
 var _busy := {}
 var ghosts: Array[TheaterGhost] = []
@@ -143,6 +147,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for ghost in ghosts:
 		ghost.case = case
 		ghost.shy = ghost.index == shy
+	performance = TheaterShow.new()
+	performance.name = "Show"
+	performance.theater = self
+	performance.case = case
+	add_child(performance)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then the Golden Mask turns up if it's there, or the cop
@@ -441,6 +450,11 @@ func _stage() -> void:
 	_builder.mesh_box(Vector3(0, ROOF - 0.6, STAGE_Z - 0.1), Vector3(HALF_X * 2, 1.0, 0.1), VELVET)
 	_builder.box(Vector3(0, STAGE_TOP + 2.8, BACKDROP_Z), Vector3(20.0, 5.6, 0.1), BACKDROP)
 	_builder.mesh_box(LEVER_AT + Vector3(0, 0.5, 0), Vector3(0.3, 1.0, 0.3), BLACK)
+	lever = StageLever.new()
+	lever.name = "StageLever"
+	lever.theater = self
+	lever.position = LEVER_AT + Vector3(0, 0.75, 0)
+	add_child(lever)
 	_builder.mesh_box(LEVER_AT + Vector3(0, 1.15, 0.1), Vector3(0.06, 0.5, 0.06), Color(0.85, 0.15, 0.15))
 
 
