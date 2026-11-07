@@ -8414,3 +8414,141 @@ HINT_ESCAPE_karaoke,¡Rosaura vio la prueba y se escapa en el auto! Tienen un mi
 CHASE_KARAOKE_LINE_1,¡Cuidado con el peinado! ¡Tardé tres horas!,Careful with my hair! It took me three hours!,Cuidado com o penteado! Levei três horas!
 CHASE_KARAOKE_LINE_2,¡No me escapaba! ¡Era mi gira mundial!,I wasn't running away! It was my world tour!,Eu não estava fugindo! Era minha turnê mundial!
 CHASE_KARAOKE_LINE_3,¡Mis fans no se van a olvidar de esto!,My fans won't forget this!,Meus fãs não vão esquecer disso!
+PLACE_CARWASH,La Espuma Loca,Crazy Foam Car Wash,Lava-Rápido Espuma Louca
+MENU_CARWASH,Lavadero (allanamiento) (prueba),Car wash (raid) (test),Lava-rápido (batida) (teste)
+HINT_TILL_KEY_CARWASH,¡Una llave! Abre la oficina de Don Chorro.,A key! It opens Don Chorro's office.,Uma chave! Abre o escritório do Don Chorro.
+CARWASH_WINDSHIELD_BROKEN,"¡El parabrisas de un cliente! ¡Lo vino a lavar, no a romper!","A customer's windshield! They came to wash it, not to break it!","O para-brisa de um cliente! Ele veio lavar, não quebrar!"
+CARWASH_WAX_BROKEN,"¡Mis ceras de colores! ¡Eran de edición limitada!","My colored waxes! They were a limited edition!","Minhas ceras coloridas! Eram edição limitada!"
+CASE_FAILED_LAWYER_CARWASH,Don Chorro llamó al abogado del lavadero. Caso perdido.,Don Chorro called the car wash's lawyer. Case lost.,Don Chorro ligou para o advogado do lava-rápido. Caso perdido.
+LOC_in_queue_car_trunk,en el baúl del auto de la fila,in the trunk of the car in line,no porta-malas do carro da fila
+LOC_in_foam_tank,adentro del tanque de espuma,inside the foam tank,dentro do tanque de espuma
+LOC_behind_boiler,detrás de la caldera,behind the boiler,atrás da caldeira
+LOC_among_tires,entre las cubiertas,among the tires,entre os pneus
+LOC_in_carwash_office,en la oficina de Don Chorro,in Don Chorro's office,no escritório do Don Chorro
+LOC_behind_shampoo_drums,detrás de los bidones de champú,behind the shampoo drums,atrás dos galões de xampu
+LOC_on_token_machine,arriba de la máquina de fichas,on top of the token machine,em cima da máquina de fichas
+LOC_behind_vacuums,detrás de las aspiradoras,behind the vacuums,atrás dos aspiradores
+LOC_in_rag_basket,en el canasto de trapos,in the rag basket,no cesto de panos
+LOC_on_wax_shelf,en el estante de ceras,on the wax shelf,na prateleira de ceras
+LOC_in_inflatable_man,en el muñeco inflable,in the inflatable man,no boneco inflável
+LOC_in_drying_toolbox,en la caja de herramientas de la zona de secado,in the toolbox in the drying area,na caixa de ferramentas da área de secagem
+PROMPT_CARWASH_TUNNEL,E: prender el túnel de lavado,E: start the wash tunnel,E: ligar o túnel de lavagem
+HINT_CARWASH_BRUSH,¡Te agarró el cepillo! Ahora estás impecable.,The brush got you! Now you're spotless.,A escova te pegou! Agora você está impecável.
+HINT_CARWASH_TOP_BRUSH,El cepillo de arriba te peinó. Más o menos.,The top brush combed your hair. Sort of.,A escova de cima te penteou. Mais ou menos.
+HINT_CARWASH_BLOWER,¡El soplador te sacó volando!,The blower sent you flying!,O soprador te mandou voando!
+CHORRO_LINE_1,"¡Que brille, que brille!","Make it shine, make it shine!","Que brilhe, que brilhe!"
+CHORRO_LINE_2,"Treinta años lavando autos y nunca vi una mancha que se me resista.","Thirty years washing cars and I've never met a stain that beat me.","Trinta anos lavando carros e nunca vi uma mancha que resistisse a mim."
+CHORRO_LINE_3,"Esta franela es más vieja que usted, oficial. Y más limpia.","This cloth is older than you, officer. And cleaner.","Esta flanela é mais velha que você, policial. E mais limpa."
+CHORRO_LINE_4,"Estamos cerrados por limpieza. ¡Por limpieza de verdad, eh!","We're closed for cleaning. Real cleaning, mind you!","Estamos fechados para limpeza. Limpeza de verdade, hein!"
+CHORRO_PRINTER,"¿Un premium? ¡Ya voy, ya voy! ¡Que nadie toque ese auto!","A premium? Coming, coming! Nobody touch that car!","Um premium? Já vou, já vou! Ninguém toca nesse carro!"
+CHORRO_FIX_1,"Primero el capot, en círculos...","First the hood, in circles...","Primeiro o capô, em círculos..."
+CHORRO_FIX_2,"(de espaldas a todo) ...que brille, que brille...","(back to everything) ...make it shine, make it shine...","(de costas para tudo) ...que brilhe, que brilhe..."
+CHORRO_FIX_3,"Y el toque final: ¡el aliento en el espejito!","And the finishing touch: a breath on the mirror!","E o toque final: um bafinho no espelho!"
+CHORRO_FIX_DONE,"¡Impecable! Ese auto vuelve a la fila como nuevo.","Spotless! That car goes back in line like new.","Impecável! Esse carro volta para a fila como novo."
+CHORRO_HURT,"¡Ojo! ¡Que estoy recién lustrado!","Watch it! I've just been polished!","Cuidado! Acabei de ser polido!"
+CHORRO_DOOR,"¡Mi oficina! ¡Ahí guardo las fichas!","My office! That's where I keep the tokens!","Meu escritório! É lá que guardo as fichas!"
+CHORRO_SAW,"¡Lo estoy viendo, oficial!","I can see you, officer!","Estou vendo você, policial!"
+CHORRO_NOTHING,"Yo de eso no sé nada. Yo solo lavo autos.","I know nothing about that. I just wash cars.","Eu não sei nada disso. Eu só lavo carros."
+CHORRO_OFFENDED,"¡Basta de preguntas! El que pregunta mucho termina enjabonado.","Enough questions! Whoever asks too much ends up soaped.","Chega de perguntas! Quem pergunta demais acaba ensaboado."
+CHORRO_LAWYER,"¡Llamo a mi abogado! ¡Que venga con botas de goma!","I'm calling my lawyer! Tell them to bring rubber boots!","Vou chamar meu advogado! Que venha de galochas!"
+CHORRO_CAUGHT_ON,"¿Otro premium? ¿Quién paga todo esto?","Another premium? Who's paying for all this?","Outro premium? Quem está pagando tudo isso?"
+CHORRO_TUNNEL,"¡Eso no se lava así! ¡El túnel es para autos!","That's not how you wash that! The tunnel is for cars!","Não é assim que se lava isso! O túnel é para carros!"
+CHORRO_WET_FLOOR,"¡Eso no se lava así! ¡Mi piso recién mojado!","That's not how you wash that! My freshly wet floor!","Não é assim que se lava isso! Meu chão recém-molhado!"
+PROMPT_CARWASH_PREMIUM,E: pagar el lavado premium,E: pay for the premium wash,E: pagar a lavagem premium
+PROMPT_CARWASH_CHAMOIS,E: sacar una gamuza seca del canasto,E: take a dry chamois from the basket,E: pegar uma camurça seca do cesto
+HINT_CARWASH_CHAMOIS_MAX,"Ya hay tres gamuzas afuera. Usa una de esas.","There are already three chamois out. Use one of those.","Já tem três camurças fora. Use uma dessas."
+PROMPT_CARWASH_CHAMOIS_HELD,"Una gamuza seca. Que no se moje.","A dry chamois. Don't get it wet.","Uma camurça seca. Não deixe molhar."
+CARWASH_CHAMOIS_WET,¡Plaf! Empapada.,Splat! Soaked.,Plaft! Encharcada.
+PROMPT_POMPITA,E: hablar con Pompita,E: talk to Pompita,E: falar com o Pompita
+PROMPT_POMPITA_CHAMOIS,E: darle la gamuza seca a Pompita,E: give Pompita the dry chamois,E: dar a camurça seca ao Pompita
+POMPITA_RULES,"Todos mis trapos están empapados... Si alguien me trajera una gamuza seca, le contaría cosas...","All my rags are soaked... If someone brought me a dry chamois, I'd tell them things...","Todos os meus panos estão encharcados... Se alguém me trouxesse uma camurça seca, eu contaria umas coisas..."
+POMPITA_AGAIN,"Ya te conté todo. Pero otra gamuza seca no te la rechazo.","I already told you everything. But I won't say no to another dry chamois.","Já te contei tudo. Mas outra camurça seca eu não recuso."
+POMPITA_WON,"¡Seca, sequita! Gracias. Te cuento algo:","Dry, nice and dry! Thanks. Here's something:","Seca, sequinha! Obrigado. Vou te contar uma coisa:"
+POMPITA_NOTHING,"¡Seca, sequita! Gracias... pero no vi nada raro. Solo espuma.","Dry, nice and dry! Thanks... but I didn't see anything weird. Just foam.","Seca, sequinha! Obrigado... mas não vi nada estranho. Só espuma."
+POMPITA_WET,"¿Mojada? ¡Para trapos mojados ya tengo los míos!","Wet? I've got plenty of wet rags of my own!","Molhada? Panos molhados eu já tenho os meus!"
+POMPITA_THANKS,"¡Otra! Con esta seco tres autos.","Another one! I can dry three cars with this.","Outra! Com esta eu seco três carros."
+POMPITA_IDLE_1,"Escurro, escurro, y sigue mojado...","I wring it and wring it, and it's still wet...","Torço, torço, e continua molhado..."
+POMPITA_IDLE_2,"Don Chorro dice que con trapo mojado se seca mejor. No le creo.","Don Chorro says you dry better with a wet rag. I don't believe him.","O Don Chorro diz que com pano molhado se seca melhor. Não acredito."
+POMPITA_IDLE_3,"En ese canasto hay gamuzas secas... pero si cruzo el túnel se mojan.","There are dry chamois in that basket... but if I cross the tunnel they get wet.","Naquele cesto tem camurças secas... mas se eu atravesso o túnel elas molham."
+BRIEF_CARWASH_TIP_B,"Llegó una denuncia anónima: en La Espuma Loca lavan más que autos.","We got an anonymous tip: at La Espuma Loca they wash more than cars.","Chegou uma denúncia anônima: no La Espuma Loca lavam mais do que carros."
+BRIEF_CARWASH_TIP_D,"El frente está abierto, pero la oficina de Don Chorro está cerrada con llave. Y ojo con el túnel: lo que entra, sale mojado.","The front is open, but Don Chorro's office is locked. And watch the tunnel: whatever goes in comes out wet.","A frente está aberta, mas o escritório do Don Chorro está trancado. E cuidado com o túnel: o que entra sai molhado."
+BRIEF_CARWASH_TIP_E,"Y no rompan nada: los parabrisas y las ceras se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the windshields and the wax come out of your pay. Press Q to see your checklist.","E não quebrem nada: os para-brisas e as ceras eu desconto do salário. Com Q vocês veem a planilha do que têm que fazer."
+BRIEF_LAUNDERED_MONEY_B,"Don Chorro lava plata robada en el túnel. Literalmente: con agua y jabón.","Don Chorro launders stolen money in the tunnel. Literally: with soap and water.","O Don Chorro lava dinheiro roubado no túnel. Literalmente: com água e sabão."
+BRIEF_LAUNDERED_MONEY_C,"Traigan el bolso con los billetes en el baúl del patrullero.","Bring the bag with the bills in the patrol car's trunk.","Tragam a bolsa com as notas no porta-malas da viatura."
+BRIEF_LAUNDERED_MONEY_D,"Si encuentran el cuaderno con las dos cuentas o la plancha, mejor: todo suma.","If you find the notebook with the two sets of books or the iron, even better: it all counts.","Se acharem o caderno com as duas contas ou o ferro de passar, melhor: tudo conta."
+OBJ_FIND_CASH_BAG,Llevarse el bolso con los billetes robados,Take the bag with the stolen bills,Levar a bolsa com as notas roubadas
+OBJ_EXTRA_TWO_BOOKS,Extra: el cuaderno con las dos cuentas,Extra: the notebook with the two sets of books,Extra: o caderno com as duas contas
+OBJ_EXTRA_IRON,Extra: la plancha,Extra: the iron,Extra: o ferro de passar
+SUSPECT_laundered_money,La plata lavada,The laundered money,O dinheiro lavado
+SUSPECT_stolen_car,El auto robado,The stolen car,O carro roubado
+SUSPECT_fake_shampoo,El champú trucho,The fake shampoo,O xampu falsificado
+SUSPECT_brush_painting,El cuadro en el cepillo,The painting in the brush,O quadro na escova
+SUSPECT_meter_coins,Las monedas de los parquímetros,The parking meter coins,As moedas dos parquímetros
+SUSPECT_smuggled_parrot,El loro de contrabando,The smuggled parrot,O papagaio contrabandeado
+CLUE_SUSPECT_laundered_money,"Un papel mojado: «Lavado completo: 3 bolsos. Secado a mano. Planchar antes de gastar».","A wet note: «Full wash: 3 bags. Hand dried. Iron before spending».","Um papel molhado: «Lavagem completa: 3 bolsas. Secagem à mão. Passar antes de gastar»."
+CLUE_SUSPECT_stolen_car,"Una boleta de compra: «Cinta adhesiva: 40 rollos. Para las patentes».","A receipt: «Duct tape: 40 rolls. For the license plates».","Um recibo: «Fita adesiva: 40 rolos. Para as placas»."
+CLUE_SUSPECT_fake_shampoo,"Una etiqueta: «Champú Brillo Total. Ingredientes: no preguntar».","A label: «Total Shine Shampoo. Ingredients: don't ask».","Um rótulo: «Xampu Brilho Total. Ingredientes: não pergunte»."
+CLUE_SUSPECT_brush_painting,"Un recorte de diario: «Roban un cuadro del museo. Mide lo mismo que un cepillo de lavadero».","A newspaper clipping: «Painting stolen from the museum. It's the same size as a car wash brush».","Um recorte de jornal: «Roubam um quadro do museu. Mede o mesmo que uma escova de lava-rápido»."
+CLUE_SUSPECT_meter_coins,"Una lista: «Parquímetro 1: vacío. Parquímetro 2: vacío. Parquímetro 3: mañana».","A list: «Parking meter 1: empty. Parking meter 2: empty. Parking meter 3: tomorrow».","Uma lista: «Parquímetro 1: vazio. Parquímetro 2: vazio. Parquímetro 3: amanhã»."
+CLUE_SUSPECT_smuggled_parrot,"Una bolsa de alpiste vacía. Atrás dice: «Que no hable. Ni de la aduana».","An empty bag of birdseed. On the back: «Don't let it talk. Especially about customs».","Um saco vazio de alpiste. Atrás diz: «Que não fale. Nem da alfândega»."
+OBJ_ENTER_CARWASH,Entrar al lavadero (el frente está abierto),Get into the car wash (the front is open),Entrar no lava-rápido (a frente está aberta)
+OBJ_GUESS_CARWASH,"Averiguar qué pasa en el lavadero (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the car wash (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no lava-rápido (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_CARWASH,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_CARWASH,Denuncia de Don Chorro: %d%%,Don Chorro's complaint: %d%%,Denúncia do Don Chorro: %d%%
+CHORRO_SLIP,"«¡Yo no escondí nada %s!... Digo, ¡que brille, que brille!»","“I didn't hide anything %s!... I mean, make it shine, make it shine!”","“Eu não escondi nada %s!... Quer dizer, que brilhe, que brilhe!”"
+CLUE_POMPITA,Pompita vio a Don Chorro esconder algo %s,Pompita saw Don Chorro hide something %s,O Pompita viu o Don Chorro esconder algo %s
+POMPITA_CLUE_laundered_money,"Vi a Don Chorro esconder algo %s. Y anoche planchaba billetes... mojados.","I saw Don Chorro hide something %s. And last night he was ironing bills... wet ones.","Vi o Don Chorro esconder algo %s. E ontem à noite ele passava notas a ferro... molhadas."
+CLUE_BILLS_DRYING,"Entre las toallas de la soga hay billetes colgados a secar. Los billetes no se lavan.","Among the towels on the line there are bills hanging to dry. Bills don't get washed.","Entre as toalhas do varal há notas penduradas secando. Notas não se lavam."
+CARWASH_BILLS,$ $ $,$ $ $,$ $ $
+CRIME_owner_carwash,"¡Novatos! Ayer se trajeron a Don Chorro, el dueño de La Espuma Loca, y lo tenemos en la sala de interrogatorio. Algo escondió en el lavadero que no encontraron.","Rookies! Yesterday you brought in Don Chorro, La Espuma Loca's owner, and he's in the interrogation room. He hid something at the car wash that you didn't find.","Novatos! Ontem vocês trouxeram o Don Chorro, o dono do La Espuma Loca, e ele está na sala de interrogatório. Ele escondeu algo no lava-rápido que vocês não acharam."
+CONFESS_owner_carwash,"¡Está bien! ¡Fui yo! Pero admitan que quedó todo reluciente.","Fine! It was me! But admit it all came out spotless.","Tá bom! Fui eu! Mas admitam que ficou tudo brilhando."
+BRIEF_STOLEN_CAR_B,"Uno de los autos de la fila es robado. Don Chorro lo pasa por el túnel hasta que no lo reconozca ni su dueño.","One of the cars in line is stolen. Don Chorro runs it through the tunnel until not even its owner would know it.","Um dos carros da fila é roubado. O Don Chorro passa ele pelo túnel até nem o dono reconhecer."
+BRIEF_STOLEN_CAR_C,"Traigan las patentes verdaderas del auto en el baúl del patrullero.","Bring the car's real license plates in the patrol car's trunk.","Tragam as placas verdadeiras do carro no porta-malas da viatura."
+BRIEF_STOLEN_CAR_D,"Si encuentran los papeles truchos o el destornillador, mejor: todo suma.","If you find the fake papers or the screwdriver, even better: it all counts.","Se acharem os documentos falsos ou a chave de fenda, melhor: tudo conta."
+OBJ_FIND_PLATES,Llevarse las patentes verdaderas del auto robado,Take the stolen car's real license plates,Levar as placas verdadeiras do carro roubado
+OBJ_EXTRA_CAR_PAPERS,Extra: los papeles truchos,Extra: the fake papers,Extra: os documentos falsos
+OBJ_EXTRA_SCREWDRIVER,Extra: el destornillador,Extra: the screwdriver,Extra: a chave de fenda
+POMPITA_CLUE_stolen_car,"Vi a Don Chorro esconder algo %s. Y ese auto ya pasó por el túnel como veinte veces. Cada vez sale de otro color.","I saw Don Chorro hide something %s. And that car has been through the tunnel like twenty times. It comes out a different color each time.","Vi o Don Chorro esconder algo %s. E aquele carro já passou pelo túnel umas vinte vezes. Cada vez sai de uma cor."
+CLUE_TAPED_PLATE,"El primer auto de la fila tiene la patente pegada con cinta. Las patentes no se pegan con cinta.","The first car in line has its license plate taped on. License plates don't get taped on.","O primeiro carro da fila tem a placa colada com fita. Placas não se colam com fita."
+CARWASH_TAPED_PLATE,¿Cinta?,Tape?,Fita?
+BRIEF_FAKE_SHAMPOO_B,"Don Chorro llena botellas con algo que no es champú y las vende como si fueran de marca.","Don Chorro fills bottles with something that isn't shampoo and sells them as the real brand.","O Don Chorro enche garrafas com algo que não é xampu e vende como se fossem de marca."
+BRIEF_FAKE_SHAMPOO_C,"Traigan la caja de champú trucho en el baúl del patrullero.","Bring the box of fake shampoo in the patrol car's trunk.","Tragam a caixa de xampu falsificado no porta-malas da viatura."
+BRIEF_FAKE_SHAMPOO_D,"Si encuentran las etiquetas falsas o el embudo, mejor: todo suma.","If you find the fake labels or the funnel, even better: it all counts.","Se acharem os rótulos falsos ou o funil, melhor: tudo conta."
+OBJ_FIND_SHAMPOO_BOX,Llevarse la caja de champú trucho,Take the box of fake shampoo,Levar a caixa de xampu falsificado
+OBJ_EXTRA_SHAMPOO_LABELS,Extra: las etiquetas falsas,Extra: the fake labels,Extra: os rótulos falsos
+POMPITA_CLUE_fake_shampoo,"Vi a Don Chorro esconder algo %s. Y desde que cambió el champú, la espuma sale verde y me pica la nariz.","I saw Don Chorro hide something %s. And ever since he changed the shampoo, the foam comes out green and makes my nose itch.","Vi o Don Chorro esconder algo %s. E desde que ele trocou o xampu, a espuma sai verde e meu nariz coça."
+CLUE_GREEN_FOAM,"La espuma es verde y huele a remedio para la tos. El champú no huele así.","The foam is green and smells like cough syrup. Shampoo doesn't smell like that.","A espuma é verde e cheira a xarope para tosse. Xampu não cheira assim."
+CARWASH_SMELL,¡Puaj! ¿Qué es ese olor?,Yuck! What's that smell?,Eca! Que cheiro é esse?
+BRIEF_BRUSH_PAINTING_B,"Don Chorro esconde un cuadro robado del museo enrollado adentro de un cepillo del túnel. Nadie revisa un cepillo.","Don Chorro is hiding a painting stolen from the museum, rolled up inside one of the tunnel's brushes. Nobody checks a brush.","O Don Chorro esconde um quadro roubado do museu enrolado dentro de uma escova do túnel. Ninguém revista uma escova."
+BRIEF_BRUSH_PAINTING_C,"Traigan el cuadro enrollado en el baúl del patrullero. Ya lo sacó del cepillo: búsquenlo.","Bring the rolled-up painting in the patrol car's trunk. He already took it out of the brush: find it.","Tragam o quadro enrolado no porta-malas da viatura. Ele já tirou da escova: procurem."
+BRIEF_BRUSH_PAINTING_D,"Si encuentran el plano del museo o el cúter, mejor: todo suma.","If you find the museum's plan or the box cutter, even better: it all counts.","Se acharem a planta do museu ou o estilete, melhor: tudo conta."
+OBJ_FIND_ROLLED_PAINTING,Llevarse el cuadro robado enrollado,Take the rolled-up stolen painting,Levar o quadro roubado enrolado
+OBJ_EXTRA_MUSEUM_PLAN,Extra: el plano del museo,Extra: the museum's plan,Extra: a planta do museu
+OBJ_EXTRA_CUTTER,Extra: el cúter,Extra: the box cutter,Extra: o estilete
+POMPITA_CLUE_brush_painting,"Vi a Don Chorro esconder algo %s. Y desde la semana pasada uno de los cepillos gira chueco y deja todo manchado de colores.","I saw Don Chorro hide something %s. And since last week one of the brushes spins crooked and leaves everything smeared with colors.","Vi o Don Chorro esconder algo %s. E desde a semana passada uma das escovas gira torta e deixa tudo manchado de cores."
+CLUE_CROOKED_BRUSH,"Uno de los cepillos del túnel está chueco y tiene manchas de pintura al óleo. Los cepillos no pintan.","One of the tunnel's brushes is crooked and smeared with oil paint. Brushes don't paint.","Uma das escovas do túnel está torta e manchada de tinta a óleo. Escovas não pintam."
+CARWASH_CROOKED_BRUSH,¿Pintura?,Paint?,Tinta?
+BRIEF_METER_COINS_B,"Don Chorro vacía los parquímetros de la ciudad y hace pasar las monedas por fichas del lavadero.","Don Chorro empties the city's parking meters and passes the coins off as car wash tokens.","O Don Chorro esvazia os parquímetros da cidade e faz as moedas passarem por fichas do lava-rápido."
+BRIEF_METER_COINS_C,"Traigan la bolsa de monedas en el baúl del patrullero. Pesa: llévenla entre dos.","Bring the sack of coins in the patrol car's trunk. It's heavy: carry it together.","Tragam o saco de moedas no porta-malas da viatura. É pesado: levem em dupla."
+BRIEF_METER_COINS_D,"Si encuentran la llave de los parquímetros o la bolsa de fichas falsas, mejor: todo suma.","If you find the parking meters' key or the bag of fake tokens, even better: it all counts.","Se acharem a chave dos parquímetros ou o saco de fichas falsas, melhor: tudo conta."
+OBJ_FIND_COIN_SACK,Llevarse la bolsa de monedas de los parquímetros,Take the sack of parking meter coins,Levar o saco de moedas dos parquímetros
+OBJ_EXTRA_METER_KEY,Extra: la llave de los parquímetros,Extra: the parking meters' key,Extra: a chave dos parquímetros
+OBJ_EXTRA_FAKE_TOKENS,Extra: la bolsa de fichas falsas,Extra: the bag of fake tokens,Extra: o saco de fichas falsas
+POMPITA_CLUE_meter_coins,"Vi a Don Chorro esconder algo %s. Y la máquina de fichas está tan llena que escupe fichas sola.","I saw Don Chorro hide something %s. And the token machine is so full it spits out tokens on its own.","Vi o Don Chorro esconder algo %s. E a máquina de fichas está tão cheia que cospe fichas sozinha."
+CLUE_TOKEN_SPIT,"La máquina de fichas escupió una ficha sola. Está tan llena que no le entra nada más.","The token machine spat out a token on its own. It's so full nothing else fits.","A máquina de fichas cuspiu uma ficha sozinha. Está tão cheia que não cabe mais nada."
+CARWASH_CLINK,¡Clinc!,Clink!,Plim!
+CARWASH_VACUUM_CLINK,"Clinc, clinc...","Clink, clink...","Plim, plim..."
+BRIEF_SMUGGLED_PARROT_B,"Don Chorro tiene escondido un loro de contrabando y espera al comprador. Lo traen y lo llevan en los autos que lava.","Don Chorro has a smuggled parrot hidden away and is waiting for the buyer. They move it in the cars he washes.","O Don Chorro tem um papagaio contrabandeado escondido e espera o comprador. Levam e trazem nos carros que ele lava."
+BRIEF_SMUGGLED_PARROT_C,"Traigan la jaula con el loro en el baúl del patrullero. Con cuidado: es la prueba y además es un loro.","Bring the cage with the parrot in the patrol car's trunk. Carefully: it's the evidence, and it's also a parrot.","Tragam a gaiola com o papagaio no porta-malas da viatura. Com cuidado: é a prova e, além disso, é um papagaio."
+BRIEF_SMUGGLED_PARROT_D,"Si encuentran el permiso de exportación trucho o la bolsa de alpiste, mejor: todo suma.","If you find the fake export permit or the bag of birdseed, even better: it all counts.","Se acharem a licença de exportação falsa ou o saco de alpiste, melhor: tudo conta."
+OBJ_FIND_PARROT_CAGE,Llevarse la jaula con el loro de contrabando,Take the cage with the smuggled parrot,Levar a gaiola com o papagaio contrabandeado
+OBJ_EXTRA_EXPORT_PERMIT,Extra: el permiso de exportación trucho,Extra: the fake export permit,Extra: a licença de exportação falsa
+OBJ_EXTRA_BIRDSEED,Extra: la bolsa de alpiste,Extra: the bag of birdseed,Extra: o saco de alpiste
+POMPITA_CLUE_smuggled_parrot,"Vi a Don Chorro esconder algo %s. Y a veces lo oigo hablar solo... pero Don Chorro está en otro lado.","I saw Don Chorro hide something %s. And sometimes I hear him talking to himself... but Don Chorro is somewhere else.","Vi o Don Chorro esconder algo %s. E às vezes ouço ele falando sozinho... mas o Don Chorro está em outro lugar."
+PARROT_PREMIUM,¡Lavado premium!,Premium wash!,Lavagem premium!
+PARROT_SAYS,"¡Crrraaa! %s","Squaaawk! %s","Crrraaa! %s"
+CLUE_PARROT_PREMIUM,"Desde un escondite alguien grita «¡Lavado premium!» con voz de pájaro. Los escondites no hablan.","Someone in a hiding place squawks «Premium wash!» in a bird's voice. Hiding places don't talk.","De um esconderijo alguém grita «Lavagem premium!» com voz de pássaro. Esconderijos não falam."
+HINT_ESCAPE_carwash,¡Don Chorro vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Chorro saw the evidence and is getting away in his car! You have one minute to catch him.,O Don Chorro viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CHASE_CARWASH_LINE_1,"¡Me voy recién lavado y encerado! ¡No me alcanzan!","I'm off freshly washed and waxed! You'll never catch me!","Vou embora recém-lavado e encerado! Não me alcançam!"
+CHASE_CARWASH_LINE_2,"¡Cuidado con los charcos, que me salpican el auto!","Watch the puddles, they'll splash my car!","Cuidado com as poças, que respingam no meu carro!"
+CHASE_CARWASH_LINE_3,"¡Está bien, me rindo! Pero el lavado premium no se los devuelvo.","Fine, I give up! But I'm not refunding the premium wash.","Tá bom, eu me rendo! Mas a lavagem premium eu não devolvo."

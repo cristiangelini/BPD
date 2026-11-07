@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/evidence.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/carwash_ledger.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.34, 0.02, 0.22)
+
+[node name="Ledger" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.2
+script = ExtResource("1")
+full_value = 300.0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+
+[node name="ValueLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0)
+billboard = 1
+pixel_size = 0.004
+outline_size = 8
+text = "0"

@@ -196,6 +196,7 @@ func current_prompt() -> String:
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
 				or aimed is BankVine \
 				or (aimed is ResurfacerDriver and $Grabber.held is CocoaCup) \
+				or (aimed is RagBoy and $Grabber.held is Chamois) \
 				or aimed is CellHeater \
 				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
 				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)) \
@@ -583,6 +584,10 @@ func use() -> bool:
 		return true
 	# A hot chocolate for Copito at the rink (allanamiento-pista.md, step 4).
 	if $Grabber.held is CocoaCup and _usable_target() is ResurfacerDriver:
+		act("use", _usable_target())
+		return true
+	# A dry chamois for Pompita at the car wash (allanamiento-lavadero.md, step 4).
+	if $Grabber.held is Chamois and _usable_target() is RagBoy:
 		act("use", _usable_target())
 		return true
 	# A pupil's card back to them, or a candy for one who cries (politico-escuela.md, step 5).
