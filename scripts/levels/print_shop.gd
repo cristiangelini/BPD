@@ -84,6 +84,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_STICKER_ALBUM", "OBJ_EXTRA_STICKER_PACK"],
 		"rig": preload("res://scripts/case/print_shop/fake_stickers_rig.gd"),
 	},
+	"fake_fines": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_FINES_B", "BRIEF_FAKE_FINES_C", "BRIEF_FAKE_FINES_D"],
+		"find": "OBJ_FIND_FAKE_STATION_STAMP",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/fake_station_stamp.tscn"), preload("res://scenes/props/fines_pad.tscn"),
+			preload("res://scenes/props/toy_police_cap.tscn")],
+		"half_heights": [0.09, 0.02, 0.05],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_FINES_PAD", "OBJ_EXTRA_TOY_POLICE_CAP"],
+		"rig": preload("res://scripts/case/print_shop/fake_fines_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
 ## side and by the binding table.
