@@ -1,0 +1,399 @@
+class_name PrintShop
+extends Node3D
+
+## The print shop "La Tinta Loca" as a place to raid (docs/diseno/allanamiento-imprenta.md, step 1): a brick shed in
+## the city with its front to +Z and the wide door open on the west side under the sign and its smiling inkwell. By
+## the front, the counter with the till and the bell, and the display of fine invitations behind its four glass panes.
+## In the middle the rotativa (still, step 2) with the four ink barrels and the empty one beside it; along the west
+## wall the chibalete and the plates cabinet, with the binding table and the paper guillotine in front of them; on the
+## east wall the shelf of ink jars. At the back, the paper store (reams and rolls), the fax, the recycling basket and
+## the owner's office, locked with the till's key. Something thrown hard at a display pane or at an ink jar breaks it,
+## a fine each. Every number here is (propuesta).
+
+signal pane_broken(index: int)
+signal jar_broken(index: int)
+
+const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const PRESS_MODEL := preload("res://assets/models/printing_press.glb")
+const BARREL_MODELS: Array[PackedScene] = [preload("res://assets/models/ink_barrel_blue.glb"),
+	preload("res://assets/models/ink_barrel_red.glb"), preload("res://assets/models/ink_barrel_yellow.glb"),
+	preload("res://assets/models/ink_barrel_black.glb")]
+const EMPTY_BARREL_MODEL := preload("res://assets/models/empty_ink_barrel.glb")
+const TYPE_CASE_MODEL := preload("res://assets/models/type_case.glb")
+const GUILLOTINE_MODEL := preload("res://assets/models/paper_guillotine.glb")
+const ROLL_MODEL := preload("res://assets/models/paper_roll.glb")
+const FAX_MODEL := preload("res://assets/models/fax_machine.glb")
+const JAR_MODEL := preload("res://assets/models/ink_jar.glb")
+const BELL_MODEL := preload("res://assets/models/counter_bell.glb")
+const INKWELL_MODEL := preload("res://assets/models/smiling_inkwell.glb")
+const HALF_X := 14.0
+const HALF_Z := 9.0
+const FLOOR_TOP := 0.06
+## The shed's walls and roof, and the wide front door (open) from ENTRANCE_X - ENTRANCE_HALF to + ENTRANCE_HALF.
+const SHOP_TOP := 4.5
+const ENTRANCE_X := -6.5
+const ENTRANCE_HALF := 1.3
+const ENTRANCE_TOP := 2.6
+## The rotativa along X in the middle: its infeed table (the belt, -X), the roller housing (open underneath up to
+## HOUSING_LOW) and the output tray (+X). In this scene's space, from the press's middle.
+const PRESS_AT := Vector3(0.0, FLOOR_TOP, 0.0)
+const PRESS_HALF_Z := 0.7
+const BELT_X := Vector2(-4.0, -0.5)
+const BELT_TOP := 0.93
+const HOUSING_X := Vector2(-0.5, 1.5)
+const HOUSING_LOW := 0.6
+const HOUSING_TOP := 2.3
+const TRAY_X := Vector2(1.5, 4.0)
+const TRAY_TOP := 0.85
+## The four ink barrels (blue, red, yellow, black) by the press, and the empty one a bit further.
+const BARRELS: Array[Vector3] = [Vector3(-3.5, FLOOR_TOP, -2.0), Vector3(-2.5, FLOOR_TOP, -2.0),
+	Vector3(-1.5, FLOOR_TOP, -2.0), Vector3(-0.5, FLOOR_TOP, -2.0)]
+const BARREL_RADIUS := 0.32
+const BARREL_TOP := 0.9
+const EMPTY_BARREL_AT := Vector3(4.8, FLOOR_TOP, -2.0)
+## By the front: the counter with the till and the bell, and the display of invitations (four glass panes, each a
+## fine) with a gap behind it against the front wall.
+const COUNTER_AT := Vector3(-10.5, FLOOR_TOP, 5.5)
+const COUNTER_SIZE := Vector3(2.4, 1.0, 0.8)
+const DISPLAY_AT := Vector3(2.5, FLOOR_TOP, 7.6)
+const DISPLAY_SIZE := Vector3(3.2, 1.2, 0.6)
+const DISPLAY_PANES := 4
+const PANE_SPEED := 3.0
+const PANE_FINE := 30
+## Along the west wall: the chibalete (with a drawer pulled out on top), the plates cabinet, and in front of them the
+## binding table and the paper guillotine.
+const TYPE_CASE_AT := Vector3(-13.5, FLOOR_TOP, 1.0)
+const DRAWER_AT := Vector3(-12.9, FLOOR_TOP + 1.1, 1.0)
+const CABINET_AT := Vector3(-13.4, FLOOR_TOP, -3.0)
+const CABINET_SIZE := Vector3(0.9, 1.9, 1.6)
+const BINDING_AT := Vector3(-8.0, FLOOR_TOP, 2.5)
+const BINDING_SIZE := Vector3(2.0, 0.8, 1.0)
+const GUILLOTINE_AT := Vector3(-8.0, FLOOR_TOP, -2.0)
+## On the east wall, the shelf of ink jars (each a fine).
+const SHELF_AT := Vector3(13.5, FLOOR_TOP, 3.0)
+const SHELF_SIZE := Vector3(0.45, 1.4, 3.2)
+const SHELF_BOARD := 0.7
+const INK_JARS := 8
+const JARS_PER_ROW := 4
+const JAR_FINE := 10
+## At the back: the paper store (two rolls on the floor and the reams' stack with a gap behind it), the fax, the
+## recycling basket and the office (east, locked).
+const ROLLS: Array[Vector3] = [Vector3(-12.3, FLOOR_TOP, -6.5), Vector3(-10.0, FLOOR_TOP, -6.5)]
+const REAMS_AT := Vector3(-6.5, FLOOR_TOP, -7.7)
+const REAMS_SIZE := Vector3(2.4, 1.4, 0.8)
+const FAX_AT := Vector3(0.0, FLOOR_TOP, -8.4)
+const BASKET_AT := Vector3(3.5, FLOOR_TOP, -8.2)
+const BASKET_SIZE := Vector3(0.8, 0.6, 0.7)
+const OFFICE_WEST := 7.0
+const OFFICE_FRONT := -3.0
+const OFFICE_DOOR_X := 10.5
+
+## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
+const SPOTS := [
+	{"id": "under_press_rollers", "at": Vector3(0.5, FLOOR_TOP, 0.0), "heavy": true},
+	{"id": "among_paper_rolls", "at": Vector3(-11.15, FLOOR_TOP, -6.5), "heavy": true},
+	{"id": "behind_reams", "at": Vector3(-6.5, FLOOR_TOP, -8.5), "heavy": true},
+	{"id": "in_empty_ink_barrel", "at": Vector3(4.8, FLOOR_TOP + 0.05, -2.0), "heavy": true},
+	{"id": "in_print_office", "at": Vector3(12.0, FLOOR_TOP, -7.0), "heavy": true},
+	{"id": "under_binding_table", "at": Vector3(-8.0, FLOOR_TOP, 2.5), "heavy": true},
+	{"id": "in_print_counter", "at": Vector3(-10.5, FLOOR_TOP + 0.05, 5.5), "heavy": false},
+	{"id": "in_type_case_drawer", "at": DRAWER_AT + Vector3(0, 0.05, 0), "heavy": false},
+	{"id": "under_guillotine", "at": Vector3(-8.0, FLOOR_TOP, -2.0), "heavy": false},
+	{"id": "behind_invitations", "at": Vector3(2.5, FLOOR_TOP, 8.45), "heavy": false},
+	{"id": "in_recycling_basket", "at": BASKET_AT + Vector3(0, 0.05, 0), "heavy": false},
+	{"id": "on_plates_cabinet", "at": CABINET_AT + Vector3(0, CABINET_SIZE.y, 0), "heavy": false},
+]
+
+const FLOOR := Color(0.62, 0.6, 0.56)
+const BRICK := Color(0.72, 0.4, 0.3)
+const WALL_IN := Color(0.9, 0.87, 0.78)
+const WOOD := Color(0.55, 0.36, 0.22)
+const STEEL := Color(0.5, 0.52, 0.56)
+const PAPER := Color(0.96, 0.95, 0.9)
+const SIGN_BLUE := Color(0.18, 0.37, 0.85)
+const GLASS := Color(0.8, 0.9, 0.95, 0.3)
+const CRACKED := Color(0.45, 0.5, 0.5, 0.75)
+
+## Where the patrol car parks at the station, in this scene's space.
+var station_parking: Transform3D
+var city_map: CityMap
+var office_door: FrontDoor
+var till: Till
+## The display's panes (each a body with its glass), the broken ones by index, and the ink jars.
+var panes: Array[StaticBody3D] = []
+var cracked: Array[int] = []
+var jars: Array[Node3D] = []
+var broken_jars: Array[int] = []
+var broken_goods := 0
+## Money taken off the case pay: the panes and the jars.
+var fines := 0
+## Same seed, same print shop (the stories and the hiding spots come from it, step 6).
+@export var case_seed := 0
+var _build: PlaceBuilder
+
+
+func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	_build = PlaceBuilder.new($Built)
+	_build_shed()
+	_build_press()
+	_build_front()
+	_build_west()
+	_build_back()
+	var city: Node3D = $City
+	city.transform = CityLayout.anchor("print_shop")
+	station_parking = city.transform * CityLayout.parking("station")
+	_park_car()
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "print_shop", $PatrolCar)
+
+
+func _park_car() -> void:
+	var car: PatrolCar = $PatrolCar
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
+	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+
+
+## The floor, the brick walls with the wide door open in the front, the roof, the lights, and the sign over the door
+## with its smiling inkwell.
+func _build_shed() -> void:
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	_build.wall_at("x", -HALF_Z, -HALF_X, HALF_X, 0.0, SHOP_TOP, [], BRICK)
+	_build.wall_at("z", -HALF_X, -HALF_Z, HALF_Z, 0.0, SHOP_TOP, [], BRICK)
+	_build.wall_at("z", HALF_X, -HALF_Z, HALF_Z, 0.0, SHOP_TOP, [], BRICK)
+	_build.wall_at("x", HALF_Z, -HALF_X, ENTRANCE_X - ENTRANCE_HALF, 0.0, SHOP_TOP, [], BRICK)
+	_build.wall_at("x", HALF_Z, ENTRANCE_X + ENTRANCE_HALF, HALF_X, 0.0, SHOP_TOP, [], BRICK)
+	_build.box(Vector3(ENTRANCE_X, (ENTRANCE_TOP + SHOP_TOP) / 2, HALF_Z),
+		Vector3(ENTRANCE_HALF * 2, SHOP_TOP - ENTRANCE_TOP, PlaceBuilder.WALL), BRICK)
+	var roof := _build.body(Vector3(0, SHOP_TOP + 0.1, 0))
+	roof.name = "Roof"
+	_build.shape(roof, Vector3(HALF_X * 2, 0.2, HALF_Z * 2))
+	var roof_look := MeshInstance3D.new()
+	var roof_mesh := BoxMesh.new()
+	roof_mesh.size = Vector3(HALF_X * 2 + 0.4, 0.2, HALF_Z * 2 + 0.4)
+	roof_look.mesh = roof_mesh
+	roof_look.material_override = _build.material(BRICK.darkened(0.4))
+	roof.add_child(roof_look)
+	for x: float in [-9.0, 0.0, 9.0]:
+		for z: float in [-5.0, 4.0]:
+			_build.light(Vector3(x, SHOP_TOP - 0.4, z)).omni_range = 9.0
+	_build.mesh_box(Vector3(ENTRANCE_X, SHOP_TOP - 0.9, HALF_Z + 0.12), Vector3(7.0, 1.0, 0.1), SIGN_BLUE)
+	var sign_label := Label3D.new()
+	sign_label.text = "PLACE_PRINT_SHOP"
+	sign_label.font_size = 64
+	sign_label.pixel_size = 0.01
+	sign_label.outline_size = 14
+	sign_label.position = Vector3(ENTRANCE_X, SHOP_TOP - 0.9, HALF_Z + 0.19)
+	$Built.add_child(sign_label)
+	_model(INKWELL_MODEL, Vector3(ENTRANCE_X + 4.2, SHOP_TOP - 1.4, HALF_Z + 0.6))
+
+
+## The rotativa (still, step 2): the belt table, the roller housing on its four posts with room underneath, the
+## output tray, and the four ink barrels and the empty one beside it.
+func _build_press() -> void:
+	_model(PRESS_MODEL, PRESS_AT)
+	var width := PRESS_HALF_Z * 2
+	_build.shape(_build.body(PRESS_AT + Vector3((BELT_X.x + BELT_X.y) / 2, BELT_TOP - 0.05, 0)),
+		Vector3(BELT_X.y - BELT_X.x, 0.1, width))
+	var housing_high := HOUSING_TOP - HOUSING_LOW
+	_build.shape(_build.body(PRESS_AT + Vector3((HOUSING_X.x + HOUSING_X.y) / 2, HOUSING_LOW + housing_high / 2, 0)),
+		Vector3(HOUSING_X.y - HOUSING_X.x, housing_high, width))
+	_build.shape(_build.body(PRESS_AT + Vector3((TRAY_X.x + TRAY_X.y) / 2, TRAY_TOP - 0.05, 0)),
+		Vector3(TRAY_X.y - TRAY_X.x, 0.1, width))
+	for x: float in [BELT_X.x + 0.1, HOUSING_X.x + 0.1, HOUSING_X.y - 0.1, TRAY_X.y - 0.1]:
+		for z: float in [-PRESS_HALF_Z + 0.1, PRESS_HALF_Z - 0.1]:
+			var low := HOUSING_LOW if x > BELT_X.y and x < TRAY_X.x else TRAY_TOP - 0.1
+			_build.shape(_build.body(PRESS_AT + Vector3(x, low / 2, z)), Vector3(0.1, low, 0.1))
+	for i in BARRELS.size():
+		_model(BARREL_MODELS[i], BARRELS[i])
+		_cylinder(BARRELS[i] + Vector3(0, BARREL_TOP / 2, 0), BARREL_RADIUS, BARREL_TOP)
+	_model(EMPTY_BARREL_MODEL, EMPTY_BARREL_AT)
+	var side := BARREL_RADIUS * 1.6
+	_build.shape(_build.body(EMPTY_BARREL_AT + Vector3(0, 0.025, 0)), Vector3(side, 0.05, side))
+	for turn in 4:
+		var out := Vector3(side / 2, 0, 0).rotated(Vector3.UP, turn * PI / 2)
+		var size := Vector3(0.05, BARREL_TOP, side) if turn % 2 == 0 else Vector3(side, BARREL_TOP, 0.05)
+		_build.shape(_build.body(EMPTY_BARREL_AT + out + Vector3(0, BARREL_TOP / 2, 0)), size)
+
+
+## By the front: the counter with the till (open at the back, something fits inside) and the bell, the display of
+## invitations with its four panes, and the shelf of ink jars on the east wall.
+func _build_front() -> void:
+	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
+	till = Till.new()
+	till.position = COUNTER_AT + Vector3(0.5, COUNTER_SIZE.y + Till.SIZE.y / 2, 0)
+	till.key_hint = "HINT_TILL_KEY_PRINT_SHOP"
+	add_child(till)
+	_model(BELL_MODEL, COUNTER_AT + Vector3(-0.6, COUNTER_SIZE.y, 0.1))
+	_build.box(DISPLAY_AT + Vector3(0, 0.25, 0), Vector3(DISPLAY_SIZE.x, 0.5, DISPLAY_SIZE.z), WOOD)
+	_build.box(DISPLAY_AT + Vector3(0, DISPLAY_SIZE.y + 0.03, 0), Vector3(DISPLAY_SIZE.x, 0.06, DISPLAY_SIZE.z), WOOD)
+	for i in 6:
+		var at := DISPLAY_AT + Vector3(-1.3 + i * 0.52, 0.52, 0.05)
+		_build.mesh_box(at, Vector3(0.3, 0.03, 0.22), [PAPER, Color(0.95, 0.8, 0.85), Color(0.85, 0.9, 1.0)][i % 3])
+	var pane_width := DISPLAY_SIZE.x / DISPLAY_PANES
+	for i in DISPLAY_PANES:
+		_pane(DISPLAY_AT + Vector3(-DISPLAY_SIZE.x / 2 + pane_width * (i + 0.5), 0.85, -DISPLAY_SIZE.z / 2),
+			Vector3(pane_width - 0.04, 0.7, 0.04))
+	_build.open_box(SHELF_AT, SHELF_SIZE, "-x", WOOD)
+	_build.box(SHELF_AT + Vector3(0, SHELF_BOARD, 0), Vector3(SHELF_SIZE.x - 0.1, 0.05, SHELF_SIZE.z - 0.1), WOOD)
+	for i in INK_JARS:
+		var row := 0 if i < JARS_PER_ROW else 1
+		var at := SHELF_AT + Vector3(0, SHELF_BOARD + 0.03 + row * (SHELF_SIZE.y - SHELF_BOARD),
+			-1.2 + (i % JARS_PER_ROW) * 0.8)
+		jars.append(_model(JAR_MODEL, at))
+		var area := _area(at + Vector3(-0.1, 0.12, 0), Vector3(0.6, 0.35, 0.4))
+		area.body_entered.connect(func(hit: Node3D) -> void:
+			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+				break_jar(i))
+
+
+## One glass pane of the display at `center`, `size` big: a body with its glass, and an area in front of it that
+## breaks it when something hits it fast.
+func _pane(center: Vector3, size: Vector3) -> void:
+	var body := _build.body(center)
+	body.name = "Pane%d" % panes.size()
+	_build.shape(body, size)
+	var glass := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = size
+	glass.mesh = box
+	glass.material_override = _glass(GLASS)
+	body.add_child(glass)
+	var index := panes.size()
+	panes.append(body)
+	var area := _area(center, size + Vector3(0, 0, 0.8))
+	area.body_entered.connect(func(hit: Node3D) -> void:
+		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+			break_pane(index))
+
+
+## Along the west wall: the chibalete with its drawer pulled out, the plates cabinet, the binding table and the paper
+## guillotine.
+func _build_west() -> void:
+	_model(TYPE_CASE_MODEL, TYPE_CASE_AT, PI / 2)
+	_build.shape(_build.body(TYPE_CASE_AT + Vector3(0, 0.55, 0)), Vector3(0.6, 1.1, 2.0))
+	_build.open_box(DRAWER_AT, Vector3(0.6, 0.15, 0.5), "top", WOOD.lightened(0.2))
+	_build.box(CABINET_AT + Vector3(0, CABINET_SIZE.y / 2, 0), CABINET_SIZE, WOOD.darkened(0.2))
+	for i in 3:
+		_build.mesh_box(CABINET_AT + Vector3(CABINET_SIZE.x / 2, 0.4 + i * 0.6, 0), Vector3(0.02, 0.4, 1.3),
+			STEEL.lightened(0.2))
+	_build.legs(BINDING_AT, Vector2(BINDING_SIZE.x, BINDING_SIZE.z), BINDING_SIZE.y, WOOD)
+	_build.box(BINDING_AT + Vector3(0, BINDING_SIZE.y + 0.03, 0), Vector3(BINDING_SIZE.x, 0.06, BINDING_SIZE.z), WOOD)
+	for i in 4:
+		_build.mesh_box(BINDING_AT + Vector3(-0.6 + i * 0.4, BINDING_SIZE.y + 0.1, 0), Vector3(0.25, 0.08 + i * 0.03,
+			0.35), [Color(0.7, 0.2, 0.2), Color(0.2, 0.4, 0.7), Color(0.3, 0.6, 0.3), PAPER][i])
+	_model(GUILLOTINE_MODEL, GUILLOTINE_AT)
+	_build.shape(_build.body(GUILLOTINE_AT + Vector3(0, 0.85, 0)), Vector3(1.2, 0.1, 0.8))
+	_build.shape(_build.body(GUILLOTINE_AT + Vector3(0, 1.25, -0.2)), Vector3(1.2, 0.8, 0.15))
+
+
+## At the back: the paper store (rolls and reams), the fax on its table, the recycling basket and the office, locked,
+## with its desk.
+func _build_back() -> void:
+	for at in ROLLS:
+		_model(ROLL_MODEL, at)
+		_build.shape(_build.body(at + Vector3(0, 0.45, 0)), Vector3(0.9, 0.9, 1.2))
+	_build.box(REAMS_AT + Vector3(0, REAMS_SIZE.y / 2, 0), REAMS_SIZE, PAPER)
+	for i in 7:
+		_build.mesh_box(REAMS_AT + Vector3(0, 0.1 + i * 0.2, REAMS_SIZE.z / 2 + 0.005),
+			Vector3(REAMS_SIZE.x - 0.1, 0.02, 0.01), Color(0.4, 0.55, 0.85))
+	_build.legs(FAX_AT, Vector2(0.9, 0.6), 0.85, WOOD)
+	_build.box(FAX_AT + Vector3(0, 0.88, 0), Vector3(0.9, 0.06, 0.6), WOOD)
+	_model(FAX_MODEL, FAX_AT + Vector3(0, 0.91, 0))
+	_build.open_box(BASKET_AT, BASKET_SIZE, "top", Color(0.3, 0.55, 0.85))
+	for i in 3:
+		_build.mesh_box(BASKET_AT + Vector3(-0.2 + i * 0.2, BASKET_SIZE.y - 0.05, 0), Vector3(0.2, 0.08, 0.2), PAPER)
+	_build.wall_at("x", OFFICE_FRONT, OFFICE_WEST, HALF_X, 0.0, SHOP_TOP, [OFFICE_DOOR_X], WALL_IN)
+	_build.wall_at("z", OFFICE_WEST, -HALF_Z, OFFICE_FRONT, 0.0, SHOP_TOP, [], WALL_IN)
+	_build.legs(Vector3(10.0, FLOOR_TOP, -8.0), Vector2(2.0, 1.0), 0.75, WOOD)
+	_build.box(Vector3(10.0, FLOOR_TOP + 0.78, -8.0), Vector3(2.0, 0.06, 1.0), WOOD)
+	_build.light(Vector3(10.5, SHOP_TOP - 0.4, -6.0))
+	office_door = DOOR_SCENE.instantiate()
+	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_FRONT)
+	add_child(office_door)
+
+
+## Breaks display pane `index`, once: a fine, the glass goes grey and cracked and the invitations are in reach.
+func break_pane(index: int) -> void:
+	if cracked.has(index):
+		return
+	cracked.append(index)
+	broken_goods += 1
+	fines += PANE_FINE
+	var pane := panes[index]
+	(pane.get_child(0) as CollisionShape3D).set_deferred("disabled", true)
+	(pane.get_child(1) as MeshInstance3D).material_override = _glass(CRACKED)
+	(pane.get_child(1) as MeshInstance3D).scale = Vector3(1, 0.25, 1)
+	(pane.get_child(1) as MeshInstance3D).position.y = -0.26
+	_say(pane.position + Vector3(0, 1.2, 0), "PRINT_SHOP_GLASS_BROKEN")
+	pane_broken.emit(index)
+
+
+## Breaks ink jar `index`, once: a fine, and it's gone (its puddle comes with the ink, step 3).
+func break_jar(index: int) -> void:
+	if broken_jars.has(index):
+		return
+	broken_jars.append(index)
+	broken_goods += 1
+	fines += JAR_FINE
+	jars[index].visible = false
+	_say(jars[index].position + Vector3(-0.6, 1.0, 0), "PRINT_SHOP_JAR_BROKEN")
+	jar_broken.emit(index)
+
+
+func _glass(color: Color) -> StandardMaterial3D:
+	var glass := StandardMaterial3D.new()
+	glass.albedo_color = color
+	glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	return glass
+
+
+## A standing cylinder body for the collisions, `height` tall, centered at `center`.
+func _cylinder(center: Vector3, radius: float, height: float) -> void:
+	var body := _build.body(center)
+	var collision := CollisionShape3D.new()
+	var cylinder := CylinderShape3D.new()
+	cylinder.radius = radius
+	cylinder.height = height
+	collision.shape = cylinder
+	body.add_child(collision)
+
+
+func _area(center: Vector3, size: Vector3) -> Area3D:
+	var area := Area3D.new()
+	area.position = center
+	area.collision_layer = 0
+	area.collision_mask = 4
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	area.add_child(shape)
+	add_child(area)
+	return area
+
+
+## A floating line over `at` for a few seconds.
+func _say(at: Vector3, key: String) -> void:
+	var label := Label3D.new()
+	label.text = key
+	label.font_size = 48
+	label.pixel_size = 0.01
+	label.outline_size = 12
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.position = at
+	add_child(label)
+	get_tree().create_timer(3.0).timeout.connect(label.queue_free)
+
+
+## A model only for the look, standing at `at` and turned `turn` around Y.
+func _model(scene: PackedScene, at: Vector3, turn := 0.0) -> Node3D:
+	var look: Node3D = scene.instantiate()
+	look.position = at
+	look.rotation.y = turn
+	$Built.add_child(look)
+	return look

@@ -5588,3 +5588,21 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_PRINT_SHOP,Imprenta La Tinta Loca,La Tinta Loca Print Shop,Gráfica La Tinta Loca
+MENU_PRINT_SHOP,Imprenta (allanamiento) (prueba),Print shop (raid) (test),Gráfica (batida) (teste)
+HINT_TILL_KEY_PRINT_SHOP,¡Una llave! Abre la oficina de Don Renglón.,A key! It opens Don Renglón's office.,Uma chave! Abre o escritório do Seu Renglón.
+PRINT_SHOP_GLASS_BROKEN,"¡Mis invitaciones de casamiento! ¡Tenían letras doradas!","My wedding invitations! They had gold letters!","Meus convites de casamento! Tinham letras douradas!"
+PRINT_SHOP_JAR_BROKEN,"¡Ese frasco era de tinta importada de ningún lado!","That jar was ink imported from nowhere!","Esse frasco era de tinta importada de lugar nenhum!"
+CASE_FAILED_LAWYER_PRINT_SHOP,Don Renglón llamó al abogado de la imprenta. Caso perdido.,Don Renglón called the print shop's lawyer. Case lost.,Seu Renglón ligou para o advogado da gráfica. Caso perdido.
+LOC_under_press_rollers,debajo de los rodillos de la rotativa,under the press rollers,debaixo dos rolos da rotativa
+LOC_among_paper_rolls,entre las bobinas de papel,among the paper rolls,entre as bobinas de papel
+LOC_behind_reams,detrás de las resmas,behind the reams of paper,atrás das resmas
+LOC_in_empty_ink_barrel,en el tacho de tinta vacío,in the empty ink barrel,no barril de tinta vazio
+LOC_in_print_office,en la oficina de Don Renglón,in Don Renglón's office,no escritório do Seu Renglón
+LOC_under_binding_table,debajo de la mesa de encuadernar,under the binding table,debaixo da mesa de encadernação
+LOC_in_print_counter,adentro del mostrador de atención,inside the front counter,dentro do balcão de atendimento
+LOC_in_type_case_drawer,en un cajón del chibalete,in a drawer of the type case,numa gaveta do cavalete de tipos
+LOC_under_guillotine,debajo de la guillotina de papel,under the paper guillotine,debaixo da guilhotina de papel
+LOC_behind_invitations,detrás de la vidriera de invitaciones,behind the invitations display,atrás da vitrine de convites
+LOC_in_recycling_basket,en el canasto de papeles para reciclar,in the recycling basket,no cesto de papel para reciclar
+LOC_on_plates_cabinet,arriba del armario de las planchas,on top of the plates cabinet,em cima do armário das chapas
