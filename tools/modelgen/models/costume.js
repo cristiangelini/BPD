@@ -381,6 +381,53 @@ export function buildItchyCostume() {
 	return b.build();
 }
 
+// The theater's trunk with the stolen costumes (theater costumes main evidence): a dark red trunk with gold trim and the
+// two theater masks on its lid, a ruffled sleeve sticking out, 1 m long along X.
+export function buildTheaterTrunk() {
+	const b = new Builder('theater_trunk');
+	const red = mat('trunk_red', 0x7a1a24);
+	const gold = mat('trunk_gold', 0xd8a830, { metalness: 0.5 });
+	b.add('box', red, new THREE.BoxGeometry(1.0, 0.5, 0.55), { pos: V(0, 0.25, 0) });
+	b.add('lid', red, new THREE.BoxGeometry(1.02, 0.1, 0.57), { pos: V(0, 0.55, 0) });
+	for (const x of [-0.45, 0.45]) b.add('trim', gold, new THREE.BoxGeometry(0.04, 0.62, 0.59), { pos: V(x, 0.31, 0) });
+	b.add('lock', gold, new THREE.BoxGeometry(0.08, 0.1, 0.02), { pos: V(0, 0.45, 0.29) });
+	b.add('masks', mat('mask_white', 0xf6f2ea), ellipsoid(0.08, 0.02, 0.1, 8, 4), { pos: V(-0.1, 0.61, 0) });
+	b.add('masks', mat('mask_black', 0x24242a), ellipsoid(0.08, 0.02, 0.1, 8, 4), { pos: V(0.1, 0.61, 0.02) });
+	b.add('sleeve', mat('sleeve_ruff', 0xf2c230), new THREE.BoxGeometry(0.2, 0.05, 0.12), { pos: V(0.3, 0.5, 0.3), rot: [0.3, 0, 0.2] });
+	return b.build();
+}
+
+// The theater's stamp (theater costumes extra): a wooden handle on a red rubber block.
+export function buildTheaterStamp() {
+	const b = new Builder('theater_stamp');
+	b.add('block', mat('stamp_wood', 0x8a5a30), new THREE.BoxGeometry(0.1, 0.04, 0.07), { pos: V(0, 0.03, 0) });
+	b.add('rubber', mat('stamp_red', 0xd83a30), new THREE.BoxGeometry(0.1, 0.01, 0.07), { pos: V(0, 0.005, 0) });
+	b.add('handle', mat('stamp_wood', 0x8a5a30), new THREE.CylinderGeometry(0.02, 0.025, 0.08, 8), { pos: V(0, 0.09, 0) });
+	b.add('knob', mat('stamp_wood', 0x8a5a30), new THREE.SphereGeometry(0.03, 8, 6), { pos: V(0, 0.14, 0) });
+	return b.build();
+}
+
+// The play's program (theater costumes extra): a purple booklet with the two masks on the cover, flat.
+export function buildPlayProgram() {
+	const b = new Builder('play_program');
+	b.add('cover', mat('program_purple', 0x5a2a8a), new THREE.BoxGeometry(0.15, 0.008, 0.21), { pos: V(0, 0.004, 0) });
+	b.add('masks', mat('mask_white', 0xf6f2ea), new THREE.BoxGeometry(0.04, 0.002, 0.05), { pos: V(-0.025, 0.009, -0.02) });
+	b.add('masks', mat('mask_black', 0x24242a), new THREE.BoxGeometry(0.04, 0.002, 0.05), { pos: V(0.025, 0.009, -0.01) });
+	return b.build();
+}
+
+// The theater's poster (theater costumes): a cream sheet 0.8 x 1.1 m on the wall, its face to +X, with a purple band and
+// the two masks, origin in its middle.
+export function buildTheaterPoster() {
+	const b = new Builder('theater_poster');
+	b.add('sheet', mat('poster_cream', 0xf2e8c8), new THREE.BoxGeometry(0.01, 1.1, 0.8), { pos: V(0, 0, 0) });
+	b.add('band', mat('program_purple', 0x5a2a8a), new THREE.BoxGeometry(0.012, 0.2, 0.8), { pos: V(0, 0.4, 0) });
+	b.add('masks', mat('mask_white', 0xf6f2ea), ellipsoid(0.01, 0.13, 0.1, 8, 4), { pos: V(0.01, 0.05, -0.1) });
+	b.add('masks', mat('mask_black', 0x24242a), ellipsoid(0.01, 0.13, 0.1, 8, 4), { pos: V(0.01, 0.05, 0.1) });
+	b.add('cross', mat('poster_red', 0xd83a30), new THREE.BoxGeometry(0.014, 0.06, 0.7), { pos: V(0.012, 0.05, 0), rot: [0.5, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -392,7 +439,8 @@ export const models = {
 	bear_loot: buildBearLoot, rental_list: buildRentalList, clown_mask: buildClownMask,
 	sewing_machine: buildSewingMachine, fake_labels: buildFakeLabels, costume_pattern: buildCostumePattern,
 	false_back: buildFalseBack, itch_drum: buildItchDrum, cream_jars: buildCreamJars, pharmacy_flyer: buildPharmacyFlyer,
-	itchy_costume: buildItchyCostume,
+	itchy_costume: buildItchyCostume, theater_trunk: buildTheaterTrunk, theater_stamp: buildTheaterStamp,
+	play_program: buildPlayProgram, theater_poster: buildTheaterPoster,
 };
 
 export const views = {
@@ -426,6 +474,11 @@ export const views = {
 		items: [{ name: 'itch_drum', pos: [-0.5, 0, 0] }, { name: 'cream_jars', pos: [0.2, 0, 0.3] },
 			{ name: 'pharmacy_flyer', pos: [0.6, 0, 0.2], rotY: 0.3 }, { name: 'itchy_costume', pos: [0.4, 0, -0.3], rotY: -0.2 }],
 		cam: { pos: [0, 1.2, 2.2], target: [0, 0.25, 0], fov: 40 },
+	},
+	theater_costumes: {
+		items: [{ name: 'theater_trunk', pos: [-0.5, 0, 0], rotY: 0.2 }, { name: 'theater_stamp', pos: [0.4, 0, 0.4] },
+			{ name: 'play_program', pos: [0.7, 0, 0.1], rotY: 0.3 }, { name: 'theater_poster', pos: [0.8, 0.8, -0.6], rotY: -1.2 }],
+		cam: { pos: [0, 1.4, 2.8], target: [0, 0.4, 0], fov: 44 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],

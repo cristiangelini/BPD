@@ -57,6 +57,17 @@ const STORIES := {
 		"rig": preload("res://scripts/case/costume/itchy_costumes_rig.gd"),
 		"main_hidden": true,
 	},
+	"theater_costumes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_THEATER_B", "BRIEF_THEATER_C", "BRIEF_THEATER_D"],
+		"find": "OBJ_FIND_THEATER",
+		"hidden": [preload("res://scenes/props/theater_trunk.tscn"), preload("res://scenes/props/theater_stamp.tscn"),
+			preload("res://scenes/props/play_program.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_THEATER_STAMP", "OBJ_EXTRA_PLAY_PROGRAM"],
+		"rig": preload("res://scripts/case/costume/theater_costumes_rig.gd"),
+		"main_hidden": true,
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the shop; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [

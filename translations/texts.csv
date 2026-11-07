@@ -5702,3 +5702,13 @@ HINT_ITCHY,¡Me pica todo!,I itch all over!,Está coçando tudo!
 CLUE_ITCHY_COSTUME,El disfraz de conejo de la canasta de ofertas pica muchísimo,The bunny costume in the sale basket itches like crazy,A fantasia de coelho do cesto de ofertas coça demais
 CUSTOMER_ITCHY,¡Ay! ¡Este disfraz pica!,Ow! This costume itches!,Ai! Esta fantasia coça!
 MIMI_CLUE_itchy_costumes,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y dice que la crema de su primo se vende sola.","You found me! Here's a secret: my uncle hid something %s. And he says his cousin's cream sells itself.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E ele diz que o creme do primo vende sozinho."
+BRIEF_THEATER_B,"Al Teatro de Mimos le robaron todos los trajes, y Don Fantoche los alquila como si fueran suyos.","All the Mime Theater's costumes were stolen, and Don Fantoche rents them out as if they were his.","Roubaram todos os figurinos do Teatro de Mímicos, e o Don Fantoche aluga como se fossem dele."
+BRIEF_THEATER_C,"Los trajes vinieron en el baúl del teatro. Está escondido en algún lado de la tienda, y pesa.","The costumes came in the theater's trunk. It's hidden somewhere in the shop, and it's heavy.","Os figurinos vieram no baú do teatro. Está escondido em algum lugar da loja, e é pesado."
+BRIEF_THEATER_D,"Tráiganme el baúl, el sello del teatro y el programa de la obra.","Bring me the trunk, the theater's stamp and the play's program.","Tragam o baú, o carimbo do teatro e o programa da peça."
+OBJ_FIND_THEATER,Encontrar el baúl con los trajes del teatro,Find the trunk with the theater's costumes,Achar o baú com os figurinos do teatro
+OBJ_EXTRA_THEATER_STAMP,El sello del teatro,The theater's stamp,O carimbo do teatro
+OBJ_EXTRA_PLAY_PROGRAM,El programa de la obra,The play's program,O programa da peça
+PROMPT_COSTUME_TAG,"E: mirar la etiqueta","E: look at the tag","E: olhar a etiqueta"
+CLUE_THEATER_TAG,Un disfraz del perchero de oficios tiene la etiqueta «Propiedad del Teatro de Mimos»,A costume on the jobs rack has the tag “Property of the Mime Theater”,Uma fantasia do cabide de profissões tem a etiqueta “Propriedade do Teatro de Mímicos”
+THEATER_POSTER,"Teatro de Mimos: se suspende la obra. ¡Nos robaron los trajes!","Mime Theater: show cancelled. Our costumes were stolen!","Teatro de Mímicos: peça suspensa. Roubaram nossos figurinos!"
+MIMI_CLUE_theater_costumes,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y trajo un baúl lleno de trajes de mimo.","You found me! Here's a secret: my uncle hid something %s. And he brought a trunk full of mime costumes.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E ele trouxe um baú cheio de figurinos de mímico."

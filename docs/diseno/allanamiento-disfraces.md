@@ -152,6 +152,10 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   frascos de crema "Antipica" (300) y el folleto de la farmacia del primo (200). El disfraz de conejo rosa de la
   canasta de ofertas hace que el policía que lo agarra lo suelte y se rasque 3 s ("¡Me pica todo!"), y la primera vez
   es la pista. Los clientes salen del probador diciendo "¡Ay! ¡Este disfraz pica!". Capturas `paso6-pica-*.png`.
+- Paso 6, los trajes del teatro: el baúl del teatro con los trajes (15 kg, 1000) va en un escondite pesado, con el
+  sello del teatro (300) y el programa de la obra (200). Un disfraz del perchero de oficios tiene una etiqueta blanca
+  ("mirar la etiqueta": "Propiedad del Teatro de Mimos", la pista) y en la pared este cuelga el afiche del teatro
+  ("Se suspende la obra. ¡Nos robaron los trajes!"). Capturas `paso6-teatro-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa
