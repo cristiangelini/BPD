@@ -49,6 +49,8 @@ const TOWER_BOXES := 8
 ## The stacks of plates on the counter: each plate that breaks counts (Don Muzza minds it, step 3).
 const PLATE_STACKS: Array[Vector3] = [Vector3(-4.6, FLOOR_TOP + 1.0, 3.3), Vector3(-3.9, FLOOR_TOP + 1.0, 3.3)]
 const PLATES_PER_STACK := 5
+## A plate's collision is thicker than its model: thin boxes in a stack sink into each other and break.
+const PLATE_HEIGHT := 0.05
 const TABLES: Array[Vector3] = [Vector3(1.5, FLOOR_TOP, 4.6), Vector3(5.0, FLOOR_TOP, 4.6), Vector3(1.5, FLOOR_TOP, 7.0),
 	Vector3(5.0, FLOOR_TOP, 7.0)]
 const TABLE_SIZE := Vector3(1.0, 0.75, 1.0)
@@ -245,12 +247,14 @@ func _place_plates() -> void:
 			plate.collision_mask = 15
 			var shape := CollisionShape3D.new()
 			var box := BoxShape3D.new()
-			box.size = Vector3(0.34, 0.03, 0.34)
+			box.size = Vector3(0.34, PLATE_HEIGHT, 0.34)
 			shape.shape = box
 			plate.add_child(shape)
 			plate.add_child(PLATE_MODEL.instantiate())
-			plate.position = stack + Vector3(0, 0.016 + i * 0.032, 0)
+			plate.position = stack + Vector3(0, PLATE_HEIGHT / 2 + 0.002 + i * (PLATE_HEIGHT + 0.004), 0)
 			add_child(plate)
+			# Asleep until something touches the stack: awake, stacked plates jitter until they break.
+			plate.sleeping = true
 			plates.append(plate)
 			plate.broken.connect(func(_at: Vector3) -> void:
 				plates.erase(plate)
