@@ -123,7 +123,7 @@ const SPOTS := [
 var station_parking: Transform3D
 var city_map: CityMap
 var cold_door: FrontDoor
-var plates: Array[Ornament] = []
+var plates: Array[StackedPlate] = []
 var sacks: Array[FlourSack] = []
 var flour: FlourPrints
 var broken_plates := 0
@@ -260,11 +260,13 @@ func _build_yard() -> void:
 ## The stacks of plates on the counter: each plate that breaks counts.
 func _place_plates() -> void:
 	for stack: Vector3 in PLATE_STACKS:
+		var stacked: Array[StackedPlate] = []
 		for i in PLATES_PER_STACK:
-			var plate := Ornament.new()
+			var plate := StackedPlate.new()
 			plate.mass = 0.4
 			plate.collision_layer = 4
 			plate.collision_mask = 15
+			plate.freeze = true
 			var shape := CollisionShape3D.new()
 			var box := BoxShape3D.new()
 			box.size = Vector3(0.34, PLATE_HEIGHT, 0.34)
@@ -273,14 +275,34 @@ func _place_plates() -> void:
 			plate.add_child(PLATE_MODEL.instantiate())
 			plate.position = stack + Vector3(0, PLATE_HEIGHT / 2 + 0.002 + i * (PLATE_HEIGHT + 0.004), 0)
 			add_child(plate)
-			# Asleep until something touches the stack: awake, stacked plates jitter until they break.
-			plate.sleeping = true
 			plates.append(plate)
+			stacked.append(plate)
+			plate.grabbed.connect(_wake_stack.bind(stacked))
 			plate.broken.connect(func(at: Vector3) -> void:
 				plates.erase(plate)
 				broken_plates += 1
 				if muzza:
 					muzza.saw(at, SAW_PLATE, "MUZZA_PLATE"))
+		var reach := Area3D.new()
+		reach.collision_layer = 0
+		reach.collision_mask = 6
+		var zone := CollisionShape3D.new()
+		var zone_box := BoxShape3D.new()
+		zone_box.size = Vector3(0.6, PLATES_PER_STACK * (PLATE_HEIGHT + 0.004) + 0.2, 0.6)
+		zone.shape = zone_box
+		reach.add_child(zone)
+		reach.position = stack + Vector3.UP * zone_box.size.y / 2
+		add_child(reach)
+		reach.body_entered.connect(func(body: Node3D) -> void:
+			if not body is StackedPlate:
+				_wake_stack(stacked))
+
+
+## Something reached a stack of plates: they fall like plates do.
+func _wake_stack(stacked: Array[StackedPlate]) -> void:
+	for plate in stacked:
+		if is_instance_valid(plate):
+			plate.freeze = false
 
 
 ## The flour sacks in a row against the kitchen's west wall: a burst one leaves a white patch on the floor.
