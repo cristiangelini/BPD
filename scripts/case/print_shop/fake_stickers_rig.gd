@@ -92,7 +92,8 @@ func notice() -> void:
 func spit() -> void:
 	var tray := shop.to_global(PrintShop.PRESS_AT + Vector3(PrintShop.TRAY_X.y, 0, 0))
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
-		if cop is Cop and is_mine(cop as Cop) and not on_face.has(cop) and cop.global_position.distance_to(tray) <= FACE_RANGE:
+		if cop is Cop and is_mine(cop as Cop) and not on_face.has(cop) \
+				and cop.global_position.distance_to(tray) <= FACE_RANGE:
 			stick_on_face(cop as Cop)
 
 
