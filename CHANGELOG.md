@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Furniture store raid, step 6: the furniture store joins the raids Play draws, and the seed picks one of its six stories.
 - Furniture store raid, step 5: the endless installments story: the book of installments (1 kg, 1000), the "Cuota 1 de 999" stamp and the calculator that always gives more are hidden, every sofa and bed carries a "120 installments of $1" price tag whose fine print ("per month, forever") is the clue for a cop who comes close, and Don Cajón offers installments to every cop who looks at him, however high his complaint is.
 - Furniture store raid, step 5: the comisario's armchair story: the armchair stolen from the comisario's office stands in the shop window as the main evidence (18 kg, one cop carries it), its "Propiedad de la Comisaría" sticker is the clue for a cop who comes close, sitting on it (E) brings the comisario on the radio, and the photo of him on it and the station's screwdriver are hidden.
 - Furniture store raid, step 5: the fake antiques story: the aging machine (a drill with a chain) is hidden with the "Año 1890" labels and the bag of fresh sawdust, and the dining chairs turn over (E) to show an absurd antique price and, underneath, the stamp "Made last week" (the clue).

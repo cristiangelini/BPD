@@ -202,3 +202,5 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
     cuotas, aunque la denuncia esté alta (3 frases que se turnan). A un mismo policía, como mucho una vez cada 10 s.
     La oferta no suma ni resta denuncia.
   - Capturas `paso5-cuotas-*.png` y `endless_installments.png` (modelos).
+- **Paso 6:** la mueblería entra al sorteo de los allanamientos de Jugar, con las mismas chances que los otros 10, y
+  la semilla elige una de sus 6 historias (la prueba revisa que en 900 semillas salgan las 6).
