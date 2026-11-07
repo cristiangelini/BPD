@@ -193,6 +193,9 @@ los extras suman 500.
    policía corre a menos de 6 m de ella, lo persigue a 5 m/s y cada 2 s le da un empujoncito sin daño, hasta que
    camina o se aleja a más de 10 m. Captura: `/mnt/project-files/vivero/paso7e-abejas.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
+   **Hecho así:** Jugar sortea el vivero entre los allanamientos, con las mismas chances que los demás, y sus 6
+   historias salen. Si Doña Hortensia ve que un policía levanta la prueba principal cerca de ella, se escapa en el auto,
+   que espera adelante del patrullero, y arranca la persecución; al pararla, se baja ella y se queja de sus plantas.
 9. El online.
 
 ## Preguntas abiertas para Cristian
