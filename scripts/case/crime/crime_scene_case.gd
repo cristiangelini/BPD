@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_THEATER_A_", "BRIEF_THEATER_B", "BRIEF_THEATER_C"], "go": "HINT_GO_THEATER",
 		"go_row": "OBJ_THEATER_GO", "look": "HINT_THEATER_LOOK", "files_row": "OBJ_THEATER_FILES",
 		"clue_line": "CLUE_THEATER_", "ruined_hint": "HINT_THEATER_RUINED_", "left": "HINT_GHOST_LEFT",
-		"who": "ghost", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_THEATER_LOOT_",
+		"who": "ghost", "getaway": SuspectCar.SCENERY_TRUCK, "loot_row": "OBJ_THEATER_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "voice": "deep",
 			"sheet": "embroidery", "witness": "embroidery"},
 		"parts": ["photo", "prints", "teeth", "hair", "voice", "embroidery"],

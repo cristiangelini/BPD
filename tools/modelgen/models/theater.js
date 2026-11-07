@@ -76,7 +76,34 @@ function susurro(b) {
 	b.add('props', C('script_paper', 0xf2ead8), new THREE.CylinderGeometry(0.04, 0.04, 0.3, 8), { pos: V(0.5, 0.7, 0.14), rot: [0.3, 0, 0] });
 }
 
-const PEOPLE = { npc_fantasma: fantasma, npc_bambalina: bambalina, npc_susurro: susurro };
+// The theater's scenery truck the culprit flees in (escena-teatro.md, step 7): a red cab and an open flatbed with
+// cardboard scenery tied on (a painted tree, a cloud, a castle wall), the theater's two masks on the doors. Front +Z,
+// 2.3 x 3.0 x 7.0, wheels at x = ±1.2, z = 2.4, -1.5 and -2.5 (SuspectCar.MIXER_WHEELS).
+function sceneryTruck(b) {
+	const red = C('truck_red', 0xb82830), dark = C('truck_dark', 0x30343a), card = C('scenery_card', 0xc8a070);
+	b.add('body', red, new THREE.BoxGeometry(2.3, 2.0, 1.8), { pos: V(0, 1.45, 2.5) });
+	b.add('body', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(2.0, 0.7, 0.04), { pos: V(0, 1.95, 3.41) });
+	b.add('body', dark, new THREE.BoxGeometry(2.3, 0.25, 0.2), { pos: V(0, 0.55, 3.45) });
+	b.add('body', dark, new THREE.BoxGeometry(2.3, 0.3, 5.2), { pos: V(0, 0.75, -0.9) });
+	b.add('body', red, new THREE.BoxGeometry(2.3, 0.4, 0.08), { pos: V(0, 1.1, -3.46) });
+	for (const sx of [-1, 1]) {
+		b.add('body', red, new THREE.BoxGeometry(0.08, 0.4, 5.2), { pos: V(sx * 1.11, 1.1, -0.9) });
+		// The two masks of the theater on the doors: one gold, one white.
+		b.add('masks', C('mask_gold', 0xe8b830), new THREE.CylinderGeometry(0.2, 0.2, 0.03, 10), { pos: V(sx * 1.16, 1.6, 2.7), rot: [0, 0, Math.PI / 2] });
+		b.add('masks', M.white, new THREE.CylinderGeometry(0.17, 0.17, 0.03, 10), { pos: V(sx * 1.16, 1.4, 2.25), rot: [0, 0, Math.PI / 2] });
+	}
+	// The scenery on the flatbed: a painted tree, a cloud and a castle wall, standing, tied with rope.
+	b.add('scenery', C('tree_trunk', 0x6a4a2a), new THREE.BoxGeometry(0.06, 1.2, 0.3), { pos: V(-0.6, 1.5, -0.4) });
+	b.add('scenery', C('tree_crown', 0x3a8a3a), new THREE.BoxGeometry(0.06, 1.0, 1.4), { pos: V(-0.6, 2.4, -0.4) });
+	b.add('scenery', M.white, new THREE.BoxGeometry(0.06, 0.8, 1.6), { pos: V(0.1, 1.9, -1.6) });
+	b.add('scenery', C('castle_grey', 0x9a9aa2), new THREE.BoxGeometry(0.06, 1.4, 1.8), { pos: V(0.7, 1.6, -2.4) });
+	b.add('scenery', card, new THREE.BoxGeometry(2.0, 0.04, 0.04), { pos: V(0, 2.0, -1.0) });
+	for (const x of [-1.2, 1.2]) for (const z of [2.4, -1.5, -2.5]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.28, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+}
+
+const PEOPLE = { npc_fantasma: fantasma, npc_bambalina: bambalina, npc_susurro: susurro, scenery_truck: sceneryTruck };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -85,6 +112,10 @@ export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => 
 }]));
 
 export const views = {
+	scenery_truck: {
+		items: [{ name: 'scenery_truck', pos: [0, 0, 0], rotY: 0.7 }],
+		cam: { pos: [0.6, 3.4, 12.0], target: [0, 1.4, 0], fov: 38 },
+	},
 	theater_people: {
 		items: [{ name: 'npc_bambalina', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_fantasma', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_susurro', pos: [1.3, 0, 0], rotY: -0.3 }],

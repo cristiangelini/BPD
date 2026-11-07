@@ -67,6 +67,8 @@ const BOX_SEAT_AT := Vector3(15.6, BOX_TOP, -3.2)
 ## The foyer: the ticket booth, the red carpet and the glass case the Golden Mask was taken from.
 const MASK_CASE_AT := Vector3(0, 0, 6.2)
 const BOOTH_AT := Vector3(-13.5, 0, 6.5)
+## The scenery truck waits at the curb east of the door, and drives straight out into the street (step 7).
+const GETAWAY_AT := Vector3(11.0, 0, SIZE.y / 2 + 1.5)
 ## The little table with the honey lozenges, by the ticket booth.
 const LOZENGES_AT := Vector3(-11.6, 0, 6.5)
 const LOZENGES := 4
@@ -249,6 +251,12 @@ func reveal_loot() -> void:
 ## The ghost by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return ghosts[index] if index >= 0 and index < ghosts.size() else null
+
+
+## The scenery truck waits at the curb, east of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 6.0))]}
 
 
 ## A cop shouted (VoiceChat): Don Susurro may close his shell.

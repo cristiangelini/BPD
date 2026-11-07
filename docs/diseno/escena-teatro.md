@@ -223,4 +223,12 @@ Mientras tanto se avanza con lo recomendado.
      Después de cantar ya no cambia nada.
    - Capturas: `teatro/paso6-susurro.png` y `teatro/paso6-pastillas.png`.
 7. El final: el tablero, el sueldo y el camión con los decorados.
+   **Hecho así:** el comisario da el caso en la comisaría (TheaterLevel con el tablero y el sello).
+   - **El camión de la escenografía:** modelo `scenery_truck`, cabina roja con las dos máscaras en las puertas y la
+     caja con un árbol, una nube y un muro de castillo atados. Espera en la calle al este de la puerta, va a 22 km/h
+     y lleva al fantasma sentado atrás.
+   - **Los decorados que se caen:** en cada esquina caen dos (un árbol y una nube, ChaseScenery). Con E se patean, y
+     el patrullero que choca uno se lo lleva en el capó, sin ver nada por 1 s.
+   - El culpable se baja como fantasma y se lo interroga como tal ("owner_ghost").
+   - Capturas: `teatro/paso7-camion.png` y `teatro/scenery_truck.png`.
 8. El sorteo de "Jugar" y el online.
