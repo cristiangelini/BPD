@@ -5,12 +5,15 @@ extends StaticBody3D
 ## their turn, walk to the counter with something to pawn (a watch, a toaster, grandpa's teeth), haggle there about
 ## HAGGLE_TIME seconds and walk back. They complain (5 to the complaint, at most once every COMPLAIN_EVERY seconds each)
 ## when a cop stands at the counter where they go, or a glass case or the armor breaks less than CRUSH_RANGE from them.
-## E on one tells a line about the shop. Every number here is (propuesta).
+## E on one tells a line about the shop, or every other time what they know about the story. Every number here is
+## (propuesta).
 
 ## They complained loud enough for the owner to hear it (Don Regateo adds it to the complaint, step 3).
 signal complained(customer: PawnCustomer)
 ## Their turn is over and they're back where they browse.
 signal turn_over(customer: PawnCustomer)
+## They told what they know about the story (`rumor`): the checklist line, already translated.
+signal rumored(text: String)
 
 const MODELS := {
 	"cliente": preload("res://assets/models/npc_cliente.glb"),
@@ -32,6 +35,8 @@ const HAGGLE_LINES := ["PAWN_HAGGLE_1", "PAWN_HAGGLE_2", "PAWN_HAGGLE_3", "PAWN_
 const TALK_LINES := ["PAWN_CUSTOMER_TALK_1", "PAWN_CUSTOMER_TALK_2", "PAWN_CUSTOMER_TALK_3"]
 
 @export var look := "cliente"
+## What they know about the story, set by its rig: every other time a cop talks to them, that's what they say.
+var rumor := ""
 var shop: PawnShop
 ## Where they browse (shop space), whether it's their turn (walking or at the counter) and whether they're haggling.
 var home := Vector3.ZERO
@@ -81,7 +86,11 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(_cop: Cop) -> void:
-	say(TALK_LINES[_next_talk % TALK_LINES.size()])
+	if rumor != "" and _next_talk % 2 == 0:
+		say(rumor)
+		rumored.emit(tr(rumor))
+	else:
+		say(TALK_LINES[_next_talk % TALK_LINES.size()])
 	_next_talk += 1
 
 

@@ -39,6 +39,38 @@ const STORIES := {
 		"main_hidden": true,
 		"rig": preload("res://scripts/case/pawn/train_watches_rig.gd"),
 	},
+	"fake_trophy": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_TROPHY_B", "BRIEF_FAKE_TROPHY_C", "BRIEF_FAKE_TROPHY_D"],
+		"find": "OBJ_FIND_FAKE_TROPHY",
+		"hidden": [preload("res://scenes/props/gold_trophy.tscn"), preload("res://scenes/props/painter_receipt.tscn")],
+		"half_heights": [0.0, 0.0],
+		"heavy": [true, false],
+		"extra_keys": ["OBJ_EXTRA_PAINTER_RECEIPT", "OBJ_EXTRA_PLASTIC_TROPHY"],
+		"main_hidden": true,
+		"rig": preload("res://scripts/case/pawn/fake_trophy_rig.gd"),
+	},
+	"walking_armor": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WALKING_ARMOR_B", "BRIEF_WALKING_ARMOR_C", "BRIEF_WALKING_ARMOR_D"],
+		"find": "OBJ_FIND_WALKING_ARMOR",
+		"hidden": [preload("res://scenes/props/armor_costume.tscn"), preload("res://scenes/props/oil_rag.tscn"),
+			preload("res://scenes/props/robbed_houses_map.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_OIL_RAG", "OBJ_EXTRA_ROBBED_MAP"],
+		"main_hidden": true,
+		"rig": preload("res://scripts/case/pawn/walking_armor_rig.gd"),
+	},
+	"gold_dentures": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLD_DENTURES_B", "BRIEF_GOLD_DENTURES_C", "BRIEF_GOLD_DENTURES_D"],
+		"find": "OBJ_FIND_GOLD_DENTURES",
+		"hidden": [preload("res://scenes/props/dentures_box.tscn"), preload("res://scenes/props/dentist_pliers.tscn"),
+			preload("res://scenes/props/patient_list.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_DENTIST_PLIERS", "OBJ_EXTRA_PATIENT_LIST"],
+		"main_hidden": true,
+		"rig": preload("res://scripts/case/pawn/gold_dentures_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the shop (never on the counter, which would
 ## buy them); three are drawn with the seed.
@@ -167,6 +199,9 @@ var till: Till
 ## Which glass cases are broken, by index into CASES.
 var cases_broken: Array[bool] = [false, false, false]
 var armor_down := false
+## Where the armor stands now (a story can walk it, move_armor), and its collider, look and hit area.
+var armor_at := ARMOR_AT
+var armor_parts: Array[Node3D] = []
 ## What broke: the glass cases and the armor (the case pay also loses what the cops paid the shop and gains what it
 ## paid them, RaidCase.fines).
 var fines := 0
@@ -388,9 +423,10 @@ func _build_shelves() -> void:
 
 ## The knight's armor (it falls apart if hit), the stuffed crocodile, the old TV and the guitar case.
 func _build_odd_things() -> void:
-	_solid(ARMOR_AT + Vector3(0, 0.95, 0), Vector3(0.7, 1.9, 0.6))
+	var armor_body := _solid(ARMOR_AT + Vector3(0, 0.95, 0), Vector3(0.7, 1.9, 0.6))
 	_armor = _model(ARMOR_MODEL, ARMOR_AT, PI / 2)
 	var armor_hit := _area(ARMOR_AT + Vector3(0, 0.95, 0), Vector3(1.1, 1.9, 1.0))
+	armor_parts.assign([armor_body, _armor, armor_hit])
 	armor_hit.body_entered.connect(func(body: Node3D) -> void:
 		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > ARMOR_SPEED:
 			knock_armor())
@@ -578,12 +614,21 @@ func knock_armor() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed
 	for i in 6:
-		var spot := Vector3(ARMOR_AT.x + rng.randf_range(0.0, 1.4), FLOOR_TOP + 0.08, ARMOR_AT.z + rng.randf_range(-0.8, 0.8))
+		var spot := Vector3(armor_at.x + rng.randf_range(0.0, 1.4), FLOOR_TOP + 0.08, armor_at.z + rng.randf_range(-0.8, 0.8))
 		_build.mesh_box(spot, Vector3(0.3, 0.16, 0.25) if i > 0 else Vector3(0.3, 0.3, 0.3), STEEL)
-	_say(ARMOR_AT + Vector3(1.0, 2.2, 0), "PAWN_ARMOR_FALLEN")
+	_say(armor_at + Vector3(1.0, 2.2, 0), "PAWN_ARMOR_FALLEN")
 	for customer in customers:
-		customer.near_crash(to_global(ARMOR_AT))
+		customer.near_crash(to_global(armor_at))
 	armor_fallen.emit()
+
+
+## The armor takes a step of `offset` (shop space), unless it already fell apart.
+func move_armor(offset: Vector3) -> void:
+	if armor_down:
+		return
+	armor_at += offset
+	for part in armor_parts:
+		part.position += offset
 
 
 ## The locked door in the stock room's wall, its middle at x.
