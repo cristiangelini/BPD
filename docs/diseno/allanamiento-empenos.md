@@ -163,3 +163,11 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   el boleto en otros dos; en la vitrina del medio, bajo el cartel "Relojes de calidad. ¡Recién llegados!", 5 relojes
   marcan las 3:15 y suenan juntos cada 30 s, y mirarlos (E) es la pista. Capturas en
   `/mnt/project-files/allanamiento-empenos/paso5-*.png`.
+- Paso 6a: tres historias más. El trofeo falso: el de oro (12 kg) escondido con el recibo del pintor, y la copia de
+  plástico arriba del estante del medio; la primera vez que pasa un policía cerca (o la agarra) se cae con un soplido
+  ("¡Pof!") y esa es la pista. La armadura que camina: el disfraz con el botín (15 kg), el trapo con aceite y el mapa de
+  las casas robadas; la armadura de la tienda da un paso de 1 m cada 20 s (hasta que se desarma), hay rayas de aceite
+  de ella al depósito, y mirarla (E) es la pista. Las dentaduras de oro: la caja (8 kg), la pinza y la lista de
+  pacientes; Chicharra tiene un diente de oro y darle la galletita es la pista ("¡Abra la boca!"). En el trofeo y las
+  dentaduras un cliente cuenta lo que sabe, una vez sí y otra no, y también suma a las pistas. Capturas en
+  `/mnt/project-files/allanamiento-empenos/paso6-*.png`.

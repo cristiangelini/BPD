@@ -5682,3 +5682,31 @@ PROMPT_PAWN_WATCHES,Mirar los relojes,Look at the watches,Olhar os relógios
 CLUE_TRAIN_WATCHES,"Todos los relojes de la vitrina marcan la misma hora: las %s. Como el tren del robo.","Every watch in the glass case shows the same time: %s. Like the robbed train.","Todos os relógios da vitrine marcam a mesma hora: %s. Como o trem do roubo."
 PAWN_WATCHES_RING,¡RIIIING! (todos los relojes a la vez),RIIIING! (every watch at once),TRIIIIM! (todos os relógios ao mesmo tempo)
 PAWN_WATCHES_SIGN,Relojes de calidad. ¡Recién llegados!,Quality watches. Just in!,Relógios de qualidade. Recém-chegados!
+BRIEF_FAKE_TROPHY_B,"El trofeo de oro del club de golf desapareció, y al ganador le dieron uno de plástico pintado.","The golf club's gold trophy disappeared, and the winner got one of painted plastic.","O troféu de ouro do clube de golfe sumiu, e o vencedor ganhou um de plástico pintado."
+BRIEF_FAKE_TROPHY_C,"Don Regateo cambió el de verdad por la copia y lo escondió en la tienda. Pesa como 12 kilos.","Don Regateo swapped the real one for the copy and hid it in the shop. It weighs about 12 kilos.","Don Regateo trocou o verdadeiro pela cópia e escondeu na loja. Pesa uns 12 quilos."
+BRIEF_FAKE_TROPHY_D,"Tráiganme el trofeo de oro, y si pueden la copia y el recibo del pintor.","Bring me the gold trophy, and if you can the copy and the painter's receipt.","Tragam o troféu de ouro, e se puderem a cópia e o recibo do pintor."
+OBJ_FIND_FAKE_TROPHY,Encontrar el trofeo de oro del club de golf,Find the golf club's gold trophy,Achar o troféu de ouro do clube de golfe
+OBJ_EXTRA_PAINTER_RECEIPT,El recibo del pintor,The painter's receipt,O recibo do pintor
+OBJ_EXTRA_PLASTIC_TROPHY,El trofeo de plástico,The plastic trophy,O troféu de plástico
+PAWN_RUMOR_FAKE_TROPHY,"«En el club de golf ganó mi cuñado y le dieron un trofeo raro, liviano como una pluma».","“My brother-in-law won at the golf club and they gave him an odd trophy, light as a feather.”","“Meu cunhado ganhou no clube de golfe e deram a ele um troféu estranho, leve como uma pena.”"
+PAWN_TROPHY_FALLS,¡Pof! (el trofeo se cayó con un soplido),Poof! (the trophy fell with a breath),Puf! (o troféu caiu com um sopro)
+CLUE_FAKE_TROPHY,"El trofeo de oro del estante se cayó con un soplido: es de plástico pintado.","The gold trophy on the shelf fell with a breath: it's painted plastic.","O troféu de ouro da estante caiu com um sopro: é de plástico pintado."
+CHICHARRA_CLUE_fake_trophy,"«¡Hoyo en uno! ¡Rrrr! ¡El trofeo %s! ¡Rrrr!»","“Hole in one! Rrrr! The trophy %s! Rrrr!”","“Buraco em uma! Rrrr! O troféu %s! Rrrr!”"
+BRIEF_WALKING_ARMOR_B,"Alguien vestido de caballero entra a las casas de noche y se lleva todo. Los vecinos oyen «clanc, clanc».","Someone dressed as a knight gets into houses at night and takes everything. The neighbors hear “clank, clank.”","Alguém vestido de cavaleiro entra nas casas à noite e leva tudo. Os vizinhos ouvem “clanc, clanc”."
+BRIEF_WALKING_ARMOR_C,"El disfraz de armadura está escondido en la tienda, con el botín adentro. Pesa como 15 kilos.","The armor costume is hidden in the shop, with the loot inside. It weighs about 15 kilos.","A fantasia de armadura está escondida na loja, com o roubo dentro. Pesa uns 15 quilos."
+BRIEF_WALKING_ARMOR_D,"Tráiganme el disfraz, y si pueden el trapo con aceite y el mapa de las casas robadas.","Bring me the costume, and if you can the oily rag and the map of the robbed houses.","Tragam a fantasia, e se puderem o pano com óleo e o mapa das casas roubadas."
+OBJ_FIND_WALKING_ARMOR,Encontrar el disfraz de armadura con el botín,Find the armor costume with the loot,Achar a fantasia de armadura com o roubo
+OBJ_EXTRA_OIL_RAG,El trapo con aceite,The oily rag,O pano com óleo
+OBJ_EXTRA_ROBBED_MAP,El mapa de las casas robadas,The map of the robbed houses,O mapa das casas roubadas
+PROMPT_PAWN_ARMOR,Mirar la armadura,Look at the armor,Olhar a armadura
+CLUE_WALKING_ARMOR,"La armadura rechina, huele a aceite y tiene barro en los pies: alguien camina con ella.","The armor creaks, smells of oil and has mud on its feet: someone walks around in it.","A armadura range, cheira a óleo e tem barro nos pés: alguém anda com ela."
+CHICHARRA_CLUE_walking_armor,"«¡Clanc, clanc! ¡Rrrr! ¡El disfraz %s! ¡Rrrr!»","“Clank, clank! Rrrr! The costume %s! Rrrr!”","“Clanc, clanc! Rrrr! A fantasia %s! Rrrr!”"
+BRIEF_GOLD_DENTURES_B,"Al dentista de la cuadra le robaron una caja de dentaduras de oro. Desde entonces, en el barrio todos sonríen menos.","The dentist down the block had a box of gold dentures stolen. Since then, nobody in the neighborhood smiles as much.","Roubaram uma caixa de dentaduras de ouro do dentista do quarteirão. Desde então, no bairro todos sorriem menos."
+BRIEF_GOLD_DENTURES_C,"Don Regateo las compró y escondió la caja en la tienda. Pesa como 8 kilos.","Don Regateo bought them and hid the box in the shop. It weighs about 8 kilos.","Don Regateo comprou e escondeu a caixa na loja. Pesa uns 8 quilos."
+BRIEF_GOLD_DENTURES_D,"Tráiganme la caja, y si pueden la pinza del dentista y la lista de pacientes.","Bring me the box, and if you can the dentist's pliers and the patient list.","Tragam a caixa, e se puderem o alicate do dentista e a lista de pacientes."
+OBJ_FIND_GOLD_DENTURES,Encontrar la caja de dentaduras de oro,Find the box of gold dentures,Achar a caixa de dentaduras de ouro
+OBJ_EXTRA_DENTIST_PLIERS,La pinza del dentista,The dentist's pliers,O alicate do dentista
+OBJ_EXTRA_PATIENT_LIST,La lista de pacientes,The patient list,A lista de pacientes
+PAWN_RUMOR_GOLD_DENTURES,"«Vine a empeñar la dentadura del abuelo y Don Regateo me dio 50. ¡50 por una dentadura!».","“I came to pawn grandpa's dentures and Don Regateo gave me 50. 50 for dentures!”","“Vim penhorar a dentadura do vovô e o Don Regateo me deu 50. 50 por uma dentadura!”"
+CLUE_GOLD_DENTURES,"Chicharra sonríe con un diente de oro. Los loros no tienen dientes.","Chicharra smiles with a gold tooth. Parrots don't have teeth.","O Chicharra sorri com um dente de ouro. Papagaios não têm dentes."
+CHICHARRA_CLUE_gold_dentures,"«¡Abra la boca! ¡Rrrr! ¡Los dientes %s! ¡Rrrr!»","“Open wide! Rrrr! The teeth %s! Rrrr!”","“Abra a boca! Rrrr! Os dentes %s! Rrrr!”"

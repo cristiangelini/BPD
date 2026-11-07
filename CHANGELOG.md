@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Pawn shop raid, step 6a: three more stories. The fake trophy (the plastic copy on top of a shelf falls with a breath when a cop walks by), the walking armor (the shop's armor takes a step every 20 s, with oil streaks to the stock room) and the gold dentures (Chicharra has a gold tooth, and feeding him is the clue); customers who know something tell it every other time.
 - Pawn shop raid, step 5: the raid case (anonymous tip, 3 suspicions with their notes, the checklist, Don Regateo's lawyer fails it, and what the cops buy comes off the pay minus what the shop paid them), his slips and Chicharra's clue, and the first story: the train's watches, the suitcase hidden where it fits, and 5 watches in the middle glass case that all show 3:15 and ring together every 30 s.
 - Pawn shop raid, step 4: Chicharra the parrot. The cookie jar on the counter gives each cop one cookie, and fed one, Chicharra repeats what he heard Don Regateo say at night (the story's clue from step 5), once per cop; without a cookie he asks for one, and every 20 s he squawks something he heard by day.
 - Pawn shop raid, step 3: Don Regateo walks behind his counter; something to pawn sends him to appraise it 15 s with his back to the shop before he pays (45 s rest, the third time he catches on, adds 10 and won't buy), and the customers' complaints, what leaves unpaid and what breaks reach his complaint.
