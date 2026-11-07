@@ -7,7 +7,7 @@ extends CrimeScenePlace
 ## turntable, four trapdoors over the basement, the prompter's shell and the backdrop; behind it, the six dressing
 ## rooms (one per sheet embroidery) and the props workshop. The six ghosts rehearse two on the stage, two in the hall
 ## and two by the dressing rooms (step 2); Maestro Bambalina directs from the aisle and Don Susurro stands in the pit
-## under his shell. The case comes in later steps. Every number here is (propuesta).
+## under his shell. The case reaches the ghosts (step 3, set_up_case). Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(36, 32)
@@ -94,6 +94,7 @@ const BACKDROP := Color(0.35, 0.45, 0.7)
 
 ## The trapdoors' bodies, by index (TRAPDOORS), closed over their holes.
 var trapdoors: Array[StaticBody3D] = []
+var case: CrimeSceneCase
 var ghosts: Array[TheaterGhost] = []
 var director: TheaterDirector
 var prompter: TheaterPrompter
@@ -112,6 +113,16 @@ func _ready() -> void:
 	_basement()
 	_backstage()
 	_people()
+
+
+## The case reaches the ghosts (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
+## take off the sheet until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var shy := absi(hash("shy ghost %d" % case.case_seed)) % ghosts.size()
+	for ghost in ghosts:
+		ghost.case = case
+		ghost.shy = ghost.index == shy
 
 
 ## The ghost by index (the order of the case's traits).

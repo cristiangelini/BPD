@@ -170,6 +170,16 @@ Mientras tanto se avanza con lo recomendado.
      susurra. En el foso se sacó la silla que quedaba debajo de la concha.
    - Capturas: `teatro/paso2-*.png` y `teatro/theater_people.png`.
 3. Las fichas: la variante `theater` de la escena del crimen, con la voz y el bordado.
+   **Hecho así:** variante `theater` en CrimeSceneCase con sus seis partes (foto, huellas, dientes, pelo, voz y
+   bordado). El culpable siempre canta grave.
+   - **Con E y las manos vacías:** el fantasma primero dice su bordado (va a la ficha), después se saca la sábana si
+     se lo pides (el pelo va a la ficha) y después canta la nota (la voz, grave o aguda).
+   - **El tímido:** uno de los seis, con la semilla, no se saca la sábana hasta que come.
+   - **Con una dona o un pan en la mano:** E se la da; muerde, se le ven los dientes (van a la ficha) y el tímido se
+     saca la sábana.
+   - **La cámara y las huellas:** la foto va a la ficha; para las huellas se saca el guante derecho.
+   - El caramelo de miel de Don Susurro que aclara la voz va en el paso 6 (el texto de la ficha ya está).
+   - Captura: `teatro/paso3-canta.png`.
 4. La Máscara de Oro escondida, buscar con E y el libro de utilería.
 5. La función que sigue: el reloj, el giro, las trampillas, el decorado y la palanca con la paciencia del director.
 6. Las pistas y el testigo: la vitrina, la pisada, la peluca, el caramelo, el trozo de sábana y Don Susurro.

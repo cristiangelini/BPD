@@ -77,6 +77,18 @@ const VARIANTS := {
 			"signature": "left"},
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
+	# The Teatro Municipal (escena-teatro.md, decision 510): six ghosts alike in the same sheet; a file knows what the
+	# cops got from its ghost, the deep voice and their embroidery included.
+	"theater": {
+		"shift": "crime_theater", "story": "theater",
+		"brief": ["BRIEF_THEATER_A", "BRIEF_THEATER_B", "BRIEF_THEATER_C"], "go": "HINT_GO_THEATER",
+		"go_row": "OBJ_THEATER_GO", "look": "HINT_THEATER_LOOK", "files_row": "OBJ_THEATER_FILES",
+		"clue_line": "CLUE_THEATER_", "ruined_hint": "HINT_THEATER_RUINED_", "left": "HINT_GHOST_LEFT",
+		"who": "ghost", "getaway": SuspectCar.BIKE,
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "voice": "deep",
+			"sheet": "embroidery", "witness": "embroidery"},
+		"parts": ["photo", "prints", "teeth", "hair", "voice", "embroidery"],
+	},
 }
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -85,6 +97,9 @@ const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "t
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
 const ROOM_PARTS: Array[String] = ["shoe", "hair", "glasses"]
+## At the theater, the traits each part of a ghost's file tells.
+const GHOST_PART_TRAITS := {"photo": ["shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"voice": ["deep"], "embroidery": ["embroidery"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -197,6 +212,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuardTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
+	if texts() == VARIANTS.theater:
+		return GhostTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -235,12 +252,14 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+## A guard gave a part of his file (escena-museo.md), or a ghost (escena-teatro.md): it goes to their file with what
+## it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	for trait_name: String in GUARD_PART_TRAITS[part]:
+	var table := GHOST_PART_TRAITS if texts() == VARIANTS.theater else GUARD_PART_TRAITS
+	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -330,7 +349,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.theater:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -699,6 +718,8 @@ func file_text(index: int) -> String:
 		return _guard_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
+	if texts() == VARIANTS.theater:
+		return _ghost_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -707,6 +728,24 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A ghost's file: their name and number, and what the cops got from them so far. A voice that a honey lozenge
+## cleared before they sang is in the file, but says nothing.
+func _ghost_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	lines.append(tr("FILE_EMBROIDERY") % (tr("EMBROIDERY_" + str(who.embroidery)) if who.has("embroidery") else "?"))
+	lines.append(tr("FILE_SHOE") % who.shoe if who.has("shoe") else tr("FILE_SHOE_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("deep"):
+		lines.append(tr("FILE_VOICE_DEEP") if who.deep else tr("FILE_VOICE_HIGH"))
+	elif file_parts.get(index, {}).get("voice", false):
+		lines.append(tr("FILE_VOICE_CLEARED"))
+	else:
+		lines.append(tr("FILE_VOICE_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 

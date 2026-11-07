@@ -27,7 +27,8 @@ const DEEP := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("theater ghosts %d" % seed_value)
-	var deep := {}
+	# The culprit sang the founder's aria so nobody heard them at the case, and is still hoarse: always deep.
+	var deep := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var deep_count := rng.randi_range(DEEP.x, DEEP.y)
 	while deep.size() < deep_count:
 		deep[rng.randi_range(0, COUNT - 1)] = true

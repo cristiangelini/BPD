@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Crime scene "Teatro Municipal", step 3: the ghosts' files. The "theater" crime scene variant with six parts (photo, prints, teeth, hair, voice and embroidery); with E a ghost says its embroidery, takes the sheet off when asked and sings its note (the culprit always sings deep); one shy ghost keeps the sheet on until it eats a donut or bread, which E now gives to a ghost; the right glove comes off for the prints.
 - Crime scene "Teatro Municipal", step 2: the six ghost actors in the same white sheet with gloves and plastic chains (GhostTraits: hair, shoes, teeth, a deep voice and the embroidery on their hem, one each), who say which embroidery is theirs and why; Maestro Bambalina the director with his beret and megaphone in the aisle; and Don Susurro the prompter in the pit under his shell.
 - Crime scene "Teatro Municipal", step 1: the theater on its own lot (block 6, 5, north side) with the columns and the "Seis Fantasmas" marquee; the foyer with the ticket booth and the Golden Mask's empty case; the hall with the seats, the orchestra pit with its tuba and a box on each side; the raised stage with the turntable, four trapdoors, the prompter's shell, the backdrop and the stage lever; the basement one floor down (the city now leaves a hole in its ground for it); and the six dressing rooms and the props workshop. --place=theater opens it.
 - Crime scene "Teatro Municipal", step 0: design (escena-teatro.md) and decision 510.
