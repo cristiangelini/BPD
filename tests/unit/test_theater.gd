@@ -71,8 +71,8 @@ func test_the_doors_lead_from_the_street_to_the_stage_and_down() -> void:
 	for x: float in Theater.DOORS_HALL_X:
 		assert_true(_open(theater, Vector3(x, 0, 5.0) + knee, Vector3(x, 0, 3.0) + knee), "into the hall at %s" % x)
 	assert_false(_open(theater, Vector3(0, 0, 5.0) + knee, Vector3(0, 0, 3.0) + knee), "a wall between the doors")
-	assert_true(_open(theater, Vector3(0, 0, Theater.PIT_RAIL_Z - 0.3) + knee,
-		Vector3(0, 0, Theater.STAGE_Z + 0.3) + knee), "the pit is open below the stage's edge")
+	assert_true(_open(theater, Vector3(-3, 0, Theater.PIT_RAIL_Z - 0.3) + knee,
+		Vector3(-3, 0, Theater.STAGE_Z + 0.3) + knee), "the pit is open below the stage's edge")
 	for i in Theater.EMBROIDERIES.size():
 		var door := Theater.dressing_at(i)
 		assert_true(_open(theater, Vector3(door.x, 0, -12.0) + above_stage,

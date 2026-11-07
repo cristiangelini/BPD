@@ -5,8 +5,9 @@ extends CrimeScenePlace
 ## marquee of "Seis Fantasmas" on the sidewalk. Inside, the foyer in front with the ticket booth and the empty case of
 ## the Golden Mask; the hall with the red seats, a box up on each side and the orchestra pit; the raised stage with the
 ## turntable, four trapdoors over the basement, the prompter's shell and the backdrop; behind it, the six dressing
-## rooms (one per sheet embroidery) and the props workshop. The people and the case come in later steps. Every number
-## here is (propuesta).
+## rooms (one per sheet embroidery) and the props workshop. The six ghosts rehearse two on the stage, two in the hall
+## and two by the dressing rooms (step 2); Maestro Bambalina directs from the aisle and Don Susurro stands in the pit
+## under his shell. The case comes in later steps. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(36, 32)
@@ -71,6 +72,14 @@ const EMBROIDERIES: Array[String] = ["star", "moon", "sun", "bolt", "heart", "cl
 const WORKSHOP_X := 5.0
 const DOOR_WORKSHOP_Z := -13.0
 const PROPS_DESK_AT := Vector3(11.0, STAGE_TOP, -13.8)
+## Where the people are: two ghosts on the stage facing the hall, one in the aisle and one in the pit looking for
+## their place on the stage, and two in the corridor behind the backdrop facing their dressing rooms; the director in
+## the aisle facing the stage; the prompter in the pit right under his shell, facing the stage.
+const GHOSTS_AT: Array[Vector3] = [Vector3(-2.0, STAGE_TOP, -7.5), Vector3(2.5, STAGE_TOP, -9.0),
+	Vector3(0, FLOOR_TOP, 1.5), Vector3(-8.0, FLOOR_TOP, -4.0), Vector3(-9.0, STAGE_TOP, -11.8),
+	Vector3(-1.0, STAGE_TOP, -11.8)]
+const DIRECTOR_AT := Vector3(0, FLOOR_TOP, -1.6)
+const PROMPTER_STANDS_AT := Vector3(0, FLOOR_TOP, -4.7)
 const PAINT := Color(0.72, 0.16, 0.18)
 const INSIDE := Color(0.92, 0.86, 0.74)
 const MARBLE := Color(0.85, 0.83, 0.8)
@@ -85,6 +94,9 @@ const BACKDROP := Color(0.35, 0.45, 0.7)
 
 ## The trapdoors' bodies, by index (TRAPDOORS), closed over their holes.
 var trapdoors: Array[StaticBody3D] = []
+var ghosts: Array[TheaterGhost] = []
+var director: TheaterDirector
+var prompter: TheaterPrompter
 var _builder: PlaceBuilder
 
 
@@ -99,6 +111,12 @@ func _ready() -> void:
 	_stage()
 	_basement()
 	_backstage()
+	_people()
+
+
+## The ghost by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return ghosts[index] if index >= 0 and index < ghosts.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the theater's lot, sidewalk included.
@@ -135,6 +153,37 @@ func room(world: Vector3) -> String:
 ## The middle of dressing room `index` (0 to 5, one per EMBROIDERIES), on its floor.
 static func dressing_at(index: int) -> Vector3:
 	return Vector3(DRESSING_FROM + (index + 0.5) * DRESSING_WIDTH, STAGE_TOP, (BACK_Z + DRESSING_FRONT_Z) / 2)
+
+
+## The six ghosts alike (GhostTraits.draw with the case seed) where they rehearse, the director in the aisle and the
+## prompter under his shell.
+func _people() -> void:
+	var traits := GhostTraits.draw(case_seed)
+	for i in traits.size():
+		var ghost := TheaterGhost.new()
+		ghost.name = "Ghost%d" % i
+		ghost.traits = traits[i]
+		ghost.index = i
+		ghost.position = GHOSTS_AT[i]
+		ghost.rotation.y = facing(GHOSTS_AT[i])
+		add_child(ghost)
+		ghosts.append(ghost)
+	director = TheaterDirector.new()
+	director.name = "Director"
+	director.position = DIRECTOR_AT
+	director.rotation.y = PI
+	add_child(director)
+	prompter = TheaterPrompter.new()
+	prompter.name = "Prompter"
+	prompter.position = PROMPTER_STANDS_AT
+	prompter.rotation.y = PI
+	add_child(prompter)
+
+
+## Which way a ghost standing at `at` faces (a Y rotation; the models face +Z): the hall from the stage, the stage
+## from the hall, their dressing rooms from behind the backdrop.
+static func facing(at: Vector3) -> float:
+	return 0.0 if at.z < STAGE_Z and at.z > BACKDROP_Z else PI
 
 
 ## The floors, the roof with its lights and the outer walls.
@@ -198,8 +247,8 @@ func _foyer() -> void:
 		_label("", "SIGN_HALL", Vector3(x, 2.5, FOYER_Z + 0.12), 0.0)
 
 
-## The hall: the wall to the foyer, the rows of seats each side of the aisle, the pit with its rail, its chairs and the
-## tuba, the two ramps up to the stage, and a box with its stairs on each side.
+## The hall: the wall to the foyer, the rows of seats each side of the aisle, the pit with its rail, its chairs (none
+## under the prompter's shell) and the tuba, the two ramps up to the stage, and a box with its stairs on each side.
 func _hall() -> void:
 	_builder.wall_at("x", FOYER_Z, -HALF_X, HALF_X, 0, ROOF, DOORS_HALL_X, INSIDE)
 	for z: float in ROWS_Z:
@@ -209,7 +258,8 @@ func _hall() -> void:
 			_builder.mesh_box(Vector3(middle, 0.7, z + 0.22), Vector3(SEATS_TO - SEATS_FROM, 0.5, 0.08), VELVET)
 	_builder.box(Vector3(0, 0.45, PIT_RAIL_Z), Vector3(PIT_HALF * 2, 0.9, 0.1), GOLD)
 	for i in 6:
-		_builder.mesh_box(Vector3(-6.0 + i * 2.0, 0.25, -4.6), Vector3(0.45, 0.5, 0.45), BLACK)
+		if i != 3:
+			_builder.mesh_box(Vector3(-6.0 + i * 2.0, 0.25, -4.6), Vector3(0.45, 0.5, 0.45), BLACK)
 	var bell := CylinderMesh.new()
 	bell.top_radius = 0.4
 	bell.bottom_radius = 0.15

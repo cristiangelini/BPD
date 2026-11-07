@@ -156,6 +156,19 @@ Mientras tanto se avanza con lo recomendado.
      baúl adentro, y la utilería con su escritorio y el estante.
    - Capturas: `teatro/paso1-*.png`.
 2. La gente: los seis fantasmas (rasgos con la semilla), el Maestro Bambalina y Don Susurro, con sus modelos.
+   **Hecho así:** modelos `npc_fantasma`, `npc_bambalina` y `npc_susurro` (tools/modelgen/models/theater.js).
+   - **Los fantasmas:** iguales con la sábana blanca de dos agujeros, el ruedo ondulado, las cadenas de plástico y
+     los guantes blancos; abajo, un actor de negro con su cara y su pelo. Cada uno tiene sus rasgos en GhostTraits
+     (pelo, zapatos, dientes, voz grave y bordado), el parche del ruedo del color de su bordado (estrella amarilla,
+     luna celeste, sol naranja, rayo violeta, corazón rojo, trébol verde), y con E dice cuál es su bordado y por qué.
+     Dos ensayan en el escenario, uno en el pasillo y otro en el foso buscan su lugar, y dos esperan frente a los
+     camerinos.
+   - **El Maestro Bambalina:** boina, bufanda roja, cuello alto negro y megáfono; dirige desde el pasillo de la sala
+     y con E grita algo de la función.
+   - **Don Susurro:** viejito, calvo con dos mechones grises, anteojos de media luna, saco marrón y el libreto
+     enrollado; está parado en el foso justo debajo de su concha, y solo se le ve la cabeza sobre las tablas. Con E
+     susurra. En el foso se sacó la silla que quedaba debajo de la concha.
+   - Capturas: `teatro/paso2-*.png` y `teatro/theater_people.png`.
 3. Las fichas: la variante `theater` de la escena del crimen, con la voz y el bordado.
 4. La Máscara de Oro escondida, buscar con E y el libro de utilería.
 5. La función que sigue: el reloj, el giro, las trampillas, el decorado y la palanca con la paciencia del director.
