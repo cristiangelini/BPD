@@ -168,6 +168,10 @@ suman 500.
   donde estaba escondida la caja (aunque ya la hayan sacado). Queda a la vista en el zapato, y es pista la primera
   vez. Como la puerta del frente no tiene hoja, los 5 fans de la vereda gritan cuando un policía pasa por el hueco de
   la puerta, como mucho una vez cada 3 s. Captura en `imprenta/paso7a-fans.png`.
+- **Paso 7b (los diplomas falsos):** `FakeDiplomasRig`. En la pared de la oficina cuelga enmarcado el diploma de Don
+  Renglón: "Doctor en Astronautas". El policía que se acerca a 2,5 m lo nota, y es pista una vez. Cada vez que
+  arranca la rotativa, sale flotando "Diploma de Doctor en Todo" con el nombre de un policía al azar, y las hojas salen
+  color pergamino. Captura en `imprenta/paso7b-diploma.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
