@@ -292,7 +292,41 @@ export function buildVipStamp() {
 	return b.build();
 }
 
+// The roll of fake diplomas, 0.5 m long and 0.2 m across: a fat roll of cream parchment tied with a red ribbon and a
+// gold seal. Origin at its middle, lying along X.
+export function buildDiplomaRoll() {
+	const b = new Builder('diploma_roll');
+	const parchment = mat('diploma_parchment', 0xf2e6c4), red = mat('diploma_ribbon', 0xc8302a);
+	b.add('roll', parchment, new THREE.CylinderGeometry(0.1, 0.1, 0.5, 14), { rot: [0, 0, Math.PI / 2] });
+	b.add('ribbon', red, new THREE.TorusGeometry(0.102, 0.012, 4, 14), { rot: [0, Math.PI / 2, 0] });
+	b.add('seal', mat('diploma_gold', 0xf2c84b, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.035, 0.035, 0.01, 10),
+		{ pos: V(0, 0.1, 0.03), rot: [0.3, 0, 0] });
+	return b.build();
+}
+
+// The university seal, 0.12 m across and 0.12 m tall: a brass embossing seal with a wooden knob. Origin at its middle.
+export function buildUniversitySeal() {
+	const b = new Builder('university_seal');
+	const brass = mat('seal_brass', 0xd8b048, { metalness: 0.7, roughness: 0.3 });
+	b.add('base', brass, new THREE.CylinderGeometry(0.06, 0.06, 0.03, 14), { pos: V(0, -0.045, 0) });
+	b.add('stem', brass, new THREE.CylinderGeometry(0.015, 0.02, 0.06, 8), { pos: V(0, 0.0, 0) });
+	b.add('knob', mat('seal_knob', 0x5a3a20), new THREE.SphereGeometry(0.035, 10, 6), { pos: V(0, 0.045, 0) });
+	return b.build();
+}
+
+// The mortarboard, 0.3 m square: the black board, the cap under it and a gold tassel. Origin at its middle.
+export function buildMortarboard() {
+	const b = new Builder('mortarboard');
+	const black = mat('mortar_black', 0x1e1e22), gold = mat('mortar_gold', 0xf2c84b);
+	b.add('board', black, new THREE.BoxGeometry(0.3, 0.015, 0.3), { pos: V(0, 0.03, 0), rot: [0, Math.PI / 4, 0] });
+	b.add('cap', black, new THREE.CylinderGeometry(0.1, 0.11, 0.07, 12), { pos: V(0, -0.015, 0) });
+	b.add('tassel', gold, new THREE.CylinderGeometry(0.006, 0.006, 0.1, 6), { pos: V(0.13, -0.01, 0) });
+	b.add('tassel', gold, new THREE.SphereGeometry(0.015, 6, 4), { pos: V(0.13, -0.06, 0) });
+	return b.build();
+}
+
 export const models = {
+	diploma_roll: buildDiplomaRoll, university_seal: buildUniversitySeal, mortarboard: buildMortarboard,
 	ticket_box: buildTicketBox, concert_poster: buildConcertPoster, vip_stamp: buildVipStamp,
 	bills_plate: buildBillsPlate, bill_loupe: buildBillLoupe, green_ink_tin: buildGreenInkTin,
 	npc_don_renglon: buildDonRenglon, npc_tipito: buildTipito,

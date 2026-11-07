@@ -5680,3 +5680,14 @@ TIPITO_CLUE_fake_tickets,"¡Gracias! Vi a Don Renglón esconder algo %s. Y desde
 CLUE_TICKET_SOLE,"Se te pegó una entrada del recital en la suela. Estaba tirada justo donde pisaste.","A concert ticket got stuck to your sole. It was lying right where you stepped.","Um ingresso do show grudou na sua sola. Estava jogado bem onde você pisou."
 HINT_TICKET_SOLE,¡Se te pegó algo en la suela! Una entrada del recital...,Something stuck to your sole! A concert ticket...,Algo grudou na sua sola! Um ingresso do show...
 PRINT_SHOP_FANS_SCREAM,¡¡Aaah!! ¿Hay entradas?,Aaah!! Any tickets?,Aaah!! Tem ingresso?
+BRIEF_FAKE_DIPLOMAS_B,"Don Renglón imprime diplomas falsos. «Doctor en Todo», firmados por una universidad que no existe.","Don Renglón prints fake diplomas. «Doctor of Everything», signed by a university that doesn't exist.","O Seu Renglón imprime diplomas falsos. «Doutor em Tudo», assinados por uma universidade que não existe."
+BRIEF_FAKE_DIPLOMAS_C,"Traigan el rollo de diplomas en el baúl del patrullero. Y no se lleven ninguno para ustedes.","Bring the roll of diplomas in the patrol car's trunk. And don't keep any for yourselves.","Tragam o rolo de diplomas no porta-malas da viatura. E não fiquem com nenhum para vocês."
+BRIEF_FAKE_DIPLOMAS_D,"Si encuentran el sello de la universidad o el birrete, mejor: todo suma.","If you find the university seal or the mortarboard, even better: it all counts.","Se acharem o selo da universidade ou o capelo, melhor: tudo conta."
+OBJ_FIND_DIPLOMA_ROLL,Llevarse el rollo de diplomas falsos,Take the roll of fake diplomas,Levar o rolo de diplomas falsos
+OBJ_EXTRA_UNIVERSITY_SEAL,Extra: el sello de la universidad,Extra: the university seal,Extra: o selo da universidade
+OBJ_EXTRA_MORTARBOARD,Extra: el birrete,Extra: the mortarboard,Extra: o capelo
+TIPITO_CLUE_fake_diplomas,"¡Gracias! Vi a Don Renglón esconder algo %s. Y ahora me dice «colega», porque los dos somos doctores.","Thanks! I saw Don Renglón hide something %s. And now he calls me «colleague», because we're both doctors.","Obrigado! Vi o Seu Renglón esconder algo %s. E agora ele me chama de «colega», porque nós dois somos doutores."
+CLUE_ASTRONAUT_DIPLOMA,"En la oficina cuelga un diploma: «Renglón, Doctor en Astronautas». La tinta todavía está fresca.","A diploma hangs in the office: «Renglón, Doctor of Astronauts». The ink is still wet.","No escritório tem um diploma pendurado: «Renglón, Doutor em Astronautas». A tinta ainda está fresca."
+PRINT_SHOP_ASTRONAUT,¿Doctor en Astronautas?,Doctor of Astronauts?,Doutor em Astronautas?
+PRINT_SHOP_OFFICE_DIPLOMA,DIPLOMA - Renglón - Doctor en Astronautas,DIPLOMA - Renglón - Doctor of Astronauts,DIPLOMA - Renglón - Doutor em Astronautas
+PRINT_SHOP_DIPLOMA_FOR,"Diploma de Doctor en Todo: %s","Doctor of Everything diploma: %s","Diploma de Doutor em Tudo: %s"

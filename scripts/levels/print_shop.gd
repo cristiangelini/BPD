@@ -51,6 +51,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CONCERT_POSTER", "OBJ_EXTRA_VIP_STAMP"],
 		"rig": preload("res://scripts/case/print_shop/fake_tickets_rig.gd"),
 	},
+	"fake_diplomas": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_DIPLOMAS_B", "BRIEF_FAKE_DIPLOMAS_C", "BRIEF_FAKE_DIPLOMAS_D"],
+		"find": "OBJ_FIND_DIPLOMA_ROLL",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/diploma_roll.tscn"), preload("res://scenes/props/university_seal.tscn"),
+			preload("res://scenes/props/mortarboard.tscn")],
+		"half_heights": [0.1, 0.06, 0.05],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_UNIVERSITY_SEAL", "OBJ_EXTRA_MORTARBOARD"],
+		"rig": preload("res://scripts/case/print_shop/fake_diplomas_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
 ## side and by the binding table.
