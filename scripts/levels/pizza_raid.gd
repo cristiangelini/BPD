@@ -7,8 +7,10 @@ extends Node3D
 ## the back the kitchen with the clay oven, the dough table and the flour sacks, and Don Muzza's office with the cold
 ## room behind it, locked. Behind the kitchen, the yard with the three new delivery scooters and the bin. Each plate
 ## that breaks counts; a flour sack that bursts leaves a white patch, and a cop who walks through it leaves white
-## footprints (FlourPrints, like in the cake lab). SPOTS are the 12 hiding spots the stories draw from (step 5). Every
-## number here is (propuesta).
+## footprints (FlourPrints, like in the cake lab). SPOTS are the 12 hiding spots the stories draw from (step 5). Don
+## Muzza walks the dining room and the kitchen singing (step 3): he fills the complaint ("¡Me arruinaron la masa!")
+## with every plate he sees break and every floured cop he sees, and the phone on the counter sends him to the dough
+## table to make an order, his back to the kitchen. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SACK_SCENE := preload("res://scenes/props/lab_flour_sack.tscn")
@@ -18,8 +20,8 @@ const DOUGH_MODEL := preload("res://assets/models/dough_ball.glb")
 const SLICE_MODEL := preload("res://assets/models/pizza_slice.glb")
 const PLATE_MODEL := preload("res://assets/models/kitchen_plate.glb")
 const BOX_MODEL := preload("res://assets/models/pizza_box.glb")
-const PHONE_MODEL := preload("res://assets/models/desk_phone.glb")
 const SCOOTER_MODEL := preload("res://assets/models/pizza_scooter.glb")
+const MUZZA_SCENE := preload("res://scenes/npc/pizza_muzza.tscn")
 const HALF_X := 8.0
 const HALF_Z := 8.0
 const WALL_TOP := 3.2
@@ -78,6 +80,16 @@ const BIN_SIZE := Vector3(0.6, 0.9, 0.6)
 ## Where Tito waits on his bench in the yard (step 4).
 const BENCH_AT := Vector3(-3.0, FLOOR_TOP, -7.4)
 const BENCH_SIZE := Vector3(1.6, 0.45, 0.45)
+## Don Muzza's round, back and forth from the dining room's tables, past the counter, to the kitchen and the oven.
+const MUZZA_ROUTE: Array[Vector3] = [Vector3(6.0, FLOOR_TOP, 5.8), Vector3(-2.0, FLOOR_TOP, 5.8),
+	Vector3(-2.0, FLOOR_TOP, 2.5), Vector3(-3.0, FLOOR_TOP, 2.3), Vector3(-3.0, FLOOR_TOP, 1.0),
+	Vector3(-1.3, FLOOR_TOP, 0.6), Vector3(-1.3, FLOOR_TOP, -1.5), Vector3(-5.0, FLOOR_TOP, -1.4)]
+## Where he makes a phoned-in order: behind the dough table, facing the dining room, his back to the oven and sacks.
+const ORDER_SPOT := Vector3(-3.0, FLOOR_TOP, -1.2)
+const ORDER_TIME := 20.0
+## Seeing a plate break, and a floured cop.
+const SAW_PLATE := 2.0
+const SAW_FLOURED := 5.0
 
 const OUTSIDE := Color(0.82, 0.32, 0.22)
 const CREAM := Color(0.96, 0.9, 0.78)
@@ -114,6 +126,11 @@ var sacks: Array[FlourSack] = []
 var flour: FlourPrints
 var broken_plates := 0
 var burst_sacks := 0
+var muzza: FloorBoss
+var phone: PizzaPhone
+var complaint_bar: ProgressBar
+## Floured cops Don Muzza already saw (until the flour wears off).
+var _seen_floured := {}
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -130,6 +147,7 @@ func _ready() -> void:
 	_place_plates()
 	_place_sacks()
 	cold_door = _door(Vector3(COLD_DOOR_X, FLOOR_TOP, COLD_Z))
+	_place_muzza()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pizzeria")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -173,7 +191,9 @@ func _build_dining_room() -> void:
 	var openings: Array = [Vector3(KITCHEN_OPENING_X, OPENING_WIDTH * 1.2, 2.4), Vector3(OFFICE_OPENING_X, OPENING_WIDTH, 2.4)]
 	_wall("x", DINING_Z, -HALF_X, HALF_X, openings, CREAM)
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
-	_model(PHONE_MODEL, PHONE_AT)
+	phone = PizzaPhone.new()
+	phone.position = PHONE_AT
+	add_child(phone)
 	_build.mesh_box(TRAY_AT + Vector3(0, 0.01, 0), Vector3(0.5, 0.02, 0.36), STEEL)
 	for i in 3:
 		_model(SLICE_MODEL, TRAY_AT + Vector3(-0.14 + i * 0.14, 0.03, 0.0), PI if i % 2 else 0.0)
@@ -252,9 +272,11 @@ func _place_plates() -> void:
 			plate.position = stack + Vector3(0, 0.016 + i * 0.032, 0)
 			add_child(plate)
 			plates.append(plate)
-			plate.broken.connect(func(_at: Vector3) -> void:
+			plate.broken.connect(func(at: Vector3) -> void:
 				plates.erase(plate)
-				broken_plates += 1)
+				broken_plates += 1
+				if muzza:
+					muzza.saw(at, SAW_PLATE, "MUZZA_PLATE"))
 
 
 ## The flour sacks in a row against the kitchen's west wall: a burst one leaves a white patch on the floor.
@@ -268,6 +290,52 @@ func _place_sacks() -> void:
 			sacks.erase(sack)
 			burst_sacks += 1
 			flour.spill(at))
+
+
+func _physics_process(_delta: float) -> void:
+	# Online the host's Don Muzza minds the flour; the guests' one only follows.
+	if muzza and multiplayer.is_server():
+		_watch_flour()
+
+
+## Don Muzza on his round, his orders at the phone, what he notices and the complaint bar.
+func _place_muzza() -> void:
+	muzza = MUZZA_SCENE.instantiate()
+	muzza.route = MUZZA_ROUTE
+	muzza.printer_spot = ORDER_SPOT
+	muzza.printer = phone
+	muzza.fix_time = ORDER_TIME
+	add_child(muzza)
+	muzza.fix_facing = to_global(ORDER_SPOT + Vector3(0, 0, 3.0))
+	muzza.start_at(0)
+	cold_door.broken.connect(muzza.door_broken)
+	muzza.lawyer_called.connect(%CaseFailed.show)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	muzza.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Every floured cop that Don Muzza sees, once until the flour wears off.
+func _watch_flour() -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not flour.is_floured(cop):
+			_seen_floured.erase(cop)
+		elif not _seen_floured.has(cop) and muzza.saw(cop.global_position + Vector3.UP * 0.8, SAW_FLOURED,
+				"MUZZA_FLOUR"):
+			_seen_floured[cop] = true
 
 
 ## A locked door in a wall along x, its middle at `at`.

@@ -5242,6 +5242,27 @@ LOC_pizza_in_firewood_box,en el cajón de la leña,in the firewood box,na caixa 
 LOC_pizza_in_tablecloth_trunk,en el baúl de los manteles,in the tablecloth trunk,no baú das toalhas de mesa
 LOC_pizza_in_yard_bin,en el tacho del patio,in the yard bin,na lixeira do quintal
 LOC_pizza_in_box_tower,en la torre de cajas de pizza,in the tower of pizza boxes,na torre de caixas de pizza
+PROMPT_PIZZA_PHONE,E: llamar y pedir una grande de muzza,E: call and order a large cheese pizza,E: ligar e pedir uma grande de muçarela
+RING_PHONE,¡Riiing!,Riiing!,Triiim!
+HINT_PHONE_BUSY,Don Muzza ya está haciendo un pedido.,Don Muzza is already making an order.,Don Muzza já está fazendo um pedido.
+HINT_PHONE_RESTING,"Don Muzza mira el teléfono con sospecha. Espera un poco.","Don Muzza eyes the phone suspiciously. Wait a bit.","Don Muzza olha para o telefone desconfiado. Espere um pouco."
+MUZZA_LINE_1,"♪ Muzza, muzza, muzzarella, la más rica es la más bella ♪","♪ Mozzarella, mozzarella, the tastiest and most bella ♪","♪ Muça, muça, muçarela, a mais gostosa e a mais bela ♪"
+MUZZA_LINE_2,"La pizza más barata del barrio. ¿Clientes? Están por venir.","The cheapest pizza in the neighborhood. Customers? They're on their way.","A pizza mais barata do bairro. Clientes? Estão chegando."
+MUZZA_LINE_3,"¿Motos nuevas? Las gané en una rifa. Tres veces.","New scooters? I won them in a raffle. Three times.","Motos novas? Ganhei numa rifa. Três vezes."
+MUZZA_LINE_4,"No toquen la masa. La masa siente.","Don't touch the dough. The dough has feelings.","Não toquem na massa. A massa sente."
+MUZZA_PRINTER,"¡Un pedido! ¡Una grande de muzza, sale!","An order! One large cheese pizza, coming up!","Um pedido! Uma grande de muçarela, saindo!"
+MUZZA_FIX_1,"♪ Amasa, amasa, que la masa no se pasa ♪","♪ Knead it, knead it, the dough won't be defeated ♪","♪ Sova, sova, que a massa não estoura ♪"
+MUZZA_FIX_2,"♪ Un poquito de tomate, un poquito de amor ♪","♪ A little bit of tomato, a little bit of love ♪","♪ Um pouquinho de tomate, um pouquinho de amor ♪"
+MUZZA_FIX_3,"♪ Queso, queso, mucho queso… bueno, el que hay ♪","♪ Cheese, cheese, lots of cheese… well, what there is ♪","♪ Queijo, queijo, muito queijo… bom, o que tem ♪"
+MUZZA_FIX_DONE,"¡Lista! ¿Y el cliente? Bueno, la como yo.","Done! And the customer? Well, I'll eat it.","Pronta! E o cliente? Bom, eu como."
+MUZZA_HURT,"¡Cuidado! ¡Casi se me cae el bollo!","Careful! I almost dropped my dough!","Cuidado! Quase deixei a massa cair!"
+MUZZA_DOOR,"¿Me rompieron la puerta? ¡Esto es una pizzería, no una demolición!","You broke my door? This is a pizzeria, not a demolition!","Quebraram minha porta? Isto é uma pizzaria, não uma demolição!"
+MUZZA_SAW,"¡Me arruinaron la masa!","You ruined my dough!","Vocês estragaram minha massa!"
+MUZZA_NOTHING,"Yo solo hago pizzas, oficial. Baratas.","I just make pizzas, officer. Cheap ones.","Eu só faço pizzas, policial. Baratas."
+MUZZA_OFFENDED,"No hablo más. La masa tiene que descansar, y yo también.","I'm done talking. The dough needs to rest, and so do I.","Não falo mais. A massa precisa descansar, e eu também."
+MUZZA_LAWYER,"¡Llamo a mi abogado! Le debo tres pizzas, pero viene igual.","I'm calling my lawyer! I owe him three pizzas, but he'll come anyway.","Vou ligar para o meu advogado! Devo três pizzas para ele, mas ele vem mesmo assim."
+MUZZA_PLATE,"¡Mis platos! ¡Eran de la abuela!","My plates! They were grandma's!","Meus pratos! Eram da vovó!"
+MUZZA_FLOUR,"¡Me están enharinando el local! ¡Eso es harina cero cero cero!","You're getting flour all over my place! That's triple-zero flour!","Estão enfarinhando o meu local! É farinha zero zero zero!"
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
