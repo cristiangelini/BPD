@@ -119,6 +119,14 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   y el del oeste a un probador, se prueban un disfraz 15 s ("¡Arrr! ¡Soy un pirata temible!") y vuelven. Se quejan si
   hay un policía en el probador ("¡Hay un policía en el probador!") o si un maniquí cae a menos de 2 m ("¡Casi me
   aplasta un maniquí!"). Capturas `paso2-*.png`.
+- Paso 3: Don Fantoche, pirata de camiseta a rayas, parche, bigote y loro al hombro, recorre la tienda por el pasillo
+  del frente, el del este y el del fondo ("¿Qué vas a ser hoy, campeón?"). El timbre dorado del mostrador ("Atención
+  al cliente") lo manda al depósito: 15 s de espaldas a la tienda buscando el talle más grande ("¡Ya te lo traigo,
+  campeón!"). El timbre descansa 45 s ("El timbre todavía suena… espera un poco") y al tercer toque no va, sospecha
+  ("¿Tanto talle para qué?") y suma 10 a la denuncia. La denuncia, con su barra arriba de la pantalla, suma 5 por
+  cada queja de un cliente y por la puerta rota, y 10 si ve abrir la caja o romperse el espejo o la vitrina.
+  Para no chocar con el callejón de la cuadra, el lote de la tienda tiene 18 m de fondo (no 20). Capturas
+  `paso3-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

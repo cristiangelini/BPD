@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 3: Don Fantoche, the pirate owner, walks his round; the counter bell sends him to the stock room for 15 s with his back to the shop, rests 45 s and gives the cops away on the third ring (+10 complaint); customers' complaints, the broken door and what he sees broken or opened fill his complaint bar.
 - Costume shop raid, step 2: eight 12 kg mannequins in costume that fall like bowling pins (one tipping over or coming in fast knocks over the one it hits), and four customers who take turns trying costumes on in the fitting rooms and complain when a cop is inside or a mannequin falls next to them.
 - Costume shop raid, step 1: the costume shop "Disfraces El Bigote Postizo" on its lot in the city, with the counter and its till (the office key), five costume racks, three fitting rooms, the giant mirror and the mask display case that break (fines 30 and 15), the stock room, the locked office with its safe and 12 hiding spots; "Costume shop (raid, test)" in the menu.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
