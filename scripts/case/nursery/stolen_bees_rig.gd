@@ -29,6 +29,8 @@ var swarm_at := Vector3.ZERO
 var _since := 0.0
 var _sting_left := 0.0
 var _time := 0.0
+## Online, on a guest: where the host's swarm is, which this one flies to.
+var _host_swarm := Vector3.ZERO
 
 
 func setup(place: Nursery) -> void:
@@ -46,6 +48,7 @@ func setup(place: Nursery) -> void:
 		nursery.add_child(bee)
 		bees.append(bee)
 	swarm_at = home()
+	_host_swarm = swarm_at
 	_place_bees()
 
 
@@ -57,10 +60,14 @@ func home() -> Vector3:
 func _physics_process(delta: float) -> void:
 	_time += delta
 	_sting_left = maxf(_sting_left - delta, 0.0)
-	_chase(delta)
+	# Online the host's swarm chases and the host hears the cops come close; the guests' swarm follows it.
+	if multiplayer.is_server():
+		_chase(delta)
+	else:
+		swarm_at = swarm_at.move_toward(_host_swarm, FLY_SPEED * 2.0 * delta)
 	_place_bees()
 	_since += delta
-	if heard or _since < CHECK_EVERY:
+	if heard or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
@@ -103,7 +110,7 @@ func sting(cop: Cop) -> void:
 	stings += 1
 	var away := cop.global_position - swarm_at
 	away.y = 0.0
-	cop.knock_back((away.normalized() if away.length() > 0.01 else Vector3.FORWARD) * PUSH, PUSH_SECONDS)
+	Nursery.shove(cop, (away.normalized() if away.length() > 0.01 else Vector3.FORWARD) * PUSH, PUSH_SECONDS)
 	cop.show_hint("HINT_NURSERY_BEES")
 
 
@@ -112,3 +119,14 @@ func _place_bees() -> void:
 		var angle := _time * 4.0 + i * TAU / bees.size()
 		bees[i].global_position = swarm_at + Vector3(cos(angle) * 0.55, sin(_time * 7.0 + i) * 0.2,
 			sin(angle * 1.3) * 0.55)
+
+
+func net_state() -> Array:
+	return [heard, swarm_at, stings]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not heard:
+		hear()
+	_host_swarm = state[1]
+	stings = state[2]

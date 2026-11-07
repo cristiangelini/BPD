@@ -49,7 +49,7 @@ func _flat(at: Vector2, size: Vector2, color: Color, lift: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
@@ -82,3 +82,13 @@ func chant() -> void:
 	nursery.add_child(label)
 	label.global_position = nursery.main.global_position + Vector3.UP * 1.5
 	get_tree().create_timer(CHANT_SECONDS).timeout.connect(label.queue_free)
+
+
+## Online the host sees the cops come close, and the guests' rig shows it when it says.
+func net_state() -> Array:
+	return [noticed]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not noticed:
+		notice()

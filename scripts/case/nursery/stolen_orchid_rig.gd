@@ -56,7 +56,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_since = 0.0
 	_lean_plants()
-	if noticed:
+	if noticed or not multiplayer.is_server():
 		return
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if cop.global_position.distance_to(cloud_center()) <= NOTICE_RANGE:
@@ -100,3 +100,13 @@ func _lean_plants() -> void:
 		if to.length() < 0.1:
 			continue
 		plant.rotation = Vector3(LEAN, atan2(to.x, to.z), 0.0)
+
+
+## Online the host sees the cops come close, and the guests' rig shows it when it says.
+func net_state() -> Array:
+	return [noticed]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not noticed:
+		notice()

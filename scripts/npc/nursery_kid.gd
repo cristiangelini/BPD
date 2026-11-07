@@ -25,6 +25,9 @@ var clue_speech := ""
 var listeners := {}
 var has_told := false
 var cans_brought := 0
+## What he said to the cops (not his idle lines), so the guests' Brotecito says it too.
+var news_count := 0
+var news := ""
 var _since_idle := 0.0
 var _idle_line := 0
 var _bubble: Label3D
@@ -61,7 +64,7 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E on him: he asks for water.
 func use(cop: Cop) -> void:
-	_say("BROTECITO_AGAIN" if listeners.has(cop) else "BROTECITO_ASK", 4.0)
+	_tell("BROTECITO_AGAIN" if listeners.has(cop) else "BROTECITO_ASK", 4.0)
 
 
 ## A full can reached him: he waters with it and, the first time for the cop who brought it, tells what he saw.
@@ -73,20 +76,35 @@ func take(can: WateringCan) -> void:
 	var cops := can.handling_cops(3.0)
 	var cop: Cop = cops[0] if not cops.is_empty() else null
 	if cop == null or listeners.has(cop):
-		_say("BROTECITO_THANKS", 3.0)
+		_tell("BROTECITO_THANKS", 3.0)
 		return
 	listeners[cop] = true
 	if clue_speech == "":
-		_say("BROTECITO_NOTHING", 5.0)
+		_tell("BROTECITO_NOTHING", 5.0)
 		return
-	_say(clue_speech, 8.0)
+	_tell(clue_speech, 8.0)
 	if not has_told:
 		has_told = true
 		told.emit(clue)
 
 
+## Online, what the guests' Brotecito takes from the host's (Nursery.net_state): what he said, he says it there too.
+func net_state() -> Array:
+	return [news_count, news, has_told, cans_brought]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > news_count:
+		_say(state[1], 6.0)
+	news_count = state[0]
+	news = state[1]
+	has_told = state[2]
+	cans_brought = state[3]
+
+
 func _physics_process(delta: float) -> void:
-	for node in get_tree().get_nodes_in_group("watering_cans"):
+	# Online the can is the host's: he takes it there.
+	for node in get_tree().get_nodes_in_group("watering_cans") if multiplayer.is_server() else []:
 		var can := node as WateringCan
 		if can and can.full and can.global_position.distance_to(global_position + Vector3.UP * 0.6) <= GIVE_RANGE:
 			take(can)
@@ -98,6 +116,13 @@ func _physics_process(delta: float) -> void:
 			_say(IDLE_LINES[_idle_line % IDLE_LINES.size()])
 			_idle_line += 1
 			return
+
+
+## Something he says to the cops, which the guests hear too.
+func _tell(key: String, seconds: float) -> void:
+	news_count += 1
+	news = key
+	_say(key, seconds)
 
 
 func _say(key: String, seconds := 3.0) -> void:

@@ -78,7 +78,8 @@ func is_tipped() -> bool:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	if not full:
+	# Online the host's can spills, and the guests' copy empties when it says (Nursery.net_state).
+	if not full or not multiplayer.is_server():
 		return
 	if is_tipped():
 		spill()

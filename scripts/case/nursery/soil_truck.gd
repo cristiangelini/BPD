@@ -76,6 +76,24 @@ func fix() -> void:
 	bags.hide()
 
 
+## Online, what the guests' truck takes from the host's (Nursery.net_state): Doña Hortensia is the host's, so when she's
+## done counting there the truck leaves here too.
+func net_state() -> Array:
+	return [honks, distractions, rest_left, is_jammed]
+
+
+func apply_net_state(state: Array) -> void:
+	honks = state[0]
+	distractions = state[1]
+	rest_left = state[2]
+	if is_jammed and not state[3]:
+		fix()
+	elif state[3] and not is_jammed:
+		is_jammed = true
+		truck.show()
+		bags.show()
+
+
 func is_counting() -> bool:
 	return is_jammed
 

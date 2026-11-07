@@ -39,14 +39,45 @@ var bites := 0
 var swallowed: Array = []
 ## What she spat lately (instance id -> seconds left).
 var _spat := {}
+## Online, on a guest: what the host's Dentuda has in her mouth, hidden here.
+var _hidden_here: Array[NodePath] = []
 
 
 func is_calm() -> bool:
 	return calm_left > 0.0
 
 
+## Online she's the host's: she bites there, and the guests' Dentuda follows (apply_net_state).
 func _physics_process(delta: float) -> void:
-	tick(delta)
+	if multiplayer.is_server():
+		tick(delta)
+
+
+## Online, what the guests' Dentuda takes from the host's: her bites (she snaps there too), how calm she is and what
+## she has in her mouth (hidden there too), by its path in the nursery.
+func net_state() -> Array:
+	var inside: Array[NodePath] = []
+	for entry: Array in swallowed:
+		if is_instance_valid(entry[0]):
+			inside.append(nursery.get_path_to(entry[0]))
+	return [bites, calm_left, inside]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > bites:
+		_snap()
+	bites = state[0]
+	calm_left = state[1]
+	for path: NodePath in _hidden_here:
+		var body := nursery.get_node_or_null(path) as Node3D
+		if body and not state[2].has(path):
+			body.show()
+	_hidden_here.clear()
+	for path: NodePath in state[2]:
+		var body := nursery.get_node_or_null(path) as Node3D
+		if body:
+			body.hide()
+			_hidden_here.append(path)
 
 
 ## Moves her on by `delta` seconds: spits what's due and, if she isn't calm or still chewing, bites what's close.
@@ -111,23 +142,24 @@ func bite(target: Node3D) -> void:
 	bitten.emit(target)
 	var cop := target as Cop
 	if cop:
-		var grabber: Grabber = cop.get_node("Grabber")
-		var held := grabber.held
+		var held := (cop.get_node("Grabber") as Grabber).held
 		if held:
-			grabber.release()
+			Nursery.empty_hands(cop)
 			cop.show_hint("HINT_NURSERY_DENTUDA_TOOK")
 			_take(held)
 		else:
 			var away := cop.global_position - mouth
 			away.y = 0.0
-			cop.knock_back((away.normalized() if away.length() > 0.01 else -facing) * PUSH, PUSH_SECONDS)
+			Nursery.shove(cop, (away.normalized() if away.length() > 0.01 else -facing) * PUSH, PUSH_SECONDS)
 			cop.show_hint("HINT_NURSERY_DENTUDA_PUSH")
 		return
 	var body := target as RigidBody3D
 	if body is Grabbable:
 		for holder_id: int in (body as Grabbable).holders.keys():
 			var grabber := instance_from_id(holder_id) as Grabber
-			if grabber:
+			if grabber and grabber.get_parent() is Cop:
+				Nursery.empty_hands(grabber.get_parent() as Cop)
+			elif grabber:
 				grabber.release()
 	if body:
 		_take(body)
