@@ -1,4 +1,4 @@
-class_name CounterBell
+class_name CostumeCounterBell
 extends StaticBody3D
 
 ## The counter bell itself (SizeBell): a gold dome on a dark base that E rings.

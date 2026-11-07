@@ -22,7 +22,7 @@ var rest_left := 0.0
 
 
 func _ready() -> void:
-	var bell := CounterBell.new()
+	var bell := CostumeCounterBell.new()
 	add_child(bell)
 	bell.rang.connect(print_copies)
 
