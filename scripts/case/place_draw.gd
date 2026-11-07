@@ -82,9 +82,10 @@ const PLACES := {
 	"supermarket": "res://scenes/levels/supermarket.tscn",
 	"farm_raid": "res://scenes/levels/farm_raid.tscn",
 	"radio": "res://scenes/levels/radio_station.tscn",
+	"bowling": "res://scenes/levels/bowling.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage", "fair", "birthday_raid", "cinema", "supermarket", "farm_raid", "radio"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage", "fair", "birthday_raid", "cinema", "supermarket", "farm_raid", "radio", "bowling"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3

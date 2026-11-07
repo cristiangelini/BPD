@@ -1,0 +1,99 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/bowling.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/levels/city.gd" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/vehicles/patrol_car.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shift_screen.tscn" id="5"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.32, 0.56, 0.9, 1)
+sky_horizon_color = Color(0.75, 0.85, 0.95, 1)
+ground_horizon_color = Color(0.75, 0.85, 0.95, 1)
+ground_bottom_color = Color(0.4, 0.37, 0.33, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.45
+tonemap_mode = 2
+tonemap_exposure = 0.85
+ssao_enabled = true
+ssao_radius = 1.2
+ssao_intensity = 1.6
+adjustments_enabled = true
+adjustments_saturation = 1.2
+
+[node name="Bowling" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 8, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 1.2
+shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 120.0
+
+[node name="City" type="Node3D" parent="."]
+script = ExtResource("4")
+live_place = "bowling"
+live_block_ground = false
+
+[node name="Built" type="Node3D" parent="."]
+
+[node name="Cop" parent="." instance=ExtResource("2")]
+
+[node name="PatrolCar" parent="." instance=ExtResource("3")]
+
+[node name="CaseHud" type="CanvasLayer" parent="."]
+
+[node name="CaseFailed" type="Label" parent="CaseHud"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -60.0
+offset_right = 500.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "CASE_FAILED_LAWYER_BOWLING"
+horizontal_alignment = 1
+
+[node name="CaseSolved" type="Label" parent="CaseHud"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -60.0
+offset_right = 500.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.45, 1, 0.5, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "CASE_SOLVED"
+horizontal_alignment = 1
+
+[node name="ShiftScreen" parent="." instance=ExtResource("5")]

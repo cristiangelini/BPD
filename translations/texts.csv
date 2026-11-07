@@ -7529,3 +7529,155 @@ PROMPT_NEXT_RANKING,E: mirar el ranking,E: look at the chart,E: olhar o ranking
 CLUE_NEXT_RANKING,"El ranking de la semana que viene ya está colgado. ¿Cómo sabe quién va a ganar si todavía nadie votó?","Next week's chart is already up. How does he know who'll win if nobody has voted yet?","O ranking da semana que vem já está pendurado. Como ele sabe quem vai ganhar se ninguém votou ainda?"
 RADIO_SAME_SONG,"«¡Y otra vez el número uno! A pedido de... de todos.»","«And the number one again! By request of... of everyone.»","«E de novo o número um! A pedido de... de todo mundo.»"
 ROSA_CLUE_fake_chart,"Doña Rosa: ""Anoche se le escapó al aire: «los sobres están %s». Y pasó la misma canción once veces.""","Doña Rosa: ""Last night it slipped out on air: «the envelopes are %s». And he played the same song eleven times.""","Dona Rosa: ""Ontem à noite escapou no ar: «os envelopes estão %s». E tocou a mesma música onze vezes."""
+PLACE_BOWLING,Bolos Chuza Feliz,Chuza Feliz Bowling,Boliche Chuza Feliz
+MENU_BOWLING,Bolera (allanamiento) (prueba),Bowling alley (raid) (test),Boliche (batida) (teste)
+HINT_TILL_KEY_BOWLING,¡Una llave! Abre la oficina de Don Chuza.,A key! It opens Don Chuza's office.,Uma chave! Abre o escritório do Don Chuza.
+CASE_FAILED_LAWYER_BOWLING,Don Chuza llamó al abogado de la bolera. Caso perdido.,Don Chuza called the bowling alley's lawyer. Case lost.,Don Chuza ligou para o advogado do boliche. Caso perdido.
+BOWL_CASE_BROKEN,"«¡Mis trofeos! ¡Esos los gané yo! Bueno, casi todos.»","“My trophies! I won those! Well, almost all of them.”","“Meus troféus! Esses eu ganhei! Bom, quase todos.”"
+BOWL_SCREEN_BROKEN,"«¡Se apagó la pantalla! ¿Y ahora cómo sabemos quién va ganando?»","“The screen went out! Now how do we know who's winning?”","“A tela apagou! E agora como sabemos quem está ganhando?”"
+LOC_in_ball_return,en el retorno de bolas de la pista 3,in lane 3's ball return,no retorno de bolas da pista 3
+LOC_in_pin_machine_corridor,en el pasillo de las máquinas de pinos,in the pin machines' corridor,no corredor das máquinas de pinos
+LOC_in_old_pins_store,en el cajón de los pinos viejos,in the bin of old pins,na caixa dos pinos velhos
+LOC_behind_trophy_case,detrás de la vitrina de trofeos,behind the trophy case,atrás da vitrine de troféus
+LOC_in_bowl_office_corner,en un rincón de la oficina de Don Chuza,in a corner of Don Chuza's office,num canto do escritório do Don Chuza
+LOC_behind_shoe_counter,detrás del mostrador de zapatos,behind the shoe counter,atrás do balcão de sapatos
+LOC_on_shoe_shelf,en el estante de los zapatos,on the shoe shelf,na prateleira dos sapatos
+LOC_under_bench,debajo del banco de la pista 5,under lane 5's bench,embaixo do banco da pista 5
+LOC_by_popcorn_machine,al lado de la máquina de palomitas,by the popcorn machine,ao lado da máquina de pipoca
+LOC_behind_bar,detrás de la barra del bar,behind the bar,atrás do balcão do bar
+LOC_in_lane_6_gutter,en la canaleta de la pista 6,in lane 6's gutter,na canaleta da pista 6
+LOC_on_bowl_desk,en el escritorio de Don Chuza,on Don Chuza's desk,na escrivaninha do Don Chuza
+HINT_BOWL_SKATE,¡La pista está encerada! Correr acá es patinar.,The lane is waxed! Running here is skating.,A pista está encerada! Correr aqui é patinar.
+PROMPT_TALK_BOWLER,E: charlar con el jugador,E: chat with the bowler,E: conversar com o jogador
+BOWL_PLAYER_THROW_1,¡Ahí va!,Here it goes!,Lá vai!
+BOWL_PLAYER_THROW_2,¡Esta es chuza segura!,This one's a sure strike!,Essa é strike certo!
+BOWL_PLAYER_THROW_3,"Mira y aprende, novato.","Watch and learn, rookie.","Olha e aprende, novato."
+BOWL_PLAYER_IN_WAY,"¡Córrete, que estoy en racha!","Move it, I'm on a streak!","Sai da frente, que estou numa sequência!"
+BOWL_PLAYER_NO_BALL,¿Quién se llevó todas las bolas? ¡Es jueves!,Who took all the balls? It's Thursday!,Quem levou todas as bolas? É quinta-feira!
+BOWL_PLAYER_GRABBED,"¡Esa es mi bola, la estaba usando!","That's my ball, I was using it!","Essa é minha bola, eu estava usando!"
+BOWL_PLAYER_PINS,"¡Esos eran mis pinos! Ahora tengo que esperar.","Those were my pins! Now I have to wait.","Esses eram meus pinos! Agora tenho que esperar."
+BOWL_PLAYER_SCREEN,¡Me rompiste la pantalla! ¿Ahora quién cuenta mis puntos?,You broke my screen! Who's counting my points now?,Você quebrou minha tela! Quem conta meus pontos agora?
+BOWL_PLAYER_TALK_1,"Los jueves gana siempre el equipo de Don Chuza. Siempre. Hace diez años.","Don Chuza's team always wins on Thursdays. Always. For ten years.","Nas quintas o time do Don Chuza sempre ganha. Sempre. Há dez anos."
+BOWL_PLAYER_TALK_2,"¿Policías? Tranquilos, acá lo único que se rompe son los récords.","Cops? Relax, the only thing broken here is records.","Policiais? Calma, aqui só se quebram recordes."
+BOWL_PLAYER_TALK_3,No corras por la pista: la enceran cada mañana y es una pista de patinaje.,Don't run on the lane: they wax it every morning and it's an ice rink.,Não corra na pista: encerram toda manhã e vira pista de patinação.
+BOWL_PLAYER_TALK_4,"Pipo rocía los zapatos con tanto desodorante que ya no huelen a pie. Huelen a pie con perfume.","Pipo sprays the shoes so much they don't smell like feet anymore. They smell like perfumed feet.","O Pipo borrifa tanto desodorante nos sapatos que não cheiram mais a pé. Cheiram a pé perfumado."
+HINT_BOWL_HIT,¡Te pegó una bola! No te pares en la pista mientras juegan.,A ball hit you! Don't stand on the lane while they play.,Uma bola te acertou! Não fique na pista enquanto eles jogam.
+CHUZA_LINE_1,"¡Bienvenidos, jugadores nuevos! El primer juego lo paga la casa.","Welcome, new players! The first game's on the house.","Bem-vindos, jogadores novos! O primeiro jogo é por conta da casa."
+CHUZA_LINE_2,"¡Eso, campeón! ¡Con ese brazo llegas al torneo!","That's it, champ! With that arm you'll make the tournament!","Isso, campeão! Com esse braço você chega ao torneio!"
+CHUZA_LINE_3,"Los zapatos se piden en el mostrador. Pipo los perfuma.","Shoes are at the counter. Pipo perfumes them.","Os sapatos se pedem no balcão. O Pipo perfuma."
+CHUZA_LINE_4,"¿El auto con forma de pino? Me lo regaló mi tía.","The pin-shaped car? My aunt gave it to me.","O carro em forma de pino? Minha tia me deu."
+CHUZA_PRINTER,¡CHUZAAA!,STRIIIKE!,STRIIIKE!
+CHUZA_FIX_1,"¡Los diez! ¡Los diez pinos! ¡Qué hermosura!","All ten! All ten pins! What a beauty!","Os dez! Os dez pinos! Que lindeza!"
+CHUZA_FIX_2,"¡Fuegos artificiales en la pantalla! ¡Que suene la campana!","Fireworks on the screen! Ring the bell!","Fogos de artifício na tela! Toca o sino!"
+CHUZA_FIX_3,"Esto lo cuelgo en la pared. Con marco dorado.","I'm hanging this on the wall. In a gold frame.","Vou pendurar isso na parede. Com moldura dourada."
+CHUZA_FIX_DONE,"Bueno, bueno, a seguir jugando. ¡Qué noche!","Right, right, back to the game. What a night!","Bom, bom, vamos continuar jogando. Que noite!"
+CHUZA_HURT,"¡Ay! ¡Las bolas se tiran a los pinos, no a mí!","Ouch! You throw the balls at the pins, not at me!","Ai! As bolas são para os pinos, não para mim!"
+CHUZA_DOOR,"¡Mi puerta! ¡Eso no es una chuza, es un desastre!","My door! That's not a strike, it's a disaster!","Minha porta! Isso não é um strike, é um desastre!"
+CHUZA_SAW,"¡Eso no se toca, jugador!","Don't touch that, player!","Isso não se toca, jogador!"
+CHUZA_NOTHING,"Yo solo alquilo pistas, oficial. Y zapatos.","I just rent lanes, officer. And shoes.","Eu só alugo pistas, policial. E sapatos."
+CHUZA_OFFENDED,"No hablo más. Me voy a lustrar trofeos.","I'm done talking. I'm off to polish trophies.","Não falo mais. Vou lustrar troféus."
+CHUZA_LAWYER,"¡Llamo a mi abogado! ¡Juega en mi equipo los jueves!","I'm calling my lawyer! He's on my Thursday team!","Vou ligar para o meu advogado! Ele joga no meu time às quintas!"
+CHUZA_CAUGHT_ON,"Tres chuzas seguidas… Ustedes no son jugadores nuevos.","Three strikes in a row… You're no new players.","Três strikes seguidos… Vocês não são jogadores novos."
+CHUZA_PLAYER,"¡Mis jugadores se quejan! ¡Los jueves son sagrados!","My players are complaining! Thursdays are sacred!","Meus jogadores estão reclamando! As quintas são sagradas!"
+CHUZA_CASE,"¡Mis trofeos! ¡Diez años de victorias!","My trophies! Ten years of victories!","Meus troféus! Dez anos de vitórias!"
+CHUZA_SCREEN,"¡La pantalla! ¿Saben lo que cuesta una pantalla?","The screen! Do you know what a screen costs?","A tela! Vocês sabem quanto custa uma tela?"
+BOWL_STRIKE_SCREEN,★ ¡CHUZA! ★,★ STRIKE! ★,★ STRIKE! ★
+PROMPT_PIPO_SHOES,E: pedirle zapatos a Pipo,E: ask Pipo for shoes,E: pedir sapatos ao Pipo
+PROMPT_PIPO_RETURN,E: devolverle los zapatos a Pipo,E: give Pipo the shoes back,E: devolver os sapatos ao Pipo
+PIPO_SHOES,"Tu número, recién perfumados. ¡Pero me los devuelves, eh! Nadie me los devuelve.","Your size, freshly perfumed. But give them back, okay? Nobody ever gives them back.","Seu número, recém-perfumados. Mas me devolve, hein! Ninguém me devolve."
+PIPO_THANKS,"¡Gracias otra vez! Eres mi cliente favorito.","Thanks again! You're my favorite customer.","Obrigado de novo! Você é meu cliente favorito."
+PIPO_NOTHING,"¡Me los devolviste! Gracias… Yo no vi nada raro, solo pies.","You gave them back! Thanks… I didn't see anything odd, only feet.","Você devolveu! Obrigado… Eu não vi nada estranho, só pés."
+PIPO_IDLE_1,"Psss, psss. Un zapato, un chorrito de desodorante.","Psss, psss. One shoe, one squirt of deodorant.","Psss, psss. Um sapato, um jato de desodorante."
+PIPO_IDLE_2,"Tengo 200 pares y vuelven 50. ¿Dónde se van los zapatos?","I've got 200 pairs and 50 come back. Where do the shoes go?","Tenho 200 pares e voltam 50. Para onde vão os sapatos?"
+PIPO_IDLE_3,"Si me devuelves un par, te cuento un secreto.","Give me back a pair and I'll tell you a secret.","Se me devolver um par, te conto um segredo."
+HINT_BOWL_SHOES_ON,Te pusiste zapatos de bolos: ahora resbalas menos en la pista.,You put on bowling shoes: you slide less on the lanes now.,Você calçou sapatos de boliche: agora escorrega menos na pista.
+HINT_BOWL_SHOES_OFF,Le devolviste los zapatos a Pipo.,You gave the shoes back to Pipo.,Você devolveu os sapatos ao Pipo.
+BRIEF_BOWL_TIP_B,"Llegó una denuncia anónima: en «Bolos Chuza Feliz» gana siempre el mismo equipo, y el dueño se compró un auto con forma de pino.","We got an anonymous tip: at «Bolos Chuza Feliz» the same team always wins, and the owner just bought a pin-shaped car.","Chegou uma denúncia anônima: no «Bolos Chuza Feliz» sempre ganha o mesmo time, e o dono comprou um carro em forma de pino."
+BRIEF_BOWL_TIP_D,"La bolera sigue abierta: es jueves y juega el torneo. Don Chuza, el dueño, no se pierde una chuza. La oficina está cerrada con llave.","The alley is still open: it's Thursday and the league is playing. Don Chuza, the owner, never misses a strike. The office is locked.","O boliche continua aberto: é quinta e o torneio está jogando. Don Chuza, o dono, não perde um strike. O escritório está trancado."
+BRIEF_BOWL_TIP_E,"Y no rompan nada: la vitrina de trofeos y las pantallas se las descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the trophy case and the screens come out of your pay. Press Q to see your checklist.","E não quebrem nada: a vitrine de troféus e as telas saem do salário de vocês. Com Q vocês veem a lista do que têm que fazer."
+SUSPECT_bowl_magnet,La bola con imán,The magnet ball,A bola com ímã
+SUSPECT_bowl_lead_pins,Los pinos de plomo,The lead pins,Os pinos de chumbo
+SUSPECT_bowl_skates,Los zapatos con ruedas,The shoes on wheels,Os sapatos com rodinhas
+SUSPECT_bowl_tournament,El torneo arreglado,The fixed tournament,O torneio arranjado
+SUSPECT_bowl_popcorn,Las palomitas mágicas,The magic popcorn,A pipoca mágica
+SUSPECT_bowl_lane7,La pista 7,Lane 7,A pista 7
+CLUE_SUSPECT_bowl_magnet,"Una boleta de una ferretería: «Un imán de herradura, el más fuerte que tengan. Que entre en una bola».","A hardware store receipt: «A horseshoe magnet, the strongest you have. It has to fit in a ball».","Um recibo de uma loja de ferragens: «Um ímã de ferradura, o mais forte que tiverem. Que caiba numa bola»."
+CLUE_SUSPECT_bowl_lead_pins,"Una nota: «Los pinos nuevos no se tocan. Pesan como un ladrillo, que nadie los levante».","A note: «Don't touch the new pins. They weigh like a brick, nobody lift them».","Um bilhete: «Não mexam nos pinos novos. Pesam como um tijolo, ninguém levante»."
+CLUE_SUSPECT_bowl_skates,"Un pedido a una fábrica de patines: «200 ruedas chiquitas. Que no se vean debajo de un zapato».","An order to a skate factory: «200 tiny wheels. They mustn't show under a shoe».","Um pedido a uma fábrica de patins: «200 rodinhas. Que não apareçam debaixo de um sapato»."
+CLUE_SUSPECT_bowl_tournament,"Un recibo de un grabador de copas: «Campeones del torneo del año que viene: Los Chuza».","A trophy engraver's receipt: «Champions of next year's tournament: Los Chuza».","Um recibo de um gravador de taças: «Campeões do torneio do ano que vem: Los Chuza»."
+CLUE_SUSPECT_bowl_popcorn,"Una bolsa vacía de «maíz para palomitas» que dice abajo, en chiquito: «piedritas para pecera».","An empty bag of «popcorn kernels» that says underneath, in small print: «fish tank pebbles».","Um saco vazio de «milho de pipoca» que diz embaixo, em letra miúda: «pedrinhas para aquário»."
+CLUE_SUSPECT_bowl_lane7,"Un plano de la bolera con 6 pistas. Alguien dibujó una séptima atrás de la pared, con lápiz.","A map of the alley with 6 lanes. Someone drew a seventh behind the wall, in pencil.","Uma planta do boliche com 6 pistas. Alguém desenhou uma sétima atrás da parede, a lápis."
+BRIEF_BOWL_MAGNET_B,"Don Chuza le puso un imán a una bola dorada y un control remoto a los pinos de la pista 1. Su equipo hace chuza sin tocar un pino.","Don Chuza put a magnet in a golden ball and a remote on lane 1's pins. His team bowls strikes without touching a pin.","Don Chuza colocou um ímã numa bola dourada e um controle remoto nos pinos da pista 1. O time dele faz strike sem tocar num pino."
+BRIEF_BOWL_MAGNET_C,"Traigan la bola dorada en el baúl del patrullero. Sin eso no hay caso.","Bring the golden ball in the patrol car's trunk. Without it there's no case.","Tragam a bola dourada no porta-malas da viatura. Sem ela não há caso."
+BRIEF_BOWL_MAGNET_D,"Si encuentran el control remoto o la lista de apuestas, mejor: todo suma.","If you find the remote or the list of bets, even better: it all adds up.","Se acharem o controle remoto ou a lista de apostas, melhor: tudo soma."
+OBJ_FIND_MAGNET_BALL,Llevarse la bola dorada con imán,Take the golden magnet ball,Levar a bola dourada com ímã
+OBJ_EXTRA_PIN_REMOTE,Extra: el control remoto de los pinos,Extra: the pins' remote,Extra: o controle remoto dos pinos
+OBJ_EXTRA_BET_LIST,Extra: la lista de apuestas,Extra: the list of bets,Extra: a lista de apostas
+OBJ_ENTER_BOWL,Entrar a la bolera (está abierta),Get into the alley (it's open),Entrar no boliche (está aberto)
+OBJ_GUESS_BOWL,"Averiguar qué pasa en la bolera (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the alley (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no boliche (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_BOWL,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_BOWL,Queja de Don Chuza: %d%%,Don Chuza's complaint: %d%%,Queixa de Don Chuza: %d%%
+CHUZA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡qué lindo tiro, campeón!»","“I didn't put anything %s!... I mean, what a throw, champ!”","“Eu não guardei nada %s!... Quer dizer, que jogada, campeão!”"
+CLUE_PIPO,Pipo vio a Don Chuza esconder algo %s,Pipo saw Don Chuza hide something %s,O Pipo viu Don Chuza esconder algo %s
+PIPO_CLUE_bowl_magnet,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y una bola de la mesa se pega a los tachos, ¡clonc!»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And one ball on the racks sticks to the bins, clonk!”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E uma bola da mesa gruda nas lixeiras, clonc!”"
+BOWL_MAGNET_CLONC,¡Clonc!,Clonk!,Clonc!
+BOWL_MAGNET_CLUE,"Una bola de la mesa se pegó sola al tacho de metal. Adentro tiene algo que atrae el metal.","A ball from the racks stuck to the metal bin on its own. There's something inside it that pulls metal.","Uma bola da mesa grudou sozinha na lixeira de metal. Tem algo dentro dela que atrai metal."
+CRIME_owner_bowling,"¡Novatos! Ayer se trajeron a Don Chuza, el dueño de Bolos Chuza Feliz, y lo tenemos en la sala de interrogatorio. Algo escondió en la bolera que no encontraron.","Rookies! Yesterday you brought in Don Chuza, the owner of Bolos Chuza Feliz, and we have him in the interrogation room. He hid something in the alley that you didn't find.","Novatos! Ontem vocês trouxeram Don Chuza, o dono do Bolos Chuza Feliz, e ele está na sala de interrogatório. Ele escondeu algo no boliche que vocês não acharam."
+CONFESS_owner_bowling,"¡Está bien! ¡Fui yo! Pero admitan que fue una chuza perfecta.","Fine! It was me! But admit it was a perfect strike.","Tá bom! Fui eu! Mas admitam que foi um strike perfeito."
+BRIEF_BOWL_LEAD_B,"Don Chuza les fundió pinos de plomo a la pista de sus rivales. Ahí no se cae un pino ni con una aplanadora, y su equipo gana siempre.","Don Chuza cast lead pins for his rivals' lane. Not a pin falls there even with a steamroller, and his team always wins.","Don Chuza fundiu pinos de chumbo para a pista dos rivais. Ali não cai um pino nem com um rolo compressor, e o time dele sempre ganha."
+BRIEF_BOWL_LEAD_C,"Traigan el molde de los pinos en el baúl del patrullero. Pesa: entre dos. Sin eso no hay caso.","Bring the pin mold in the patrol car's trunk. It's heavy: two of you. Without it there's no case.","Tragam o molde dos pinos no porta-malas da viatura. É pesado: em dois. Sem ele não há caso."
+BRIEF_BOWL_LEAD_D,"Si encuentran un pino de plomo de repuesto o la factura del plomo, mejor: todo suma.","If you find a spare lead pin or the invoice for the lead, even better: it all adds up.","Se acharem um pino de chumbo de reserva ou a nota do chumbo, melhor: tudo soma."
+OBJ_FIND_LEAD_MOLD,Llevarse el molde de los pinos de plomo,Take the lead pins' mold,Levar o molde dos pinos de chumbo
+OBJ_EXTRA_LEAD_PIN,Extra: un pino de plomo,Extra: a lead pin,Extra: um pino de chumbo
+OBJ_EXTRA_LEAD_INVOICE,Extra: la factura del plomo,Extra: the invoice for the lead,Extra: a nota do chumbo
+PIPO_CLUE_bowl_lead_pins,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y los pinos de la pista 4… yo no los levanto, me duele la espalda.»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And lane 4's pins… I don't lift those, my back hurts.”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E os pinos da pista 4… eu não levanto, minhas costas doem.”"
+BOWL_LEAD_HEAVY,¡Uf! ¡Pesa como un ladrillo!,Oof! It weighs like a brick!,Ufa! Pesa como um tijolo!
+BOWL_LEAD_CLUE,"Un pino de la pista 4 pesa como cinco: no es de madera, es de plomo pintado de blanco.","A pin from lane 4 weighs as much as five: it isn't wood, it's lead painted white.","Um pino da pista 4 pesa como cinco: não é de madeira, é chumbo pintado de branco."
+BRIEF_BOWL_SKATES_B,"Don Chuza les puso ruedas escondidas a los zapatos de su equipo. Llegan a la línea patinando y tiran con todo el envión.","Don Chuza put hidden wheels in his team's shoes. They skate up to the line and throw with all that momentum.","Don Chuza colocou rodinhas escondidas nos sapatos do time dele. Chegam à linha patinando e jogam com todo o embalo."
+BRIEF_BOWL_SKATES_C,"Traigan la caja de zapatos con ruedas en el baúl del patrullero. Sin eso no hay caso.","Bring the box of wheeled shoes in the patrol car's trunk. Without it there's no case.","Tragam a caixa de sapatos com rodinhas no porta-malas da viatura. Sem ela não há caso."
+BRIEF_BOWL_SKATES_D,"Si encuentran el patín desarmado o el manual para patinar sin que se note, mejor: todo suma.","If you find the skate taken apart or the manual on skating unnoticed, even better: it all adds up.","Se acharem o patins desmontado ou o manual para patinar sem que se note, melhor: tudo soma."
+OBJ_FIND_SKATE_BOX,Llevarse la caja de zapatos con ruedas,Take the box of wheeled shoes,Levar a caixa de sapatos com rodinhas
+OBJ_EXTRA_SKATE_PARTS,Extra: el patín desarmado,Extra: the skate taken apart,Extra: o patins desmontado
+OBJ_EXTRA_SKATE_MANUAL,Extra: el manual «Cómo patinar sin que se note»,Extra: the manual «How to skate unnoticed»,Extra: o manual «Como patinar sem que se note»
+PIPO_CLUE_bowl_skates,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y esos zapatos… ¿tú también los sentiste andar solos?»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And those shoes… did you feel them move by themselves too?”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E esses sapatos… você também sentiu eles andarem sozinhos?”"
+HINT_BOWL_WHEELS,¡Estos zapatos se van solos!,These shoes are going off on their own!,Esses sapatos andam sozinhos!
+BOWL_WHEELS_CLUE,"Los zapatos de bolos que te dio Pipo tienen rueditas escondidas en la suela.","The bowling shoes Pipo gave you have tiny wheels hidden in the sole.","Os sapatos de boliche que o Pipo te deu têm rodinhas escondidas na sola."
+BRIEF_BOWL_CUP_B,"Don Chuza arregló el torneo de los jueves: la copa de este año ya tiene grabado el nombre del ganador, y adivina quién.","Don Chuza fixed the Thursday tournament: this year's cup already has the winner's name engraved, and guess who.","Don Chuza arranjou o torneio das quintas: a taça deste ano já tem o nome do vencedor gravado, e adivinha quem."
+BRIEF_BOWL_CUP_C,"Traigan la copa grabada en el baúl del patrullero. Sin eso no hay caso.","Bring the engraved cup in the patrol car's trunk. Without it there's no case.","Tragam a taça gravada no porta-malas da viatura. Sem ela não tem caso."
+BRIEF_BOWL_CUP_D,"Si encuentran la planilla de puntos falsa o el sobre para el juez, mejor: todo suma.","If you find the fake score sheet or the envelope for the judge, even better: it all adds up.","Se acharem a planilha de pontos falsa ou o envelope para o juiz, melhor: tudo soma."
+OBJ_FIND_RIGGED_CUP,Llevarse la copa con el ganador ya grabado,Take the cup with the winner already engraved,Levar a taça com o vencedor já gravado
+OBJ_EXTRA_FAKE_SCORES,Extra: la planilla de puntos falsa,Extra: the fake score sheet,Extra: a planilha de pontos falsa
+OBJ_EXTRA_JUDGE_ENVELOPE,Extra: el sobre con plata para el juez,Extra: the envelope of money for the judge,Extra: o envelope com dinheiro para o juiz
+PIPO_CLUE_bowl_tournament,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y mira la pantalla de la pista 1: ¡suma como quiere!»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And look at lane 1's screen: it adds up however it likes!”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E olha a tela da pista 1: soma como quer!”"
+BOWL_CUP_PLATE,"Campeones: Los Chuza (todos los años)","Champions: Los Chuza (every year)","Campeões: Los Chuza (todos os anos)"
+BOWL_SCORE_PLUS,+10 de regalo,+10 for free,+10 de presente
+BOWL_SCORE_ODD,¿Tiraron %d pinos y la pantalla sumó %d?,They knocked %d pins and the screen added %d?,Derrubaram %d pinos e a tela somou %d?
+BOWL_SCORE_CLUE,"La pantalla de la pista 1 suma 10 puntos de más a cada tiro.","Lane 1's screen adds 10 points too many to every roll.","A tela da pista 1 soma 10 pontos a mais em cada jogada."
+BRIEF_BOWL_POPCORN_B,"Don Chuza vende «palomitas premium» a precio de oro, pero son piedritas pintadas de amarillo. Nadie se las come: las compran y se van con la boca cerrada.","Don Chuza sells «premium popcorn» at the price of gold, but it's little pebbles painted yellow. Nobody eats them: they buy them and leave with their mouths shut.","Don Chuza vende «pipoca premium» a preço de ouro, mas são pedrinhas pintadas de amarelo. Ninguém come: compram e vão embora de boca fechada."
+BRIEF_BOWL_POPCORN_C,"Traigan la bolsa de «maíz para palomitas» en el baúl del patrullero. Sin eso no hay caso.","Bring the sack of «popcorn corn» in the patrol car's trunk. Without it there's no case.","Tragam o saco de «milho de pipoca» no porta-malas da viatura. Sem ele não tem caso."
+BRIEF_BOWL_POPCORN_D,"Si encuentran la pintura amarilla o el recibo de las palomitas premium, mejor: todo suma.","If you find the yellow paint or the premium popcorn receipt, even better: it all adds up.","Se acharem a tinta amarela ou o recibo da pipoca premium, melhor: tudo soma."
+OBJ_FIND_PEBBLE_SACK,Llevarse la bolsa de «maíz para palomitas»,Take the sack of «popcorn corn»,Levar o saco de «milho de pipoca»
+OBJ_EXTRA_PAINT_CAN,Extra: la lata de pintura amarilla,Extra: the can of yellow paint,Extra: a lata de tinta amarela
+OBJ_EXTRA_POPCORN_RECEIPT,Extra: el recibo de las «palomitas premium»,Extra: the «premium popcorn» receipt,Extra: o recibo da «pipoca premium»
+PIPO_CLUE_bowl_popcorn,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y no comas las palomitas: yo perdí una muela.»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And don't eat the popcorn: I lost a tooth.”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E não coma a pipoca: eu perdi um dente.”"
+BOWL_POPCORN_RATTLE,¡Clonc! ¡Clonc!,Clonk! Clonk!,Clonc! Clonc!
+BOWL_POPCORN_CRACK,¡CRAC!,CRACK!,CRAC!
+HINT_BOWL_POPCORN_BITE,"¡Ay, mi diente! Esta palomita es una piedra.","Ow, my tooth! This popcorn is a stone.","Ai, meu dente! Essa pipoca é uma pedra."
+BOWL_POPCORN_CLUE,"Las palomitas de la máquina son piedritas pintadas de amarillo.","The machine's popcorn is little pebbles painted yellow.","A pipoca da máquina são pedrinhas pintadas de amarelo."
+BRIEF_BOWL_LANE7_B,"Don Chuza les roba bolas a las otras boleras y las hace rodar en una pista 7 que no figura en ningún plano.","Don Chuza steals balls from the other bowling alleys and rolls them on a lane 7 that isn't on any plan.","Don Chuza rouba bolas dos outros boliches e as faz rolar numa pista 7 que não aparece em nenhuma planta."
+BRIEF_BOWL_LANE7_C,"Traigan la caja de bolas robadas en el baúl del patrullero. Sin eso no hay caso.","Bring the crate of stolen balls in the patrol car's trunk. Without it there's no case.","Tragam a caixa de bolas roubadas no porta-malas da viatura. Sem ela não tem caso."
+BRIEF_BOWL_LANE7_D,"Si encuentran el cartel arrancado de otra bolera o el plano de la pista secreta, mejor: todo suma.","If you find the sign torn off another alley or the plan of the secret lane, even better: it all adds up.","Se acharem a placa arrancada de outro boliche ou a planta da pista secreta, melhor: tudo soma."
+OBJ_FIND_STOLEN_BALLS,Llevarse la caja de bolas robadas,Take the crate of stolen balls,Levar a caixa de bolas roubadas
+OBJ_EXTRA_TORN_SIGN,Extra: el cartel arrancado de otra bolera,Extra: the sign torn off another alley,Extra: a placa arrancada de outro boliche
+OBJ_EXTRA_SECRET_PLAN,Extra: el plano de la pista secreta,Extra: the plan of the secret lane,Extra: a planta da pista secreta
+PIPO_CLUE_bowl_lane7,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y de noche se oyen bolas detrás de la cortina roja…»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And at night you hear balls rolling behind the red curtain…”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E de noite se ouvem bolas atrás da cortina vermelha…”"
+BOWL_LANE7_SIGN,Pista 7: no entrar,Lane 7: keep out,Pista 7: não entre
+BOWL_RETURN_EXTRA,¡Plonc! Volvió una bola de más,Plonk! One ball too many came back,Plonc! Voltou uma bola a mais
+BOWL_FOREIGN_1,Propiedad de Bolera Strike Sur,Property of Strike Sur Bowling,Propriedade do Boliche Strike Sur
+BOWL_FOREIGN_2,Propiedad de Bolos El Chanfle,Property of Bolos El Chanfle,Propriedade do Bolos El Chanfle
+BOWL_FOREIGN_3,Propiedad de Pista Rodante,Property of Pista Rodante,Propriedade da Pista Rodante
+BOWL_FOREIGN_CLUE,"El retorno de bolas devuelve más bolas de las que se tiran, con nombres de otras boleras.","The ball return gives back more balls than were bowled, with other alleys' names on them.","O retorno de bolas devolve mais bolas do que foram jogadas, com nomes de outros boliches."
+HINT_ESCAPE_bowling,"¡Don Chuza vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Don Chuza saw the evidence and is getting away in the car! You have one minute to catch him.","O Don Chuza viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-lo."
+CHASE_BOWLING_LINE_1,"¡Chuza! ¡Me tiraron a mí como a un pino!","Strike! You knocked me down like a pin!","Strike! Me derrubaram como um pino!"
+CHASE_BOWLING_LINE_2,"¡No me escapaba! ¡Iba a buscar más zapatos para Pipo!","I wasn't running away! I was getting more shoes for Pipo!","Eu não estava fugindo! Ia buscar mais sapatos para o Pipo!"
+CHASE_BOWLING_LINE_3,"¡Eso fue falta! ¡Pisaron la línea!","That's a foul! You stepped over the line!","Isso foi falta! Pisaram na linha!"
