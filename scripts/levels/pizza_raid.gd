@@ -10,7 +10,9 @@ extends Node3D
 ## footprints (FlourPrints, like in the cake lab). SPOTS are the 12 hiding spots the stories draw from (step 5). Don
 ## Muzza walks the dining room and the kitchen singing (step 3): he fills the complaint ("¡Me arruinaron la masa!")
 ## with every plate he sees break and every floured cop he sees, and the phone on the counter sends him to the dough
-## table to make an order, his back to the kitchen. Every number here is (propuesta).
+## table to make an order, his back to the kitchen. Tito waits on his bench in the yard and talks for a slice from the
+## counter's tray (step 4), and what stays in the clay oven's mouth burns (PizzaOven): Don Muzza minds seeing anyone
+## put something in. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SACK_SCENE := preload("res://scenes/props/lab_flour_sack.tscn")
@@ -61,7 +63,7 @@ const TRUNK_SIZE := Vector3(1.0, 0.5, 0.6)
 const OVEN_AT := Vector3(-5.5, FLOOR_TOP, -2.8)
 const OVEN_SIZE := Vector3(1.6, 1.7, 1.6)
 ## The oven's mouth, where what is put in burns (step 4).
-const OVEN_MOUTH := Vector3(-5.5, FLOOR_TOP + 1.0, -2.1)
+const OVEN_MOUTH := Vector3(-5.5, FLOOR_TOP + 1.175, -2.3)
 const WOODBOX_AT := Vector3(-3.4, FLOOR_TOP, -3.5)
 const WOODBOX_SIZE := Vector3(0.9, 0.5, 0.6)
 const DOUGH_TABLE_AT := Vector3(-3.0, FLOOR_TOP, -0.3)
@@ -90,6 +92,13 @@ const ORDER_TIME := 20.0
 ## Seeing a plate break, and a floured cop.
 const SAW_PLATE := 2.0
 const SAW_FLOURED := 5.0
+const SAW_OVEN := 10.0
+## The oven's brick base, and the dome behind its mouth: the mouth is the ledge on the base, in front of the dome.
+const OVEN_BASE := 0.95
+const OVEN_LEDGE := 0.6
+## The slices on the counter's tray, and where Tito waits (in front of his bench, facing the back door).
+const SLICES := 3
+const TITO_AT := BENCH_AT + Vector3(0, 0, 0.55)
 
 const OUTSIDE := Color(0.82, 0.32, 0.22)
 const CREAM := Color(0.96, 0.9, 0.78)
@@ -131,6 +140,9 @@ var phone: PizzaPhone
 var complaint_bar: ProgressBar
 ## Floured cops Don Muzza already saw (until the flour wears off).
 var _seen_floured := {}
+var oven: PizzaOven
+var tito: PizzaTito
+var slices: Array[Grabbable] = []
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -148,6 +160,7 @@ func _ready() -> void:
 	_place_sacks()
 	cold_door = _door(Vector3(COLD_DOOR_X, FLOOR_TOP, COLD_Z))
 	_place_muzza()
+	_place_tito()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pizzeria")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -195,8 +208,6 @@ func _build_dining_room() -> void:
 	phone.position = PHONE_AT
 	add_child(phone)
 	_build.mesh_box(TRAY_AT + Vector3(0, 0.01, 0), Vector3(0.5, 0.02, 0.36), STEEL)
-	for i in 3:
-		_model(SLICE_MODEL, TRAY_AT + Vector3(-0.14 + i * 0.14, 0.03, 0.0), PI if i % 2 else 0.0)
 	for i in TOWER_BOXES:
 		_model(BOX_MODEL, TOWER_AT + Vector3(0, i * 0.05, 0), i * 0.25)
 	var tower := _build.body(TOWER_AT + Vector3(0, TOWER_BOXES * 0.025, 0))
@@ -217,8 +228,14 @@ func _build_dining_room() -> void:
 func _build_kitchen() -> void:
 	_wall("z", KITCHEN_X, YARD_Z, DINING_Z, [], TILE)
 	_model(OVEN_MODEL, OVEN_AT)
-	var oven := _build.body(OVEN_AT + Vector3(0, OVEN_SIZE.y / 2, 0))
-	_build.shape(oven, OVEN_SIZE)
+	var base := _build.body(OVEN_AT + Vector3(0, OVEN_BASE / 2, 0))
+	_build.shape(base, Vector3(OVEN_SIZE.x, OVEN_BASE, OVEN_SIZE.z))
+	var dome_height := OVEN_SIZE.y - OVEN_BASE
+	var dome := _build.body(OVEN_AT + Vector3(0, OVEN_BASE + dome_height / 2, -OVEN_LEDGE / 2))
+	_build.shape(dome, Vector3(OVEN_SIZE.x, dome_height, OVEN_SIZE.z - OVEN_LEDGE))
+	oven = PizzaOven.new()
+	oven.position = OVEN_MOUTH
+	add_child(oven)
 	_build.open_box(WOODBOX_AT, WOODBOX_SIZE, "y", WOOD.darkened(0.2))
 	_model(DOUGH_TABLE_MODEL, DOUGH_TABLE_AT)
 	var table := _build.body(DOUGH_TABLE_AT + Vector3(0, DOUGH_TABLE_SIZE.y - 0.03, 0))
@@ -326,6 +343,23 @@ func _place_muzza() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	muzza.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Tito by his bench, and the slices on the tray he'd talk for.
+func _place_tito() -> void:
+	for i in SLICES:
+		var slice := ClubEvidence.make_item("Slice%d" % (i + 1), SLICE_MODEL, Vector3(0.12, 0.03, 0.2), 0.15)
+		slice.add_to_group(PizzaTito.SLICE_GROUP)
+		slice.position = TRAY_AT + Vector3(-0.14 + i * 0.14, 0.04, 0.0)
+		slice.rotation.y = PI if i % 2 else 0.0
+		add_child(slice)
+		slices.append(slice)
+	tito = PizzaTito.new()
+	tito.name = "Tito"
+	tito.position = TITO_AT
+	add_child(tito)
+	oven.fed.connect(func(_item: Grabbable) -> void:
+		muzza.saw(oven.global_position, SAW_OVEN, "MUZZA_OVEN"))
 
 
 ## Every floured cop that Don Muzza sees, once until the flour wears off.

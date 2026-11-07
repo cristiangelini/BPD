@@ -5263,6 +5263,18 @@ MUZZA_OFFENDED,"No hablo más. La masa tiene que descansar, y yo también.","I'm
 MUZZA_LAWYER,"¡Llamo a mi abogado! Le debo tres pizzas, pero viene igual.","I'm calling my lawyer! I owe him three pizzas, but he'll come anyway.","Vou ligar para o meu advogado! Devo três pizzas para ele, mas ele vem mesmo assim."
 MUZZA_PLATE,"¡Mis platos! ¡Eran de la abuela!","My plates! They were grandma's!","Meus pratos! Eram da vovó!"
 MUZZA_FLOUR,"¡Me están enharinando el local! ¡Eso es harina cero cero cero!","You're getting flour all over my place! That's triple-zero flour!","Estão enfarinhando o meu local! É farinha zero zero zero!"
+MUZZA_OVEN,"¡¿Qué metieron en mi horno?! ¡Ahí solo entra pizza!","What did you put in my oven?! Only pizza goes in there!","O que vocês colocaram no meu forno?! Ali só entra pizza!"
+PROMPT_OVEN_HAND,E: meter la mano en el horno,E: put your hand in the oven,E: enfiar a mão no forno
+HINT_OVEN_HOT,"¡Ay, quema! Soltaste lo que tenías.","Ouch, it's hot! You let go of what you had.","Ai, queima! Você soltou o que segurava."
+PROMPT_TITO,E: hablar con Tito,E: talk to Tito,E: falar com o Tito
+PROMPT_TITO_SLICE,E: darle la porción a Tito,E: give Tito the slice,E: dar a fatia para o Tito
+TITO_WANTS_SLICE,"Tengo un hambre… Don Muzza no me deja comer en horario. Si me traen una porción, les cuento algo.","I'm so hungry… Don Muzza won't let me eat on the clock. Bring me a slice and I'll tell you something.","Que fome… Don Muzza não me deixa comer no expediente. Se me trouxerem uma fatia, eu conto uma coisa."
+TITO_AGAIN,"Ya les conté todo. Bueno, todo lo que vi.","I already told you everything. Well, everything I saw.","Já contei tudo. Bom, tudo o que vi."
+TITO_THANKS,"¡Gracias! Otra porción más y llego a la noche.","Thanks! One more slice and I'll make it to tonight.","Valeu! Mais uma fatia e eu chego até a noite."
+TITO_NOTHING,"Mmm, rica. Pero no vi nada raro, eh. Bueno, las motos nuevas.","Mmm, tasty. But I didn't see anything weird. Well, the new scooters.","Hmm, gostosa. Mas não vi nada estranho, hein. Bom, as motos novas."
+TITO_IDLE_1,"Tres motos nuevas y ni un pedido. Yo reparto aire.","Three new scooters and not a single order. I deliver air.","Três motos novas e nenhum pedido. Eu entrego ar."
+TITO_IDLE_2,"¿Saben patinar? Yo reparto en patines. La moto es para la foto.","Can you skate? I deliver on skates. The scooter is for the photo.","Vocês sabem patinar? Eu entrego de patins. A moto é para a foto."
+TITO_IDLE_3,"Huele a muzza… y yo acá, con la panza vacía.","It smells like cheese pizza… and here I am, with an empty belly.","Cheiro de muçarela… e eu aqui, de barriga vazia."
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
