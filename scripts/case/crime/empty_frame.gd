@@ -8,6 +8,13 @@ extends StaticBody3D
 
 var case: CrimeSceneCase
 var has_prints := false
+## What it is, in its texts' keys: "FRAME" (PROMPT_EMPTY_FRAME, HINT_FRAME_..., PRINTS_FRAME...), "SAFE", "GLASS"...
+## Setting it sets `keys` to that look's texts.
+var look := "FRAME":
+	set(value):
+		look = value
+		keys = {"prompt": "PROMPT_EMPTY_" + value, "touched": "HINT_%s_TOUCHED" % value, "empty": "HINT_%s_EMPTY" % value,
+			"smudged": "PRINTS_%s_SMUDGED" % value, "prints": "PRINTS_" + value}
 ## A cop touched it.
 var touched := false
 ## Its texts: the prompt, the hints on E and what the print kit shows.
