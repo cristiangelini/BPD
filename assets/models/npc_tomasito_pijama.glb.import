@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bkcvndaav2sco"
-path="res://.godot/imported/npc_tomasito_pijama.glb-1c981d6f47c1fa1195fdce383c72c576.scn"
+path="res://.godot/imported/npc_tomasito_pijama.glb-13d87b6025b8e3d862e84b44c55ae2c0.scn"
 
 [deps]
 
 source_file="res://assets/models/npc_tomasito_pijama.glb"
-dest_files=["res://.godot/imported/npc_tomasito_pijama.glb-1c981d6f47c1fa1195fdce383c72c576.scn"]
+dest_files=["res://.godot/imported/npc_tomasito_pijama.glb-13d87b6025b8e3d862e84b44c55ae2c0.scn"]
 
 [params]
 

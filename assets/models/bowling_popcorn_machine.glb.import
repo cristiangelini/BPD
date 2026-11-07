@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c8egfwyq1lg32"
-path="res://.godot/imported/bowling_popcorn_machine.glb-969fa549c369f0ff465d92c639a30da0.scn"
+path="res://.godot/imported/bowling_popcorn_machine.glb-a7dd4c6868b939412026288774d917ff.scn"
 
 [deps]
 
 source_file="res://assets/models/bowling_popcorn_machine.glb"
-dest_files=["res://.godot/imported/bowling_popcorn_machine.glb-969fa549c369f0ff465d92c639a30da0.scn"]
+dest_files=["res://.godot/imported/bowling_popcorn_machine.glb-a7dd4c6868b939412026288774d917ff.scn"]
 
 [params]
 

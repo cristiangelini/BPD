@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bk3hc4nffasos"
-path="res://.godot/imported/npc_lucho_paciente.glb-605c36b31dbbe1e02655efba6a40b224.scn"
+path="res://.godot/imported/npc_lucho_paciente.glb-12a6ef03f8f99ab38bc9956fb46fce3a.scn"
 
 [deps]
 
 source_file="res://assets/models/npc_lucho_paciente.glb"
-dest_files=["res://.godot/imported/npc_lucho_paciente.glb-605c36b31dbbe1e02655efba6a40b224.scn"]
+dest_files=["res://.godot/imported/npc_lucho_paciente.glb-12a6ef03f8f99ab38bc9956fb46fce3a.scn"]
 
 [params]
 

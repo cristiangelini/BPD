@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bv05l5wwjum5o"
-path="res://.godot/imported/cat_parrot.glb-0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f.scn"
+path="res://.godot/imported/cat_parrot.glb-874daa9f132d87aa01b2114015b66764.scn"
 
 [deps]
 
 source_file="res://assets/models/cat_parrot.glb"
-dest_files=["res://.godot/imported/cat_parrot.glb-0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f.scn"]
+dest_files=["res://.godot/imported/cat_parrot.glb-874daa9f132d87aa01b2114015b66764.scn"]
 
 [params]
 

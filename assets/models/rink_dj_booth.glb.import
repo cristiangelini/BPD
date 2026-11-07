@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://kygt3mufyuor"
-path="res://.godot/imported/rink_dj_booth.glb-7bd492ab68d0a881d29c3fe6a22f4387.scn"
+path="res://.godot/imported/rink_dj_booth.glb-3e8100b6387318a3976cac5233a36bc7.scn"
 
 [deps]
 
 source_file="res://assets/models/rink_dj_booth.glb"
-dest_files=["res://.godot/imported/rink_dj_booth.glb-7bd492ab68d0a881d29c3fe6a22f4387.scn"]
+dest_files=["res://.godot/imported/rink_dj_booth.glb-3e8100b6387318a3976cac5233a36bc7.scn"]
 
 [params]
 
