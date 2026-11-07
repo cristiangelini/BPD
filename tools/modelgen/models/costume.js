@@ -476,6 +476,51 @@ export function buildSmokeClients() {
 	return b.build();
 }
 
+// The ghost costume with chains (neighborhood ghost main evidence): a white sheet with two black eye holes heaped on
+// the floor, wrapped in grey chains, 0.7 x 0.35 x 0.5 m.
+export function buildGhostCostume() {
+	const b = new Builder('ghost_costume');
+	const sheet = mat('ghost_sheet', 0xf4f4f0);
+	b.add('sheet', sheet, ellipsoid(0.35, 0.16, 0.25, 10, 6), { pos: V(0, 0.15, 0) });
+	b.add('sheet', sheet, ellipsoid(0.18, 0.14, 0.16, 8, 5), { pos: V(-0.12, 0.27, 0.02) });
+	for (const z of [-0.05, 0.07]) b.add('eyes', mat('ghost_eyes', 0x101014), ellipsoid(0.01, 0.035, 0.025, 6, 4), { pos: V(-0.29, 0.3, z) });
+	const chain = mat('ghost_chain', 0x8a8a92, { metalness: 0.7, roughness: 0.4 });
+	for (let i = 0; i < 9; i++) {
+		const a = i / 9 * Math.PI * 2;
+		b.add('chains', chain, new THREE.TorusGeometry(0.035, 0.01, 4, 8), { pos: V(Math.cos(a) * 0.3, 0.2, Math.sin(a) * 0.22), rot: [0, -a, (i % 2) * Math.PI / 2] });
+	}
+	return b.build();
+}
+
+// The howl recorder (neighborhood ghost extra): a grey tape recorder with a speaker grille and two reels.
+export function buildHowlRecorder() {
+	const b = new Builder('howl_recorder');
+	b.add('body', mat('recorder_grey', 0x5a5a62), new THREE.BoxGeometry(0.26, 0.08, 0.16), { pos: V(0, 0.04, 0) });
+	b.add('grille', mat('recorder_dark', 0x24242a), new THREE.BoxGeometry(0.1, 0.005, 0.12), { pos: V(-0.07, 0.082, 0) });
+	for (const x of [0.04, 0.1]) b.add('reels', mat('recorder_reel', 0xd8d8d0), new THREE.CylinderGeometry(0.025, 0.025, 0.01, 10), { pos: V(x, 0.085, 0) });
+	b.add('button', mat('recorder_red', 0xd83a30), new THREE.BoxGeometry(0.02, 0.012, 0.02), { pos: V(0.07, 0.085, 0.06) });
+	return b.build();
+}
+
+// The list of the neighborhood's houses (neighborhood ghost extra): a white sheet with a row of little red houses, flat.
+export function buildHouseList() {
+	const b = new Builder('house_list');
+	b.add('sheet', mat('paper_white', 0xf4f2ea), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) {
+		b.add('houses', mat('house_red', 0xd83a30), new THREE.BoxGeometry(0.03, 0.002, 0.025), { pos: V(-0.07, 0.005, -0.11 + i * 0.045) });
+		b.add('rows', mat('ink', 0x30303a), new THREE.BoxGeometry(0.11, 0.002, 0.008), { pos: V(0.03, 0.005, -0.11 + i * 0.045) });
+	}
+	return b.build();
+}
+
+// The costume shop's light switch by the counter: a cream plate with a big black lever, its face to -X, origin in its middle.
+export function buildCostumeSwitch() {
+	const b = new Builder('costume_switch');
+	b.add('plate', mat('switch_plate', 0xece2c8), new THREE.BoxGeometry(0.02, 0.18, 0.12), { pos: V(0, 0, 0) });
+	b.add('lever', mat('switch_lever', 0x24242a), new THREE.BoxGeometry(0.04, 0.07, 0.03), { pos: V(-0.02, 0.02, 0) });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -489,7 +534,8 @@ export const models = {
 	false_back: buildFalseBack, itch_drum: buildItchDrum, cream_jars: buildCreamJars, pharmacy_flyer: buildPharmacyFlyer,
 	itchy_costume: buildItchyCostume, theater_trunk: buildTheaterTrunk, theater_stamp: buildTheaterStamp,
 	play_program: buildPlayProgram, theater_poster: buildTheaterPoster, smoke_box: buildSmokeBox, double_hat: buildDoubleHat,
-	show_hat: buildShowHat, smoke_clients: buildSmokeClients,
+	show_hat: buildShowHat, smoke_clients: buildSmokeClients, ghost_costume: buildGhostCostume,
+	howl_recorder: buildHowlRecorder, house_list: buildHouseList, costume_switch: buildCostumeSwitch,
 };
 
 export const views = {
@@ -533,6 +579,11 @@ export const views = {
 		items: [{ name: 'smoke_box', pos: [-0.4, 0, 0] }, { name: 'double_hat', pos: [0.35, 0, 0.3] },
 			{ name: 'show_hat', pos: [0.6, 0, -0.2] }, { name: 'smoke_clients', pos: [0.1, 0, 0.6], rotY: 0.3 }],
 		cam: { pos: [0, 1.2, 2.0], target: [0, 0.2, 0], fov: 40 },
+	},
+	neighborhood_ghost: {
+		items: [{ name: 'ghost_costume', pos: [-0.4, 0, 0], rotY: 0.6 }, { name: 'howl_recorder', pos: [0.35, 0, 0.35] },
+			{ name: 'house_list', pos: [0.6, 0, -0.1], rotY: 0.3 }, { name: 'costume_switch', pos: [0.1, 0.4, -0.5], rotY: -1.57 }],
+		cam: { pos: [0, 1.1, 1.9], target: [0, 0.2, 0], fov: 40 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],

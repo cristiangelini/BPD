@@ -160,6 +160,12 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   sombrero de mago con doble fondo (300) y la lista de clientes (200). El sombrero violeta de estrellas que está
   sobre el baúl de pelucas suelta una nube de humo de color si lo tiras o se cae fuerte (la pista; descansa 5 s), y
   cada 25 s sale una nube rosa del depósito. Capturas `paso6-humo-*.png`.
+- Paso 6, el fantasma del barrio: el disfraz de fantasma con cadenas (6 kg, 1000) va en un escondite pesado, con la
+  grabadora de aullidos (300) y la lista de casas del barrio (200). La llave de luz de la pared este, al lado del
+  mostrador, apaga las 16 lámparas (Don Fantoche suma 5 si se apaga: "¿Quién apagó la luz, campeón?"); a oscuras, el
+  último disfraz del perchero de monstruos brilla, y mirarlo es la pista. Los clientes, vecinos de la cuadra, salen
+  del probador hablando del fantasma ("Si el fantasma vuelve, vendo la casa. Don Fantoche dice que me la compra.").
+  Capturas `paso6-fantasma-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

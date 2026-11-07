@@ -79,6 +79,18 @@ const STORIES := {
 		"rig": preload("res://scripts/case/costume/smoke_bombs_rig.gd"),
 		"main_hidden": true,
 	},
+	"neighborhood_ghost": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_NEIGHBOR_GHOST_B", "BRIEF_NEIGHBOR_GHOST_C",
+			"BRIEF_NEIGHBOR_GHOST_D"],
+		"find": "OBJ_FIND_GHOST",
+		"hidden": [preload("res://scenes/props/ghost_costume.tscn"), preload("res://scenes/props/howl_recorder.tscn"),
+			preload("res://scenes/props/house_list.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_HOWL_RECORDER", "OBJ_EXTRA_HOUSE_LIST"],
+		"rig": preload("res://scripts/case/costume/neighborhood_ghost_rig.gd"),
+		"main_hidden": true,
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the shop; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
