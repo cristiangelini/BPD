@@ -233,12 +233,55 @@ export function buildWateringCan() {
 	return b.build();
 }
 
+// The botanic garden's blue orchid (0.35 m across, 0.6 m tall): a white ceramic pot with a curved stake and a spray of
+// big blue flowers.
+export function buildNurseryOrchid() {
+	const b = new Builder('nursery_orchid');
+	const pot = mat('orchid_pot', 0xf4f2ec), blue = mat('orchid_blue', 0x3a5ae8, { emissive: 0x0a1040 });
+	const eye = mat('orchid_eye', 0xf2e060);
+	b.add('pot', pot, new THREE.CylinderGeometry(0.13, 0.1, 0.18, 14), { pos: V(0, 0.09, 0) });
+	b.add('soil', soil(), new THREE.CylinderGeometry(0.12, 0.12, 0.02, 12), { pos: V(0, 0.17, 0) });
+	for (const a of [0.3, 2.4, 4.4]) {
+		b.add('leaf', leaf(), ellipsoid(0.15, 0.02, 0.06), { pos: V(Math.sin(a) * 0.1, 0.2, Math.cos(a) * 0.1), rot: [0, a + Math.PI / 2, 0.2] });
+	}
+	b.add('stem', mat('orchid_stem', 0x5a7a3a), new THREE.CylinderGeometry(0.008, 0.01, 0.4, 6), { pos: V(0, 0.38, 0) });
+	for (let i = 0; i < 5; i++) {
+		const y = 0.42 + i * 0.04, x = 0.03 + i * 0.03;
+		b.add('flower', blue, ellipsoid(0.06, 0.05, 0.015, 8, 4), { pos: V(x, y, 0.02) });
+		b.add('flower', eye, ellipsoid(0.015, 0.015, 0.01, 6, 4), { pos: V(x, y, 0.035) });
+	}
+	return b.build();
+}
+
+// The botanic garden's catalog (0.24 x 0.3 m): a green cover with a white flower and the gold title band.
+export function buildBotanicCatalog() {
+	const b = new Builder('botanic_catalog');
+	b.add('cover', mat('catalog_cover', 0x2f7a4a), new THREE.BoxGeometry(0.24, 0.03, 0.3), { pos: V(0, 0.015, 0) });
+	b.add('pages', mat('catalog_pages', 0xf4f0e2), new THREE.BoxGeometry(0.22, 0.026, 0.29), { pos: V(0.012, 0.015, 0) });
+	b.add('flower', mat('catalog_flower', 0xf6f2e8), new THREE.CylinderGeometry(0.05, 0.05, 0.004, 8), { pos: V(0, 0.032, 0.03) });
+	b.add('band', mat('catalog_gold', 0xf2c84b), new THREE.BoxGeometry(0.2, 0.004, 0.03), { pos: V(0, 0.032, -0.09) });
+	return b.build();
+}
+
+// Doña Hortensia's other pruning shears (0.25 m long): two steel blades and red handles, lying open.
+export function buildNurseryShears() {
+	const b = new Builder('nursery_shears');
+	const steel = mat('shears_steel', 0xb8bec6, { metalness: 0.7, roughness: 0.3 }), red = mat('shears_red', 0xd8302a);
+	for (const s of [-1, 1]) {
+		b.add('blade', steel, new THREE.BoxGeometry(0.03, 0.015, 0.12), { pos: V(s * 0.012, 0.012, 0.07), rot: [0, s * 0.15, 0] });
+		b.add('handle', red, new THREE.BoxGeometry(0.03, 0.025, 0.12), { pos: V(s * 0.03, 0.013, -0.05), rot: [0, -s * 0.3, 0] });
+	}
+	b.add('pin', steel, new THREE.CylinderGeometry(0.012, 0.012, 0.03, 8), { pos: V(0, 0.015, 0.01) });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
 	ceramic_pot: buildCeramicPot, soil_bag: buildSoilBag, water_tank: buildWaterTank, nursery_tap: buildNurseryTap,
 	smiling_pot: buildSmilingPot, npc_dona_hortensia: buildDonaHortensia,
-	npc_brotecito: buildBrotecito, watering_can: buildWateringCan,
+	npc_brotecito: buildBrotecito, watering_can: buildWateringCan, nursery_orchid: buildNurseryOrchid,
+	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears,
 };
 
 export const views = {
@@ -251,6 +294,8 @@ export const views = {
 			{ name: 'soil_bag', pos: [3.2, 0, 0.3], rotY: 0.4 }, { name: 'nursery_tap', pos: [3.4, 0, -0.9] },
 			{ name: 'nursery_sprinkler', pos: [-0.2, 0, 0.6] }, { name: 'npc_dona_hortensia', pos: [1.6, 0, 2.6], rotY: -0.2 },
 			{ name: 'npc_brotecito', pos: [-1.6, 0, 2.6], rotY: 0.2 }, { name: 'watering_can', pos: [-0.9, 0, 3.1], rotY: 0.5 },
+			{ name: 'nursery_orchid', pos: [-0.2, 0, 3.4] }, { name: 'botanic_catalog', pos: [0.4, 0, 3.6], rotY: 0.3 },
+			{ name: 'nursery_shears', pos: [0.9, 0, 3.6], rotY: -0.4 },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},

@@ -158,6 +158,13 @@ los extras suman 500.
    cuenta lo que vio al policía que la trajo (una vez por policía; la pista la pone la historia en el paso 6).
    Capturas: `/mnt/project-files/vivero/paso5-*.png`.
 6. El caso con la primera historia, la orquídea robada.
+   **Hecho así:** el vivero ahora es un caso como los demás (`RaidCase`), con `Nursery.STORIES` y
+   `--story=stolen_orchid`. La denuncia anónima, las 3 sospechas con sus notas en el piso, la planilla, la multa por
+   vidrio y maceta, el abogado en 100 y Doña Hortensia en el interrogatorio (`owner_nursery`). Ella suelta dónde
+   escondió las 3 cosas con R, y Brotecito cuenta una. La orquídea (2 kg, 1000), el catálogo (0,2 kg, 300) y la tijera
+   (0,5 kg, 200) van a escondites sorteados. `StolenOrchidRig`: 7 mariposas dan vueltas 1,2 m arriba de la orquídea
+   (la siguen si alguien la lleva) y el policía que pasa a menos de 3 m las ve (pista); las 32 plantas del patio y de
+   las mesas se inclinan hacia ella. Capturas: `/mnt/project-files/vivero/paso6-*.png`.
 7. Las otras 5 historias, una por PR.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
