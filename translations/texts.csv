@@ -5588,3 +5588,23 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_PAWN_SHOP,Empeños La Última Oferta,The Last Offer Pawn Shop,Penhores A Última Oferta
+PAWN_MOTTO,¡Todo tiene precio!,Everything has a price!,Tudo tem preço!
+MENU_PAWN_SHOP,Casa de empeños (allanamiento) (prueba),Pawn shop (raid) (test),Casa de penhores (batida) (teste)
+HINT_TILL_KEY_PAWN,¡Una llave! Abre el depósito de Don Regateo.,A key! It opens Don Regateo's stock room.,Uma chave! Abre o depósito do Don Regateo.
+CASE_FAILED_LAWYER_PAWN,Don Regateo llamó a su abogado (que le cobró el doble). Caso perdido.,Don Regateo called his lawyer (who charged him double). Case lost.,Don Regateo ligou para o advogado (que cobrou o dobro). Caso perdido.
+PAWN_STOCK_SIGN,DEPÓSITO · Prohibido regatear,STOCK ROOM · No haggling,DEPÓSITO · Proibido pechinchar
+PAWN_CASE_BROKEN,"«¡Mi vitrina! ¡Eso se lo cobro, y con intereses!»","“My glass case! I'm charging you for that, with interest!”","“Minha vitrine! Isso eu cobro, e com juros!”"
+PAWN_ARMOR_FALLEN,"«¡La armadura! ¡Era del siglo pasado... o del otro!»","“The armor! It was from last century... or the one before!”","“A armadura! Era do século passado... ou do outro!”"
+LOC_by_pawn_stock_shelf,al pie de un estante del depósito,at the foot of a stock room shelf,ao pé de uma estante do depósito
+LOC_in_pawn_boxes,entre las cajas del depósito,among the stock room's boxes,entre as caixas do depósito
+LOC_behind_knight_armor,detrás de la armadura,behind the armor,atrás da armadura
+LOC_behind_pawn_counter,detrás del mostrador,behind the counter,atrás do balcão
+LOC_by_old_tv,al lado del televisor viejo,by the old TV,ao lado da televisão velha
+LOC_in_pawn_stock_corner,en un rincón del depósito,in a corner of the stock room,num canto do depósito
+LOC_in_pawn_safe,al pie de la caja fuerte grande,at the foot of the big safe,ao pé do cofre grande
+LOC_behind_stuffed_croc,al lado del cocodrilo embalsamado,by the stuffed crocodile,ao lado do crocodilo empalhado
+LOC_in_guitar_case,en el estuche de la guitarra,in the guitar case,no estojo do violão
+LOC_under_pawn_desk,debajo del escritorio de Don Regateo,under Don Regateo's desk,embaixo da escrivaninha do Don Regateo
+LOC_under_parrot_cage,debajo de la jaula del loro,under the parrot's cage,embaixo da gaiola do papagaio
+LOC_on_pawn_case,arriba de una vitrina,on top of a glass case,em cima de uma vitrine

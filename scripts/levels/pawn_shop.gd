@@ -1,0 +1,322 @@
+class_name PawnShop
+extends Node3D
+
+## The pawn shop "Empeños La Última Oferta" as a place to raid (docs/diseno/allanamiento-empenos.md, step 1): a shop
+## on its lot in the city, open and with the front to +Z. The barred counter stands by the door on the east side, with
+## the stock room's key in its till, the parrot's cage hanging beside it and the cookie jar on top; three glass cases
+## stand in a row in the middle, four shelves of pawned things behind them and along the west wall, with the knight's
+## armor, the stuffed crocodile, the old TV and the guitar case among them. The stock room is the locked back of the
+## shop, with its shelves, boxes, the big safe and the desk. The glass cases break if something hits them fast and so
+## does the armor, which falls apart, a fine each. Every number here is (propuesta).
+
+signal case_broken(index: int)
+signal armor_fallen
+
+const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const COUNTER_MODEL := preload("res://assets/models/pawn_counter.glb")
+const CASE_MODEL := preload("res://assets/models/pawn_case.glb")
+const SHELF_MODEL := preload("res://assets/models/pawn_shelf.glb")
+const ARMOR_MODEL := preload("res://assets/models/knight_armor.glb")
+const CROC_MODEL := preload("res://assets/models/stuffed_croc.glb")
+const TV_MODEL := preload("res://assets/models/old_tv.glb")
+const GUITAR_MODEL := preload("res://assets/models/guitar_case.glb")
+const CAGE_MODEL := preload("res://assets/models/pawn_parrot_cage.glb")
+const JAR_MODEL := preload("res://assets/models/cookie_jar.glb")
+const STOCK_SHELF_MODEL := preload("res://assets/models/pawn_stock_shelf.glb")
+const BOXES_MODEL := preload("res://assets/models/pawn_boxes.glb")
+const SAFE_MODEL := preload("res://assets/models/pawn_safe.glb")
+const TAG_MODEL := preload("res://assets/models/giant_price_tag.glb")
+const HALF_X := 11.0
+const HALF_Z := 9.0
+const WALL_TOP := 4.5
+const BUILDING_TOP := 6.0
+const FLOOR_TOP := 0.06
+## The open doorway in the middle of the front wall.
+const ENTRANCE_X := 0.0
+const ENTRANCE_WIDTH := 3.5
+const ENTRANCE_HEIGHT := 3.0
+
+## The barred counter by the door, its shop side to -Z (its till holds the stock room's key).
+const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 5.0)
+const COUNTER_SIZE := Vector3(5.0, 1.0, 0.8)
+const TILL_ON := Vector3(7.8, FLOOR_TOP + 1.02, 5.0)
+const JAR_ON := Vector3(4.4, FLOOR_TOP + 1.0, 5.0)
+## The parrot's cage hangs from the ceiling by the counter's east end.
+const CAGE_AT := Vector3(9.6, 2.6, 4.2)
+## The three glass cases in a row in the middle of the shop, and what breaks them.
+const CASES: Array[Vector3] = [Vector3(-6.0, FLOOR_TOP, 2.5), Vector3(-2.5, FLOOR_TOP, 2.5),
+	Vector3(1.0, FLOOR_TOP, 2.5)]
+const CASE_SIZE := Vector3(2.0, 1.1, 0.8)
+const CASE_SPEED := 3.0
+const CASE_FINE := 20
+## The four shelves of pawned things: two along the west wall (turned to face +X) and two in the middle.
+const SHELVES: Array[Vector3] = [Vector3(-10.4, FLOOR_TOP, 1.5), Vector3(-10.4, FLOOR_TOP, -2.0),
+	Vector3(-5.0, FLOOR_TOP, -1.5), Vector3(-0.5, FLOOR_TOP, -1.5)]
+const SHELF_SIZE := Vector3(3.0, 2.2, 0.6)
+## The knight's armor by the west wall up front, and what makes it fall apart.
+const ARMOR_AT := Vector3(-9.6, FLOOR_TOP, 5.5)
+const ARMOR_SPEED := 3.0
+const ARMOR_FINE := 15
+## The stuffed crocodile along the front wall, the old TV by the middle shelves and the guitar case on the floor.
+const CROC_AT := Vector3(-4.5, FLOOR_TOP, 7.8)
+const TV_AT := Vector3(3.2, FLOOR_TOP, -1.5)
+const GUITAR_AT := Vector3(-7.6, FLOOR_TOP, 6.8)
+## The stock room: the locked back of the shop, its front wall at STOCK_Z with the door at STOCK_DOOR_X; its shelves on
+## the back wall, a pile of boxes, the big safe and the desk with the pawn book.
+const STOCK_Z := -4.5
+const STOCK_DOOR_X := -3.0
+const STOCK_SHELVES_X: Array[float] = [-8.0, -5.5]
+const STOCK_SHELF_Z := -8.4
+const BOXES_AT := Vector3(-1.5, FLOOR_TOP, -7.8)
+const SAFE_AT := Vector3(8.5, FLOOR_TOP, -8.3)
+const DESK_AT := Vector3(3.5, FLOOR_TOP, -7.8)
+const DESK_SIZE := Vector3(1.8, 0.8, 0.9)
+
+## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
+const SPOTS := [
+	{"id": "by_pawn_stock_shelf", "at": Vector3(-6.8, FLOOR_TOP, -7.6), "heavy": true},
+	{"id": "in_pawn_boxes", "at": Vector3(-0.4, FLOOR_TOP, -7.8), "heavy": true},
+	{"id": "behind_knight_armor", "at": Vector3(-10.2, FLOOR_TOP, 6.6), "heavy": true},
+	{"id": "behind_pawn_counter", "at": Vector3(5.0, FLOOR_TOP, 6.0), "heavy": true},
+	{"id": "by_old_tv", "at": Vector3(3.2, FLOOR_TOP, -0.6), "heavy": true},
+	{"id": "in_pawn_stock_corner", "at": Vector3(10.2, FLOOR_TOP, -5.4), "heavy": true},
+	{"id": "in_pawn_safe", "at": Vector3(8.5, FLOOR_TOP, -7.5), "heavy": false},
+	{"id": "behind_stuffed_croc", "at": Vector3(-2.9, FLOOR_TOP, 8.4), "heavy": false},
+	{"id": "in_guitar_case", "at": Vector3(-7.6, FLOOR_TOP + 0.1, 6.8), "heavy": false},
+	{"id": "under_pawn_desk", "at": Vector3(3.5, FLOOR_TOP, -7.8), "heavy": false},
+	{"id": "under_parrot_cage", "at": Vector3(9.6, FLOOR_TOP, 3.6), "heavy": false},
+	{"id": "on_pawn_case", "at": Vector3(1.0, FLOOR_TOP + CASE_SIZE.y, 2.5), "heavy": false},
+]
+
+const OUTSIDE := Color(0.25, 0.42, 0.34)
+const FLOOR := Color(0.5, 0.42, 0.36)
+const CEILING := Color(0.9, 0.88, 0.82)
+const WALLS := Color(0.92, 0.84, 0.66)
+const STOCK := Color(0.7, 0.66, 0.6)
+const WOOD := Color(0.42, 0.25, 0.16)
+const DARK := Color(0.1, 0.1, 0.12)
+const STEEL := Color(0.72, 0.74, 0.77)
+
+## Where the patrol car parks at the station, in this scene's space.
+var station_parking: Transform3D
+var city_map: CityMap
+var stock_door: FrontDoor
+var till: Till
+## Which glass cases are broken, by index into CASES.
+var cases_broken: Array[bool] = [false, false, false]
+var armor_down := false
+## Money taken off the case pay: the glass cases and the armor.
+var fines := 0
+## Same seed, same shop (the stories and the hiding spots come from it, step 5).
+@export var case_seed := 0
+var _build: PlaceBuilder
+var _armor: Node3D
+@onready var car: PatrolCar = $PatrolCar
+
+
+func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	_build = PlaceBuilder.new($Built)
+	_build_shell()
+	_build_counter()
+	_build_cases()
+	_build_shelves()
+	_build_odd_things()
+	_build_stock()
+	stock_door = _door(STOCK_DOOR_X)
+	var city: Node3D = $City
+	city.transform = CityLayout.anchor("pawn_shop")
+	station_parking = city.transform * CityLayout.parking("station")
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
+	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "pawn_shop", car)
+
+
+## The floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its giant price tag.
+func _build_shell() -> void:
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, WALL_TOP + PlaceBuilder.SLAB, CEILING)
+	var x0 := ENTRANCE_X - ENTRANCE_WIDTH / 2
+	var x1 := ENTRANCE_X + ENTRANCE_WIDTH / 2
+	_build.wall_at("x", HALF_Z, -HALF_X, x0, 0.0, WALL_TOP, [], OUTSIDE)
+	_build.wall_at("x", HALF_Z, x1, HALF_X, 0.0, WALL_TOP, [], OUTSIDE)
+	_build.wall_at("x", HALF_Z, x0, x1, ENTRANCE_HEIGHT, WALL_TOP - ENTRANCE_HEIGHT, [], OUTSIDE)
+	_build.wall_at("x", -HALF_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [], WALLS)
+	_build.wall_at("z", -HALF_X, -HALF_Z, HALF_Z, 0.0, WALL_TOP, [], WALLS)
+	_build.wall_at("z", HALF_X, -HALF_Z, HALF_Z, 0.0, WALL_TOP, [], WALLS)
+	var upper := BUILDING_TOP - WALL_TOP - PlaceBuilder.SLAB
+	_build.box(Vector3(0, WALL_TOP + PlaceBuilder.SLAB + upper / 2, 0), Vector3(HALF_X * 2, upper, HALF_Z * 2), OUTSIDE)
+	_label("PLACE_PAWN_SHOP", Vector3(-5.5, WALL_TOP + 0.6, HALF_Z + 0.08), 96)
+	_label("PAWN_MOTTO", Vector3(-5.5, ENTRANCE_HEIGHT + 0.6, HALF_Z + 0.08), 60)
+	_model(TAG_MODEL, Vector3(6.0, BUILDING_TOP + 0.8, HALF_Z - 0.6))
+	for x: float in [-7.5, -2.5, 2.5, 7.5]:
+		for z: float in [-7.0, -2.0, 2.5, 7.0]:
+			_build.light(Vector3(x, 4.1, z)).light_energy = 1.2
+
+
+## The barred counter by the door with its till, the cookie jar and the parrot's cage.
+func _build_counter() -> void:
+	_solid(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0), COUNTER_SIZE)
+	_model(COUNTER_MODEL, COUNTER_AT)
+	till = Till.new()
+	till.position = TILL_ON + Vector3.UP * Till.SIZE.y / 2
+	till.key_hint = "HINT_TILL_KEY_PAWN"
+	add_child(till)
+	_model(JAR_MODEL, JAR_ON)
+	_model(CAGE_MODEL, CAGE_AT + Vector3.UP * 0.75)
+	var hook := CAGE_AT.y + 0.75
+	_build.mesh_box(Vector3(CAGE_AT.x, (hook + WALL_TOP) / 2, CAGE_AT.z), Vector3(0.02, WALL_TOP - hook, 0.02), DARK)
+
+
+## The three glass cases, each with what breaks it from any side.
+func _build_cases() -> void:
+	for i in CASES.size():
+		_solid(CASES[i] + Vector3(0, CASE_SIZE.y / 2, 0), CASE_SIZE)
+		_model(CASE_MODEL, CASES[i])
+		var hit := _area(CASES[i] + Vector3(0, CASE_SIZE.y / 2, 0), CASE_SIZE + Vector3(0.4, 0.4, 0.4))
+		hit.body_entered.connect(func(body: Node3D) -> void:
+			if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > CASE_SPEED:
+				break_case(i))
+
+
+## The four shelves of pawned things, each with its price tag sign.
+func _build_shelves() -> void:
+	for i in SHELVES.size():
+		var turn := PI / 2 if i < 2 else 0.0
+		var size := Vector3(SHELF_SIZE.z, SHELF_SIZE.y, SHELF_SIZE.x) if i < 2 else SHELF_SIZE
+		_solid(SHELVES[i] + Vector3(0, SHELF_SIZE.y / 2, 0), size)
+		_model(SHELF_MODEL, SHELVES[i], turn)
+
+
+## The knight's armor (it falls apart if hit), the stuffed crocodile, the old TV and the guitar case.
+func _build_odd_things() -> void:
+	_solid(ARMOR_AT + Vector3(0, 0.95, 0), Vector3(0.7, 1.9, 0.6))
+	_armor = _model(ARMOR_MODEL, ARMOR_AT, PI / 2)
+	var armor_hit := _area(ARMOR_AT + Vector3(0, 0.95, 0), Vector3(1.1, 1.9, 1.0))
+	armor_hit.body_entered.connect(func(body: Node3D) -> void:
+		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > ARMOR_SPEED:
+			knock_armor())
+	_solid(CROC_AT + Vector3(0, 0.2, 0), Vector3(2.2, 0.4, 0.5))
+	_model(CROC_MODEL, CROC_AT)
+	_solid(TV_AT + Vector3(0, 0.28, 0), Vector3(0.7, 0.55, 0.5))
+	_model(TV_MODEL, TV_AT)
+	_model(GUITAR_MODEL, GUITAR_AT)
+
+
+## The stock room at the back: its wall with the locked door, the shelves, the pile of boxes, the safe and the desk.
+func _build_stock() -> void:
+	_build.wall_at("x", STOCK_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [STOCK_DOOR_X], STOCK)
+	_label("PAWN_STOCK_SIGN", Vector3(STOCK_DOOR_X, GameScale.DOOR_HEIGHT + 0.4, STOCK_Z + 0.1), 40)
+	for x: float in STOCK_SHELVES_X:
+		var at := Vector3(x, FLOOR_TOP, STOCK_SHELF_Z)
+		_solid(at + Vector3(0, 1.1, 0), Vector3(2.0, 2.2, 0.6))
+		_model(STOCK_SHELF_MODEL, at)
+	_solid(BOXES_AT + Vector3(0, 0.65, 0), Vector3(1.2, 1.3, 0.6))
+	_model(BOXES_MODEL, BOXES_AT)
+	_solid(SAFE_AT + Vector3(0, 0.6, 0), Vector3(0.9, 1.2, 0.8))
+	_model(SAFE_MODEL, SAFE_AT)
+	_build.legs(DESK_AT, Vector2(DESK_SIZE.x, DESK_SIZE.z), DESK_SIZE.y - 0.04, DARK)
+	_build.box(DESK_AT + Vector3(0, DESK_SIZE.y - 0.02, 0), Vector3(DESK_SIZE.x, 0.04, DESK_SIZE.z), WOOD)
+	_build.mesh_box(DESK_AT + Vector3(0.2, DESK_SIZE.y + 0.03, 0), Vector3(0.5, 0.06, 0.35), Color(0.55, 0.15, 0.15))
+
+
+## Something hit glass case `index` hard, once: a fine, no glass and its watches and rings on the floor.
+func break_case(index: int) -> void:
+	if cases_broken[index]:
+		return
+	cases_broken[index] = true
+	fines += CASE_FINE
+	var at := CASES[index]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed + index
+	for i in 8:
+		var spot := Vector3(at.x + rng.randf_range(-1.0, 1.0), FLOOR_TOP + 0.01, at.z + rng.randf_range(-0.9, 0.9))
+		_build.mesh_box(spot, Vector3(0.1, 0.02, 0.1), [Color(0.88, 0.69, 0.25), Color(0.78, 0.8, 0.82),
+			Color(0.85, 0.22, 0.2)][i % 3])
+	_build.mesh_box(at + Vector3(0, CASE_SIZE.y - 0.15, 0), Vector3(1.9, 0.02, 0.7), DARK)
+	_say(at + Vector3(0, 2.0, 0), "PAWN_CASE_BROKEN")
+	case_broken.emit(index)
+
+
+## Something hit the knight's armor hard, once: a fine and it falls apart in six pieces on the floor.
+func knock_armor() -> void:
+	if armor_down:
+		return
+	armor_down = true
+	fines += ARMOR_FINE
+	_armor.visible = false
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed
+	for i in 6:
+		var spot := Vector3(ARMOR_AT.x + rng.randf_range(0.0, 1.4), FLOOR_TOP + 0.08, ARMOR_AT.z + rng.randf_range(-0.8, 0.8))
+		_build.mesh_box(spot, Vector3(0.3, 0.16, 0.25) if i > 0 else Vector3(0.3, 0.3, 0.3), STEEL)
+	_say(ARMOR_AT + Vector3(1.0, 2.2, 0), "PAWN_ARMOR_FALLEN")
+	armor_fallen.emit()
+
+
+## The locked door in the stock room's wall, its middle at x.
+func _door(x: float) -> FrontDoor:
+	var door: FrontDoor = DOOR_SCENE.instantiate()
+	door.position = Vector3(x - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, STOCK_Z)
+	add_child(door)
+	return door
+
+
+## A box only to bump into, under a model that gives the look.
+func _solid(center: Vector3, size: Vector3) -> StaticBody3D:
+	var body := _build.body(center)
+	_build.shape(body, size)
+	return body
+
+
+func _area(center: Vector3, size: Vector3) -> Area3D:
+	var area := Area3D.new()
+	area.position = center
+	area.collision_layer = 0
+	area.collision_mask = 4
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	area.add_child(shape)
+	add_child(area)
+	return area
+
+
+func _label(key: String, at: Vector3, size: int, turn := 0.0, pixel := 0.01) -> void:
+	var label := Label3D.new()
+	label.text = key
+	label.font_size = size
+	label.pixel_size = pixel
+	label.outline_size = 18
+	label.double_sided = false
+	label.position = at
+	label.rotation.y = turn
+	$Built.add_child(label)
+
+
+## A floating line over `at` for a few seconds.
+func _say(at: Vector3, key: String, seconds := 3.0) -> void:
+	var label := Label3D.new()
+	label.text = key
+	label.font_size = 48
+	label.pixel_size = 0.01
+	label.outline_size = 12
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.position = at
+	add_child(label)
+	get_tree().create_timer(seconds).timeout.connect(label.queue_free)
+
+
+## A model only for the look, standing at `at` and turned `turn` around Y.
+func _model(scene: PackedScene, at: Vector3, turn := 0.0) -> Node3D:
+	var look: Node3D = scene.instantiate()
+	look.position = at
+	look.rotation.y = turn
+	$Built.add_child(look)
+	return look

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Pawn shop raid, step 1: "Empeños La Última Oferta" on lot (0, 5) north, with the barred counter and its till (the stock room's key), the cookie jar and the parrot's cage, 3 glass cases that break (fine 20 each), 4 shelves of pawned things, the knight's armor that falls apart (fine 15), the stuffed crocodile, the old TV, the guitar case, the locked stock room with the big safe, and 12 hiding spots.
 - Pawn shop raid design: "Empeños La Última Oferta" on lot (0, 5) north, where Don Regateo buys whatever a cop leaves on the counter (evidence too), his appraisal as the distraction, Chicharra the parrot who talks for a cookie, and 6 stories (decision 550).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
