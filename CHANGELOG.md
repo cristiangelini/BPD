@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Zoo crime scene, step 1: the Municipal Zoo fills block (7, -1) on the north edge (--place=zoo): the fence and the entrance arch with Copito's birthday banner, the ticket booth, the ice-cream stand, the souvenir shop, the keepers' hut with six lockers and the feeding log, the penguins' pool with the empty ice floe behind the glass, the monkey, ostrich and elephant enclosures with their gates shut, the reptile house with the tortoise shell, the duck pond with the pedal boat and the little train's track.
 - Zoo crime scene, step 0: the design (docs/diseno/escena-zoo.md, decision 570): Copito the baby penguin stolen from the Municipal Zoo, six look-alike keepers told apart by their smell and a peck, Don Pico the parrot as witness, and feeding time letting out the monkey, the ostrich or the elephant every 2 minutes.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
