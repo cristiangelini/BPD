@@ -484,6 +484,7 @@ func finish_shift() -> void:
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
+		campaign.add_stats(stats)
 		campaign.finish_shift("chase_" + suspect_id, case_solved, report, QUOTA)
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),

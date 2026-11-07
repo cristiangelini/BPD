@@ -47,7 +47,14 @@ todos usan `CaseBriefing`. Online la cuenta el host: `Net.match_intro` viaja con
 La pantalla final dice "¡Ascendidos! La comisaría sigue abierta." o "la comisaría cierra". Capturas:
 `campana/intro_1.png`, `intro_4.png` e `intro_caso.png`.
 
-**Para después:** la inspección de la ciudad como caso especial del último turno.
+**El último turno** es la inspección de la ciudad ([inspeccion.md](inspeccion.md), decisión 107): ahí decide el informe
+de la inspectora, no la cuota.
+
+**Premios de toda la partida (cómo quedó):** la partida suma las estadísticas de cada policía turno a turno
+(`Campaign.add_stats`, guardadas en la partida) y el turno que la termina, se gane o se pierda, muestra debajo de los
+premios del turno los "Premios de toda la partida": los mismos premios en chiste (decisión 41), con lo que juntó cada
+uno en todos los turnos (por ejemplo, "Chofer del año" con los metros de los 10 turnos). Viajan en el informe del turno,
+así que online los ve cada invitado. **(propuesta: también al perder, para reírse de la derrota)**
 
 ## La armería
 Un mostrador con reja y el armero (un NPC pera, con la misma estructura que todos). Se le habla con E y abre una lista:

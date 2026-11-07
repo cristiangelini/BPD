@@ -132,6 +132,7 @@ SHIFT_QUOTA,Cuota del turno,Shift quota,Cota do turno
 SHIFT_APPROVED,¡Turno aprobado!,Shift approved!,Turno aprovado!
 SHIFT_SUSPENDED,Suspendidos,Suspended,Suspensos
 SHIFT_AWARDS,Premios del turno,Shift awards,Prêmios do turno
+SHIFT_GAME_AWARDS,Premios de toda la partida,Awards of the whole match,Prêmios da partida inteira
 SHIFT_AGAIN,Otro turno,Another shift,Outro turno
 SHIFT_MENU,Volver al menú,Back to menu,Voltar ao menu
 AWARD_RAM_MISSES,Más golpes al aire con el ariete: %s (%d),Most battering ram swings at thin air: %s (%d),Mais golpes no ar com o aríete: %s (%d)
