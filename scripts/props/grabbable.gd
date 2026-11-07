@@ -21,6 +21,13 @@ var let_go_at := -1
 var touched_by := {}
 
 
+## In the "grabbables" group while in the tree (the zoo's monkey looks for things lying around). A notification runs
+## for every script up the chain, so subclasses with their own _ready get it too.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_ENTER_TREE:
+		add_to_group("grabbables")
+
+
 static func max_force_per_holder() -> float:
 	return GameScale.COP_CARRY_KG * GameScale.GRAVITY * STRENGTH_MARGIN
 

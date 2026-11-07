@@ -171,3 +171,9 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   suma 10 a la paciencia de Doña Jaula. Si el animal sigue afuera en la hora de comer siguiente, vuelve solo y la
   paciencia baja 20. Quedan para el paso 5b: lo que hace cada animal suelto, el castigo con la paciencia en 0 y el
   trencito.
+- **Paso 5b:** suelto, el mono agarra lo que encuentra tirado (cualquier objeto que se agarra, menos los baldes) y
+  lo suelta cuando lo llevan con bananas; el avestruz corre al policía más cercano y lo tira 2 s (se le cae lo que
+  tiene en la mano) y después descansa 3 s; el elefante tira agua cada 5 s delante suyo: el policía mojado resbala
+  3 s y `Zoo.washed` avisa qué se lavó (las pistas del paso 6). Con la paciencia en 0, Doña Jaula pone al policía más
+  cercano a darles de comer a los pingüinos 10 s y vuelve a la mitad de su paciencia. El trencito (`ZooTrain`) da la
+  vuelta a 3 m/s y empuja para un costado al que se le cruza, que suelta lo que lleva.
