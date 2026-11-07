@@ -194,8 +194,29 @@ export function buildDonRenglon() {
 	return b.build();
 }
 
+// Tipito, the apprentice (decision 72, the pear body; shown smaller in the game): grey overalls with a pocket full
+// of type, a cap on backwards, an ink smudge on his nose and a composing stick in his hand. Faces +Z.
+export function buildTipito() {
+	const b = new Builder('npc_tipito');
+	const overalls = mat('tipito_overalls', 0x7a8290), shirt = mat('tipito_shirt', 0xf2c63a);
+	const skin = mat('tipito_skin', 0xf0c8a8), cap = mat('tipito_cap', 0xd83a3a), lead = mat('tipito_lead', 0x9aa0a8);
+	pearBody(b, skin, { shirt, pants: overalls, shoes: mat('tipito_shoes', 0x2a2a30), belted: false });
+	b.add('body', overalls, new THREE.BoxGeometry(0.5, 0.4, 0.04), { pos: V(0, 0.7, 0.37), rot: [-0.2, 0, 0] });
+	b.add('body', overalls, new THREE.BoxGeometry(0.16, 0.1, 0.05), { pos: V(0.1, 0.72, 0.41), rot: [-0.2, 0, 0] });
+	for (let i = 0; i < 3; i++) {
+		b.add('body', lead, new THREE.BoxGeometry(0.02, 0.06, 0.02), { pos: V(0.05 + i * 0.04, 0.8, 0.41) });
+	}
+	eyes(b, 1.33, 0.19, 0.08, 0.05);
+	b.add('face', mat('tipito_ink', 0x2e5fd8), ellipsoid(0.035, 0.025, 0.01, 6, 4), { pos: V(0, 1.27, 0.215) });
+	b.add('hat', cap, new THREE.CylinderGeometry(0.2, 0.2, 0.1, 12), { pos: V(0, 1.47, 0.02) });
+	b.add('hat', cap, new THREE.CylinderGeometry(0.15, 0.15, 0.01, 12, 1, false, -Math.PI / 2, Math.PI),
+		{ pos: V(0, 1.43, -0.2), rot: [0, Math.PI, 0] });
+	b.add('tool', lead, new THREE.BoxGeometry(0.22, 0.05, 0.06), { pos: V(0.5, 0.64, 0.2) });
+	return b.build();
+}
+
 export const models = {
-	npc_don_renglon: buildDonRenglon,
+	npc_don_renglon: buildDonRenglon, npc_tipito: buildTipito,
 	printing_press: buildPrintingPress, empty_ink_barrel: buildEmptyBarrel, type_case: buildTypeCase,
 	paper_guillotine: buildPaperGuillotine, paper_roll: buildPaperRoll, fax_machine: buildFax, ink_jar: buildInkJar,
 	counter_bell: buildCounterBell, smiling_inkwell: buildSmilingInkwell,
@@ -213,6 +234,7 @@ export const views = {
 			{ name: 'ink_jar', pos: [3.2, 0, 2.7] }, { name: 'counter_bell', pos: [3.6, 0, 2.7] },
 			{ name: 'smiling_inkwell', pos: [5.0, 0, 1.6], rotY: -0.3 },
 			{ name: 'npc_don_renglon', pos: [6.2, 0, 1.8], rotY: -0.3 },
+			{ name: 'npc_tipito', pos: [7.3, 0, 2.0], rotY: -0.4 },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},

@@ -152,6 +152,12 @@ suman 500.
   Don Renglón arma el pedido, asoma la hoja del pedido; él se para frente al chibalete, de espaldas al taller, 20 s.
   Las huellas suman cuando ve el lugar donde cayó la huella, una vez por policía. Capturas en
   `imprenta/paso4-huellas.png` y `imprenta/paso4-chibalete.png`.
+- **Paso 5 (Tipito y las letras):** `PrintShopKid` (`scripts/npc/print_shop_kid.gd`), parado al lado del chibalete
+  mirando al taller, y `WoodenLetter` (`scripts/case/print_shop/wooden_letter.gd`). Las 6 letras son Ñ, Q, G, R, A y
+  Z, de madera, hechas con texto en 3D. Están tiradas por el taller y una está arriba de la cinta de la rotativa: si
+  arranca, sale "impresa". La que pide es la letra número `semilla % 6`. Cuenta como "traída" la letra que un policía
+  tuvo en la mano en los últimos 3 s, a 1,5 m de él. No repite lo mismo de una misma letra antes de 4 s. Captura en
+  `imprenta/paso5-tipito.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
