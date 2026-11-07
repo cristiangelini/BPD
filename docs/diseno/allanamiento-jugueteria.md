@@ -80,6 +80,10 @@ extras suman entre 400 y 600. El caballito es la cosa más pesada (8 kg): convie
 1. La juguetería como lugar: el edificio en la manzana (4, 5) con el trompo, el salón con los estantes, el mostrador,
    la vitrina, el oso y el castillo, el depósito con llave, el taller, el baño, el patio con la camioneta, lo frágil y
    los escondites. Modelos nuevos con modelgen.
+   **Hecho (paso 1):** `scripts/levels/toy_store.gd` y `scenes/levels/toy_store.tscn`, con "Juguetería (allanamiento,
+   prueba)" en el menú. El tren va sobre una maqueta en una mesa del salón (con el túnel en la curva), no alrededor de
+   todo el salón: así no corta los pasillos. El trompo gira en el techo. Capturas en la carpeta del proyecto
+   `jugueteria/paso1-*.png`.
 2. Lo que se dispara: los juguetes a cuerda de los estantes, el ruido y el tropiezo; el pelotero y el revolver.
 3. Don Cucho: la ronda, la denuncia, el oído y el tren que descarrila.
 4. Doña Ramona y el regalo.
