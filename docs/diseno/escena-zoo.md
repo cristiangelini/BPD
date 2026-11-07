@@ -23,7 +23,7 @@ El comisario lo cuenta en su oficina, con un folleto del zoológico en la mano:
 > cuidado, que a la hora de comer los animales salen a pasear."
 
 ## El lugar
-- **El Zoológico Municipal:** la cuadra (2, 5) entera **(propuesta)**, abierta como el parque o el aeropuerto, con
+- **El Zoológico Municipal:** la cuadra (7, -1) entera, en la fila del borde norte **(propuesta)**, abierta como el parque o el aeropuerto, con
   una reja alrededor, el arco de la entrada con un elefante de cartón y el cartel "¡Feliz cumple, Copito!". Adentro:
   - la **entrada**, con la boletería, el puesto de helados y la **tienda de recuerdos**, llena de pingüinos de
     peluche;
@@ -127,13 +127,13 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
 2. **¿La vuelta es la hora de comer con un animal suelto?** Recomiendo que sí: tres animales con tres problemas
    distintos (el mono roba, el avestruz atropella, el elefante lava) se sienten distintos en cada partida. La otra
    opción es solo el trencito que no para, que es más simple pero da menos sorpresas.
-3. **¿El zoológico va en la cuadra (2, 5) entera?** Es la única cuadra entera libre al sur en todas las ramas al
+3. **¿El zoológico va en la cuadra (7, -1) entera?** La fila del borde norte está libre en todas las ramas al
    7/11, y el zoológico necesita lugar para los recintos.
 4. **¿Lo robado es un animal vivo?** Recomiendo que sí: Copito en brazos aletea y estornuda entre los peluches, y
    devolverlo al témpano se siente bien. La otra opción es un objeto, el huevo de oro del avestruz.
 
 ## Pasos
-1. El lugar en la ciudad: el zoológico en la cuadra (2, 5), sus recintos y la casilla (--place=zoo).
+1. El lugar en la ciudad: el zoológico en la cuadra (7, -1), sus recintos y la casilla (--place=zoo).
 2. La gente: los seis cuidadores, Doña Jaula, Don Pico y los tres animales, con sus modelos.
 3. Las fichas: la variante zoo de la escena del crimen, con el olor y el picotazo.
 4. Copito escondido, la búsqueda y la libreta de comidas.
