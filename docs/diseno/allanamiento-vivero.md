@@ -171,6 +171,11 @@ los extras suman 500.
    enano de la fila con pintura fresca se sortea con la semilla; un policía a menos de 1,5 m lo hace descascarar y
    aparecen 3 manchas doradas (pista). Los 8 enanos de la fila giran para mirar al de oro, esté donde esté. Captura:
    `/mnt/project-files/vivero/paso7a-enanos.png`.
+   **Hecho así, el pasto del estadio** (`StadiumGrassRig`, `--story=stadium_grass`): el rollo de pasto (12 kg, 1000)
+   y la cortadora (3 kg, 200) van a escondites de cosas pesadas; la entrada (0,1 kg, 300) a cualquiera. Un cantero del
+   patio (sorteado entre 4 lugares) tiene pasto más claro con líneas blancas; el policía que pasa a menos de 1,5 m del
+   borde lo ve (pista). Cada vez que se prende el riego, sobre el rollo aparece el canto de la hinchada 4 s (por ahora
+   como texto, sin sonido). Captura: `/mnt/project-files/vivero/paso7b-pasto.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 

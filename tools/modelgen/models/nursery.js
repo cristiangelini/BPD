@@ -309,6 +309,42 @@ export function buildGnomePaint() {
 	return b.build();
 }
 
+// The stadium's roll of grass (1.0 m long, 0.45 m across): a fat roll of turf, green outside, with the brown soil
+// spiral at the ends and a white line painted across it.
+export function buildGrassRoll() {
+	const b = new Builder('grass_roll');
+	const turf = mat('roll_turf', 0x4caf50), dirt = mat('roll_dirt', 0x6a4424), white = mat('roll_line', 0xf6f4ee);
+	b.add('roll', turf, new THREE.CylinderGeometry(0.22, 0.22, 1.0, 16), { pos: V(0, 0.22, 0), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-0.505, 0.505]) {
+		b.add('end', dirt, new THREE.CylinderGeometry(0.2, 0.2, 0.01, 16), { pos: V(x, 0.22, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('spiral', turf, new THREE.TorusGeometry(0.11, 0.015, 4, 16), { pos: V(x * 1.01, 0.22, 0), rot: [0, Math.PI / 2, 0] });
+	}
+	b.add('line', white, new THREE.CylinderGeometry(0.222, 0.222, 0.06, 16), { pos: V(0.2, 0.22, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+// A stadium ticket (0.15 x 0.07 m): a pink stub with a black stripe and a torn edge.
+export function buildStadiumTicket() {
+	const b = new Builder('stadium_ticket');
+	b.add('paper', mat('ticket_pink', 0xf07aa8), new THREE.BoxGeometry(0.15, 0.003, 0.07), { pos: V(0, 0.0015, 0) });
+	b.add('stripe', mat('ticket_ink', 0x1a1a1a), new THREE.BoxGeometry(0.15, 0.001, 0.012), { pos: V(0, 0.0035, 0.015) });
+	b.add('stub', mat('ticket_white', 0xf6f4ee), new THREE.BoxGeometry(0.03, 0.001, 0.06), { pos: V(-0.055, 0.0035, 0) });
+	return b.build();
+}
+
+// A push reel mower (0.5 m wide, 1.0 m tall with its handle): a green reel between two wheels and a long T handle.
+export function buildHandMower() {
+	const b = new Builder('hand_mower');
+	const green = mat('mower_green', 0x2f8a3a), steel = mat('mower_steel', 0xb8bec6, { metalness: 0.7 }), black = mat('mower_black', 0x1a1a1a);
+	b.add('reel', green, new THREE.CylinderGeometry(0.08, 0.08, 0.4, 10), { pos: V(0, 0.1, 0), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-0.23, 0.23]) {
+		b.add('wheel', black, new THREE.CylinderGeometry(0.1, 0.1, 0.04, 12), { pos: V(x, 0.1, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('arm', steel, new THREE.CylinderGeometry(0.012, 0.012, 0.9, 6), { pos: V(x * 0.6, 0.5, -0.32), rot: [-0.8, 0, 0] });
+	}
+	b.add('grip', black, new THREE.CylinderGeometry(0.02, 0.02, 0.32, 8), { pos: V(0, 0.86, -0.64), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
@@ -316,7 +352,8 @@ export const models = {
 	smiling_pot: buildSmilingPot, npc_dona_hortensia: buildDonaHortensia,
 	npc_brotecito: buildBrotecito, watering_can: buildWateringCan, nursery_orchid: buildNurseryOrchid,
 	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears, gold_gnome: buildGoldGnome,
-	mayor_photo: buildMayorPhoto, gnome_paint: buildGnomePaint,
+	mayor_photo: buildMayorPhoto, gnome_paint: buildGnomePaint, grass_roll: buildGrassRoll,
+	stadium_ticket: buildStadiumTicket, hand_mower: buildHandMower,
 };
 
 export const views = {
@@ -332,7 +369,8 @@ export const views = {
 			{ name: 'nursery_orchid', pos: [-0.2, 0, 3.4] }, { name: 'botanic_catalog', pos: [0.4, 0, 3.6], rotY: 0.3 },
 			{ name: 'nursery_shears', pos: [0.9, 0, 3.6], rotY: -0.4 },
 			{ name: 'gold_gnome', pos: [-2.6, 0, 3.2] }, { name: 'mayor_photo', pos: [-2.0, 0, 3.7] },
-			{ name: 'gnome_paint', pos: [-1.6, 0, 3.6] },
+			{ name: 'gnome_paint', pos: [-1.6, 0, 3.6] }, { name: 'grass_roll', pos: [2.6, 0, 2.8], rotY: 0.4 },
+			{ name: 'stadium_ticket', pos: [2.2, 0, 3.8] }, { name: 'hand_mower', pos: [3.6, 0, 2.2], rotY: -0.6 },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},
