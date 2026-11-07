@@ -24,7 +24,6 @@ const CROC_MODEL := preload("res://assets/models/stuffed_croc.glb")
 const TV_MODEL := preload("res://assets/models/old_tv.glb")
 const GUITAR_MODEL := preload("res://assets/models/guitar_case.glb")
 const CAGE_MODEL := preload("res://assets/models/pawn_parrot_cage.glb")
-const JAR_MODEL := preload("res://assets/models/cookie_jar.glb")
 const STOCK_SHELF_MODEL := preload("res://assets/models/pawn_stock_shelf.glb")
 const BOXES_MODEL := preload("res://assets/models/pawn_boxes.glb")
 const SAFE_MODEL := preload("res://assets/models/pawn_safe.glb")
@@ -75,7 +74,7 @@ const CUSTOMER_COMPLAINT := 5.0
 const TAKEN_COMPLAINT := 10.0
 const CAUGHT_ON := 10.0
 ## The parrot's cage hangs from the ceiling by the counter's east end.
-const CAGE_AT := Vector3(9.6, 2.6, 4.2)
+const CAGE_AT := Vector3(9.6, 2.2, 4.2)
 ## The three glass cases in a row in the middle of the shop, and what breaks them.
 const CASES: Array[Vector3] = [Vector3(-6.0, FLOOR_TOP, 2.5), Vector3(-2.5, FLOOR_TOP, 2.5),
 	Vector3(1.0, FLOOR_TOP, 2.5)]
@@ -144,6 +143,9 @@ var fines := 0
 @export var case_seed := 0
 ## The counter's top: what the shop buys and sells (step 2).
 var counter: PawnCounter
+## Chicharra the parrot and the cookie jar on the counter (step 4).
+var parrot: PawnParrot
+var cookie_jar: CookieJar
 var owner_boss: FloorBoss
 var appraisal: Appraisal
 var complaint_bar: ProgressBar
@@ -215,8 +217,16 @@ func _build_counter() -> void:
 	till.position = TILL_ON + Vector3.UP * Till.SIZE.y / 2
 	till.key_hint = "HINT_TILL_KEY_PAWN"
 	add_child(till)
-	_model(JAR_MODEL, JAR_ON)
+	cookie_jar = CookieJar.new()
+	cookie_jar.name = "CookieJar"
+	cookie_jar.position = JAR_ON
+	add_child(cookie_jar)
 	_model(CAGE_MODEL, CAGE_AT + Vector3.UP * 0.75)
+	parrot = PawnParrot.new()
+	parrot.name = "Chicharra"
+	parrot.jar = cookie_jar
+	parrot.position = CAGE_AT + Vector3.UP * 0.75
+	add_child(parrot)
 	var hook := CAGE_AT.y + 0.75
 	_build.mesh_box(Vector3(CAGE_AT.x, (hook + WALL_TOP) / 2, CAGE_AT.z), Vector3(0.02, WALL_TOP - hook, 0.02), DARK)
 
