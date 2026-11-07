@@ -179,6 +179,11 @@ suman 500.
   6 libros finos y livianos apilados no se quedan quietos solos en la física. La máquina de escribir usa el modelo
   que ya estaba (`typewriter.glb`) con otra escena de 6 kg. Capturas en `imprenta/paso7c-afiches.png` y
   `imprenta/paso7c-pilas.png`.
+- **Paso 7d (las figuritas truchas):** `FakeStickersRig`. La figurita difícil es la del arquero (fondo verde, bigote).
+  Alrededor del lugar donde estaba la plancha hay 20 figuritas repetidas tiradas en el piso, hasta 1,2 m. El policía
+  que se acerca a 1,5 m de ellas las nota, y es pista una vez. Mientras la rotativa anda, cada 3 s le pega una
+  figurita en la cara (delante de la cámara, 4 s) a cada policía a menos de 4 m de la bandeja. Capturas en
+  `imprenta/paso7d-repetidas.png` e `imprenta/paso7d-cara.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
