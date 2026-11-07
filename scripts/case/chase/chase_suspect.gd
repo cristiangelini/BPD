@@ -38,6 +38,8 @@ const MODELS := {
 	"guest": preload("res://assets/models/npc_huesped.glb"),
 	# The Monedero mansion's culprit, out of his aunt's limousine (escena-gato.md).
 	"nephew": preload("res://assets/models/npc_sobrino_tia.glb"),
+	# The office's culprit, out of the water truck in the company's grey suit (escena-oficina.md).
+	"employee": preload("res://assets/models/npc_oficinista.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

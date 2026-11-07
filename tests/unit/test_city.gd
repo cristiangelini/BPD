@@ -44,6 +44,7 @@ func test_the_station_and_the_ten_raid_places_are_in_the_city() -> void:
 	assert_false(CityLayout.place("cat_mansion").is_empty(), "and the Monedero mansion")
 	assert_false(CityLayout.place("wrong_house").is_empty(), "and the twin houses of the wrong house")
 	assert_false(CityLayout.place("airport").is_empty(), "and the airport")
+	assert_false(CityLayout.place("office").is_empty(), "and the forms office")
 	assert_eq(CityLayout.PLACES.size(), RAID_PLACES.size() + 23)
 
 

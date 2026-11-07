@@ -46,6 +46,7 @@ const PLACES := {
 	"cat_mansion": "res://scenes/levels/cat_mansion.tscn",
 	"hotel": "res://scenes/levels/hotel.tscn",
 	"hotel_raid": "res://scenes/levels/hotel_raid.tscn",
+	"office": "res://scenes/levels/forms_office.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
 	"blackout": "res://scenes/levels/prison_blackout.tscn",
 	"visits": "res://scenes/levels/prison_visits.tscn",
@@ -86,7 +87,7 @@ const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
 ## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md), the museum (escena-museo.md),
 ## the hotel (escena-hotel.md) and the train (escena-tren.md), in fifths (propuesta).
-const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel", "train", "cat_mansion", "mansion"]
+const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel", "train", "cat_mansion", "mansion", "office"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "restaurant", "chess", "biker", "auction"]

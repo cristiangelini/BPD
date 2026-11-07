@@ -108,6 +108,8 @@ const MODELS := {
 	"baggage_tug": preload("res://assets/models/baggage_tug.glb"),
 	# The cat's culprit gets away in his aunt's golden limousine, throwing balls of yarn out the window (escena-gato.md).
 	"golden_limo": preload("res://assets/models/golden_limo.glb"),
+	# The office's culprit runs off in the water delivery truck, dropping jugs off its back (escena-oficina.md).
+	"water_truck": preload("res://assets/models/water_truck.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -142,6 +144,7 @@ const RIDERS := {
 	"hotel_shuttle": [[preload("res://assets/models/npc_huesped.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 	"baggage_tug": [[preload("res://assets/models/npc_mudancero.glb"), Vector3(0, 0.35, 0.2), 0.85]],
 	"golden_limo": [[preload("res://assets/models/npc_sobrino_tia.glb"), Vector3(-0.5, 0.4, 1.2), 0.85]],
+	"water_truck": [[preload("res://assets/models/npc_oficinista.glb"), Vector3(-0.5, 0.45, 1.7), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -232,6 +235,7 @@ const TV_VAN := "tv_van"
 const HOTEL_SHUTTLE := "hotel_shuttle"
 const BAGGAGE_TUG := "baggage_tug"
 const LIMO := "golden_limo"
+const WATER_TRUCK := "water_truck"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -257,7 +261,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9), "art_van": Vector3(2.1, 2.3, 4.8),
 	"tv_van": Vector3(2.1, 2.3, 4.8),
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0),
-	"baggage_tug": Vector3(1.3, 1.4, 2.4), "golden_limo": Vector3(2.1, 1.5, 7.0)}
+	"baggage_tug": Vector3(1.3, 1.4, 2.4), "golden_limo": Vector3(2.1, 1.5, 7.0),
+	"water_truck": Vector3(2.1, 2.4, 5.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -283,7 +288,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"gallery_cart": NO_WHEELS,
 	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS,
 	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS,
-	"golden_limo": LIMO_WHEELS}
+	"golden_limo": LIMO_WHEELS,
+	"water_truck": SHUTTLE_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

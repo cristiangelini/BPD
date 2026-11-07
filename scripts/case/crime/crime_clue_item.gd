@@ -9,8 +9,8 @@ extends Grabbable
 ## loose too, on the velvet rope's post, and the bite is in the guards' sandwich. At the hotel (`look` "hotel") the
 ## hair is loose on the suite's pillow and the bite is in the bonbon left on it. At the mansion (`look` "mansion") the
 ## hair is loose on the armour and the bite is in one of doña Clotilde's chocolates. At the Monedero mansion (`look`
-## "cat_mansion") the hair is loose on Duquesa's velvet armchair and the bite is in a fish-shaped cat biscuit. Every
-## number here is (propuesta).
+## "cat_mansion") the hair is loose on Duquesa's velvet armchair and the bite is in a fish-shaped cat biscuit. At the
+## office (`look` "office") the bite is in a company cookie on the thief's saucer. Every number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -29,7 +29,7 @@ const DARK_CHOCOLATE := Color(0.24, 0.13, 0.08)
 
 ## "hair", "bite" or "recipe".
 var kind := "hair"
-## "pastry", "circus", "museum", "hotel", "mansion" or "cat_mansion": what the clue looks like.
+## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion" or "office": what the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -50,7 +50,7 @@ func _ready() -> void:
 		"recipe": Vector3(0.21, 0.02, 0.3)}[kind] as Vector3
 	if _loose():
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
-	elif look == "hotel":
+	elif look in ["hotel", "office"]:
 		size = Vector3(0.08, 0.05, 0.08)
 	elif look == "mansion":
 		size = Vector3(0.08, 0.06, 0.08)
@@ -82,6 +82,9 @@ func _ready() -> void:
 		chocolate.mesh(ball, Vector3(0, 0.025, 0), DARK_CHOCOLATE)
 		# The bite: a pale notch in its side, the liqueur showing.
 		chocolate.mesh_box(Vector3(0.022, 0.03, 0), Vector3(0.02, 0.03, 0.04), CREAM)
+		return
+	if look == "office":
+		_cookie(builder)
 		return
 	match kind:
 		"hair":
@@ -153,7 +156,19 @@ func _biscuit() -> void:
 	part.mesh_box(Vector3(0.02, 0.024, -0.06), Vector3(0.03, 0.034, 0.025), WET)
 
 
-## The circus's look: its loose hair and its fish. The museum's, the hotel's and the mansion's hair are loose too.
+## The office's cookie: a round company cookie with a bite out of one side.
+func _cookie(builder: PlaceBuilder) -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var cookie := CylinderMesh.new()
+	cookie.top_radius = 0.035
+	cookie.bottom_radius = 0.035
+	cookie.height = 0.012
+	PlaceBuilder.new(_eaten_part).mesh(cookie, Vector3(0, 0.006, 0), SPONGE)
+	builder.mesh_box(Vector3(0.03, 0.007, 0), Vector3(0.02, 0.014, 0.03), WET)
+
+
+## The circus's look: its loose hair and its fish. The museum's, the hotel's and both mansions' hair are loose too.
 func _loose() -> bool:
 	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion"] and kind == "hair")
 
