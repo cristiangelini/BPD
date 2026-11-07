@@ -89,6 +89,18 @@ const VARIANTS := {
 			"signature": "left"},
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
+	# The Monedero mansion (escena-gato.md, decision 260): six nephews alike in the sweater their aunt knitted; a file
+	# knows what the cops got from its nephew, his scratch and his catchphrase included.
+	"cat": {
+		"shift": "crime_cat", "story": "cat",
+		"brief": ["BRIEF_CAT_A_", "BRIEF_CAT_B", "BRIEF_CAT_C"], "go": "HINT_GO_CAT_MANSION",
+		"go_row": "OBJ_CAT_GO", "look": "HINT_CAT_LOOK", "files_row": "OBJ_CAT_FILES",
+		"clue_line": "CLUE_CAT_", "ruined_hint": "HINT_CAT_RUINED_", "left": "HINT_NEPHEW_LEFT",
+		"who": "nephew", "getaway": SuspectCar.LIMO, "loot_row": "OBJ_CAT_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "necklace": "scratch",
+			"witness": "tic"},
+		"parts": ["photo", "prints", "teeth", "hair", "scratch", "tic"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -96,6 +108,9 @@ const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"],
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
+## At the Monedero mansion, the traits each part of a nephew's file tells.
+const NEPHEW_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"scratch": ["scratch"], "tic": ["tic"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -120,6 +135,8 @@ var clues_found: Array[String] = []
 var frames_broken := 0
 ## What the cops paid out of their salary during the case (on the train: señor Mostaza's sandwiches).
 var spent := 0
+## Other fines off the salary (the Monedero mansion's: the comisario's scared calls, the vases).
+var fines := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -216,6 +233,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return MagicianTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
+	if texts() == VARIANTS.cat:
+		return NephewTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -270,12 +289,14 @@ func magician_part(magician_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+## A guard gave a part of his file (escena-museo.md), or a nephew (escena-gato.md): it goes to his file with what it
+## says about him.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	for trait_name: String in GUARD_PART_TRAITS[part]:
+	var table := NEPHEW_PART_TRAITS if texts() == VARIANTS.cat else GUARD_PART_TRAITS
+	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -365,7 +386,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.train:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.train or texts() == VARIANTS.cat:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -489,7 +510,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent,
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent + fines,
 		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
@@ -534,7 +555,7 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "spent": spent,
+		"frames": frames_broken, "spent": spent, "fines": fines,
 		"rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
@@ -553,6 +574,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	clues_found.assign(state.found)
 	frames_broken = state.get("frames", 0)
 	spent = state.get("spent", 0)
+	fines = state.get("fines", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -624,6 +646,16 @@ func _send_off(suspect: CollisionObject3D) -> void:
 	suspect.collision_layer = 0
 	suspect.process_mode = Node.PROCESS_MODE_DISABLED
 
+## The comisario says `key` to the cops: on the briefing screen, or as a hint (the Monedero mansion's scared calls).
+func comisario_says(key: String) -> void:
+	_comisario_says(key)
+
+
+## A hint for every cop (the Monedero mansion's broken vases).
+func hint_all(key: String) -> void:
+	_hint_all(key)
+
+
 ## The comisario comes to the board and says it (with a player at the keys).
 func _comisario_says(key: String) -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -674,6 +706,8 @@ func clue_line(kind: String) -> String:
 		return _train_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.cat:
+		return _cat_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -686,6 +720,24 @@ func clue_line(kind: String) -> String:
 		"recipe":
 			return tr("CLUE_CRIME_recipe_left" if culprit().left else "CLUE_CRIME_recipe_right")
 	return tr("CLUE_CRIME_" + kind)
+
+
+## At the Monedero mansion: the footprint in the litter tray, the hair on the armchair, the bitten biscuit, the blood
+## on the necklace's clasp and what the parrot repeats.
+func _cat_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_CAT_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_CAT_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_CAT_bite") % tr("TEETH_" + str(who.teeth))
+		"necklace":
+			return tr("CLUE_CAT_necklace_" + str(who.scratch))
+		"witness":
+			return tr("CLUE_CAT_witness") % tr("NEPHEW_TIC_%d" % who.tic)
+	return tr("CLUE_CAT_" + kind)
 
 
 ## At the circus: the sawdust footprint, the hair in the pool, the bitten fish, the rehearsal's honk and Zulema.
@@ -788,6 +840,8 @@ func file_text(index: int) -> String:
 		return _magician_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
+	if texts() == VARIANTS.cat:
+		return _nephew_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -815,6 +869,24 @@ func _magician_file_text(index: int, who: Dictionary) -> String:
 		lines.append(tr("FILE_KNOT_UNKNOWN"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
+
+
+## A nephew's file: his name and number, and what the cops got from him so far.
+func _nephew_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_SCRATCH_" + (str(who.scratch).to_upper() if who.scratch != "" else "NONE")) if who.has("scratch")
+		else tr("FILE_SCRATCH_UNKNOWN"))
+	lines.append(tr("FILE_TIC") % (tr("NEPHEW_TIC_%d" % who.tic) if who.has("tic") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
 
 
 ## A guard's file: his name and number, and what the cops got from him so far.

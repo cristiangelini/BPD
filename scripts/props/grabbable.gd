@@ -50,6 +50,16 @@ func let_go(holder_id: int) -> void:
 		sleeping = false
 
 
+## Every holder lets go of it (their grabbers drop it too).
+func release_all() -> void:
+	for id: int in holders.keys():
+		var grabber := instance_from_id(id) as Grabber
+		if grabber:
+			grabber.release()
+		else:
+			let_go(id)
+
+
 ## The cops holding it now, plus the one who let go of it less than `since` seconds ago.
 func handling_cops(since: float) -> Array[Cop]:
 	var cops: Array[Cop] = []

@@ -5232,6 +5232,9 @@ TRAIN_MAGICIAN_CAUGHT,"¡Está bien, está bien! El truco terminó. Aplausos, po
 TRAIN_MAGICIAN_SPLASH,"¡Y para mi último truco... desaparezco! ¡SPLASH!","And for my last trick... I vanish! SPLASH!","E para o meu último truque... eu desapareço! SPLASH!"
 CRIME_owner_magician,"¡Novatos! Ayer acusaron a un mago del tren El Lento y está en la sala de interrogatorio. Dice que fue un truco y que el público tiene que adivinar. Que confiese.","Rookies! Yesterday you accused a magician from the train El Lento and he's in the interrogation room. He says it was a trick and the audience has to guess. Make him confess.","Novatos! Ontem vocês acusaram um mágico do trem El Lento e ele está na sala de interrogatório. Diz que foi um truque e que o público tem que adivinhar. Façam ele confessar."
 CONFESS_owner_magician,"¡Está bien! ¡Fui yo! Veinte años sacando conejos de la galera y nunca uno de oro.","Fine! It was me! Twenty years pulling rabbits out of a hat and never a golden one.","Tá bom! Fui eu! Vinte anos tirando coelhos da cartola e nunca um de ouro."
+PLACE_CAT_MANSION,"Casona Monedero","Monedero Mansion","Casarão Monedero"
+SIGN_CAT_MANSION,"Casona Monedero","Monedero Mansion","Casarão Monedero"
+SIGN_CAT_MANSION_DRAWING,"Sala →","Drawing room →","Sala de estar →"
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
@@ -5767,3 +5770,131 @@ CASE_FAILED_LAWYER_CHOLA,Doña Chola llamó a su abogado. Caso perdido.,Doña Ch
 MENU_WRONG_HOUSE,La casa equivocada (prueba),The wrong house (test),A casa errada (teste)
 HINT_ESCAPE_wrong_house,"¡El de la 14 se escapa en su rural con la prueba en el techo! Tienen un minuto para agarrarlo.","Number 14 is getting away in his station wagon with the evidence on the roof! You have one minute to catch him.","O da 14 está fugindo na perua com a prova no teto! Vocês têm um minuto para pegá-lo."
 CASE_FAILED_WH_GOT_AWAY,El de la 14 se escapó con la prueba. Caso perdido.,Number 14 got away with the evidence. Case lost.,O da 14 fugiu com a prova. Caso perdido.
+PROMPT_NEPHEW_TALK,"E: hablar con el sobrino","E: talk to the nephew","E: falar com o sobrinho"
+NEPHEW_LINE_0,"¿La herencia? A mí la plata no me importa. %s","The inheritance? I don't care about money. %s","A herança? Eu não ligo para dinheiro. %s"
+NEPHEW_LINE_1,"La tía le dejó todo a una gata. A una GATA. %s","Auntie left everything to a cat. A CAT. %s","A titia deixou tudo para uma gata. Uma GATA. %s"
+NEPHEW_LINE_2,"Yo quiero mucho a la Duquesa. Bueno, la tolero. %s","I love Duquesa very much. Well, I put up with her. %s","Eu amo muito a Duquesa. Bom, eu a tolero. %s"
+NEPHEW_LINE_3,"Este suéter pica muchísimo. %s","This sweater is so itchy. %s","Este suéter pinica demais. %s"
+NEPHEW_LINE_4,"Yo estaba durmiendo, como todos los sobrinos buenos. %s","I was asleep, like all the good nephews. %s","Eu estava dormindo, como todos os sobrinhos bons. %s"
+NEPHEW_TIC_0,"¡Ay, mi espalda!","Oh, my back!","Ai, minhas costas!"
+NEPHEW_TIC_1,"¡Qué barbaridad!","How outrageous!","Que absurdo!"
+NEPHEW_TIC_2,"Te lo juro por la tía.","I swear on Auntie.","Juro pela titia."
+NEPHEW_TIC_3,"Ni loco.","No way.","Nem morto."
+NEPHEW_TIC_4,"Así no se puede.","This is impossible.","Assim não dá."
+NEPHEW_TIC_5,"¡Por favor!","Oh, please!","Ah, por favor!"
+PROMPT_MANSION_LADY,"E: hablar con la señora Ofelia","E: talk to Señora Ofelia","E: falar com a senhora Ofelia"
+MANSION_LADY_LINE_0,"¡Mi Duquesa! ¡Mi bebé! ¿Dónde estás, mi amor?","My Duquesa! My baby! Where are you, darling?","Minha Duquesa! Meu bebê! Onde você está, meu amor?"
+MANSION_LADY_LINE_1,"Cuidado con ese jarrón, oficial. Vale más que su patrullero.","Careful with that vase, officer. It's worth more than your patrol car.","Cuidado com esse vaso, policial. Vale mais que a sua viatura."
+MANSION_LADY_LINE_2,"Le pago la máquina de café a su comisaría, ¿sabe?","I pay for your station's coffee machine, you know.","Eu pago a máquina de café da sua delegacia, sabia?"
+MANSION_LADY_LINE_3,"La Duquesa solo ronronea con la cajita de música del piano.","Duquesa only purrs to the music box on the piano.","A Duquesa só ronrona com a caixinha de música do piano."
+MANSION_LADY_LINE_4,"Mis sobrinos son unos encantos. Bueno, casi todos.","My nephews are darlings. Well, almost all of them.","Meus sobrinhos são uns amores. Bom, quase todos."
+PROMPT_PARROT,"E: hablar con el loro","E: talk to the parrot","E: falar com o papagaio"
+PARROT_PRETTY,"¡Lorito bonito! ¡Lorito bonito!","Pretty parrot! Pretty parrot!","Louro bonito! Louro bonito!"
+PROMPT_MANSION_CAT,"Clic: agarrar a la gata (se escapa a los 5 segundos)","Click: grab the cat (she escapes after 5 seconds)","Clique: pegar a gata (ela foge depois de 5 segundos)"
+CAT_HISS,¡FFFSSS!,HISSSS!,FFFSSS!
+CAT_PURR,"♥ Rrrrrr ♥","♥ Purrrr ♥","♥ Rrrrrr ♥"
+PROMPT_MUSIC_BOX,E: darle cuerda a la cajita de música,E: wind up the music box,E: dar corda na caixinha de música
+MUSIC_BOX_NOTES,♪ ♫ ♪,♪ ♫ ♪,♪ ♫ ♪
+PROMPT_TUNA_CAN,E: abrir la lata de atún,E: open the can of tuna,E: abrir a lata de atum
+PROMPT_TUNA_CAN_OPEN,La lata ya está abierta,The can is already open,A lata já está aberta
+PROMPT_CAT_CRATE,"Transportadora: acércale una gata en brazos","Transport crate: bring a cat in your arms to it","Caixa de transporte: aproxime uma gata nos braços"
+PROMPT_CAT_CRATE_OPEN,E: abrir la transportadora y soltar a la gata,E: open the crate and let the cat out,E: abrir a caixa e soltar a gata
+PROMPT_NEPHEW_FEED,E: darle de comer al sobrino (sus dientes),E: feed the nephew (his teeth),E: dar de comer ao sobrinho (os dentes)
+PROMPT_NEPHEW_PRINTS,E: tomarle las huellas al sobrino,E: take the nephew's prints,E: tirar as digitais do sobrinho
+PROMPT_NEPHEW_BEANIE,E: pedirle que se saque el gorro,E: ask them to take off the beanie,E: pedir que tire o gorro
+PROMPT_NEPHEW_SLEEVES,E: pedirle que se arremangue,E: ask them to roll up their sleeves,E: pedir que arregace as mangas
+NEPHEW_BITES,"¡Ñam! Mmm, la tía nunca me da de esto.","Nom! Mmm, auntie never gives me these.","Nham! Hum, a titia nunca me dá disso."
+NEPHEW_NO_DONUTS,"¿Una caja vacía? Igual que la herencia.","An empty box? Just like the inheritance.","Uma caixa vazia? Igual à herança."
+NEPHEW_BEANIE_NO,"¿El gorro? Ni loco: tengo el pelo como un nido. Tráeme algo de comer y lo pensamos.","The beanie? No way: my hair is a bird's nest. Bring me something to eat and we'll see.","O gorro? Nem pensar: meu cabelo está um ninho. Traga algo para comer e a gente vê."
+NEPHEW_BEANIE_OFF,"Ya está, aquí tienes mi pelo. No le digas a la tía.","There, here's my hair. Don't tell auntie.","Pronto, aqui está meu cabelo. Não conte para a titia."
+NEPHEW_SCRATCH_ROSES,"¿Esto? Fue el rosal del jardín. Esas rosas son unas fieras.","This? The rose bush in the garden. Those roses are wild beasts.","Isto? Foi a roseira do jardim. Essas rosas são umas feras."
+NEPHEW_NO_SCRATCH,"Mira, ni un rasguño. Yo a la Duquesa ni la toco.","Look, not a scratch. I don't even touch Duquesa.","Olha, nem um arranhão. Eu nem toco na Duquesa."
+NEPHEW_NO_FLASH,"¡Sin fotos, que la tía me ve despeinado!","No photos, auntie will see my messy hair!","Sem fotos, a titia vai me ver despenteado!"
+FILE_SCRATCH_LEFT,Arañazo: mano izquierda,Scratch: left hand,Arranhão: mão esquerda
+FILE_SCRATCH_RIGHT,Arañazo: mano derecha,Scratch: right hand,Arranhão: mão direita
+FILE_SCRATCH_NONE,Sin arañazos,No scratches,Sem arranhões
+FILE_SCRATCH_UNKNOWN,Arañazo: ? (falta arremangarlo),Scratch: ? (sleeves not rolled up yet),Arranhão: ? (falta arregaçar as mangas)
+FILE_TIC,"Muletilla: «%s»","Catchphrase: “%s”","Bordão: «%s»"
+BRIEF_CAT_A_duchess,"Novatos, esto es serio. A la señora Ofelia Monedero, la mujer más rica de la ciudad, le desapareció su gata, la Duquesa. La señora le paga la máquina de café a esta comisaría.","Rookies, this is serious. Señora Ofelia Monedero, the richest woman in the city, has lost her cat, Duquesa. The señora pays for this station's coffee machine.","Novatos, isto é sério. A senhora Ofelia Monedero, a mulher mais rica da cidade, perdeu a gata dela, a Duquesa. A senhora paga a máquina de café desta delegacia."
+BRIEF_CAT_B,"Y la Duquesa es la heredera de todo: está en el testamento. Este fin de semana están en la casona los seis sobrinos de la señora, y los seis quieren esa herencia. Uno de ellos se llevó a la gata.","And Duquesa is the heiress to everything: she's in the will. The señora's six nephews are at the mansion this weekend, and all six want that inheritance. One of them took the cat.","E a Duquesa é a herdeira de tudo: está no testamento. Neste fim de semana os seis sobrinhos da senhora estão no casarão, e os seis querem essa herança. Um deles levou a gata."
+BRIEF_CAT_C,"Quiero un nombre en el tablero y a la Duquesa en los brazos de la señora. Y por favor, no rompan nada, que todo vale más que mi sueldo.","I want a name on the board and Duquesa in the señora's arms. And please, don't break anything: it's all worth more than my salary.","Quero um nome no quadro e a Duquesa nos braços da senhora. E por favor, não quebrem nada, que tudo vale mais que o meu salário."
+HINT_GO_CAT_MANSION,"La Casona Monedero es la de las rejas doradas y la fuente con una gata. No se puede perder.","The Monedero Mansion is the one with the golden railings and the fountain with a cat. You can't miss it.","O Casarão Monedero é o das grades douradas e da fonte com uma gata. Não tem como errar."
+OBJ_CAT_GO,Ir a la Casona Monedero,Go to the Monedero Mansion,Ir ao Casarão Monedero
+HINT_CAT_LOOK,"Los seis sobrinos llevan el mismo suéter. Mírales el pelo, las manos y escucha cómo hablan.","The six nephews wear the same sweater. Look at their hair and their hands, and listen to how they talk.","Os seis sobrinhos usam o mesmo suéter. Olhe o cabelo e as mãos deles, e escute como falam."
+OBJ_CAT_FILES,"Armar la ficha de cada sobrino (%d de %d)","Make each nephew's file (%d of %d)","Montar a ficha de cada sobrinho (%d de %d)"
+HINT_NEPHEW_LEFT,"%s se aburrió del fin de semana y se fue a su casa. Su ficha queda como está.","%s got bored of the weekend and went home. Their file stays as it is.","%s se cansou do fim de semana e foi para casa. A ficha fica como está."
+HINT_FILE_scratch,"Las manos de %s para la ficha. ¿Rosal o gata?","%s's hands for the file. Rose bush or cat?","As mãos de %s para a ficha. Roseira ou gata?"
+HINT_FILE_tic,"La muletilla de %s para la ficha. Que no se te pegue.","%s's catchphrase for the file. Don't let it rub off on you.","O bordão de %s para a ficha. Não vá pegar a mania."
+OBJ_CAT_LOOT_duchess,Llevarle la Duquesa a la señora (+100),Bring Duquesa to the señora (+100),Levar a Duquesa para a senhora (+100)
+HINT_LOOT_FOUND_duchess,"«¡Mi bebé!» La señora Ofelia abraza a la Duquesa y no la suelta más.","“My baby!” Señora Ofelia hugs Duquesa and won't let go.","«Meu bebê!» A senhora Ofelia abraça a Duquesa e não solta mais."
+PROMPT_SEARCH_suitcase,E: revisar la maleta,E: search the suitcase,E: revistar a mala
+PROMPT_SEARCH_dumbwaiter,E: abrir el montaplatos,E: open the dumbwaiter,E: abrir o monta-pratos
+PROMPT_SEARCH_basket,E: revisar la canasta de la ropa,E: search the laundry basket,E: revistar o cesto de roupa
+HINT_SEARCH_NOTHING_CAT_suitcase,"Calcetines, un cepillo de dientes y una foto de la tía con un bigote dibujado. Nada más.","Socks, a toothbrush and a photo of auntie with a mustache drawn on. Nothing else.","Meias, uma escova de dentes e uma foto da titia com um bigode desenhado. Nada mais."
+HINT_SEARCH_NOTHING_CAT_dumbwaiter,"Una bandeja con migas y un calcetín perdido. Nada más.","A tray with crumbs and a lost sock. Nothing else.","Uma bandeja com migalhas e uma meia perdida. Nada mais."
+HINT_SEARCH_NOTHING_CAT_basket,"Ropa sucia que huele a gata. Nada más.","Dirty laundry that smells of cat. Nothing else.","Roupa suja com cheiro de gata. Nada mais."
+HINT_DUCHESS_OUT,"¡Una gata naranja sale de un salto! ¿Será la Duquesa? Llévasela a la señora.","An orange cat jumps out! Could it be Duquesa? Take her to the señora.","Uma gata laranja sai de um pulo! Será a Duquesa? Leve-a para a senhora."
+MANSION_LADY_MY_BABY,¡Mi bebé! ¡Mi Duquesa!,My baby! My Duquesa!,Meu bebê! Minha Duquesa!
+MANSION_LADY_WRONG_CAT,"¡Esa es %s! ¿Están ciegos?","That's %s! Are you blind?","Essa é a %s! Vocês estão cegos?"
+DUCHESS,la Duquesa,Duquesa,a Duquesa
+CAT_NAME_0,Pochola,Pochola,Pochola
+CAT_NAME_1,Mantequilla,Butter,Manteiga
+CAT_NAME_2,Bigotes,Whiskers,Bigodes
+CAT_NAME_3,Calabaza,Pumpkin,Abóbora
+CLUE_CAT_prints,"Huellas en la puerta para gatos","Fingerprints on the cat flap","Digitais na portinha dos gatos"
+CLUE_CAT_footprint,"Pisada en el arenero: talle %d","Footprint in the litter tray: shoe size %d","Pegada na caixa de areia: número %d"
+CLUE_CAT_hair,"Un pelo en el sillón de la Duquesa: pelo %s","A hair on Duquesa's armchair: %s hair","Um fio de cabelo na poltrona da Duquesa: cabelo %s"
+CLUE_CAT_bite,"Una galleta para gatos, mordida: %s","A cat biscuit, bitten: %s","Um biscoito de gato, mordido: %s"
+CLUE_CAT_necklace_left,"El collar: sangre en el broche, del lado izquierdo","The necklace: blood on the clasp, on the left side","O colar: sangue no fecho, do lado esquerdo"
+CLUE_CAT_necklace_right,"El collar: sangre en el broche, del lado derecho","The necklace: blood on the clasp, on the right side","O colar: sangue no fecho, do lado direito"
+CLUE_CAT_witness,"Don Plumas repite: «%s»","Don Plumas repeats: “%s”","Don Plumas repete: «%s»"
+CLUE_CAT_RUINED_prints,"Huellas en la puerta para gatos: tapadas","Prints on the cat flap: covered","Digitais na portinha: cobertas"
+CLUE_CAT_RUINED_footprint,"Pisada en el arenero: tapada","Footprint in the litter tray: covered","Pegada na caixa de areia: coberta"
+CLUE_CAT_RUINED_hair,"Un pelo en el sillón: se perdió","A hair on the armchair: lost","Um fio de cabelo na poltrona: perdido"
+CLUE_CAT_RUINED_bite,"La galleta mordida: alguien se la comió","The bitten biscuit: someone ate it","O biscoito mordido: alguém comeu"
+CLUE_CAT_RUINED_necklace,"El collar: la señora ya se lo puso","The necklace: the señora is wearing it now","O colar: a senhora já colocou"
+CLUE_CAT_RUINED_witness,"Don Plumas: asustado","Don Plumas: scared","Don Plumas: assustado"
+HINT_CAT_RUINED_prints,"Las huellas de la puerta para gatos ya no sirven: o las tocaste o una gata pasó con las patas llenas de barro.","The prints on the cat flap are no good now: you touched them or a cat came through with muddy paws.","As digitais da portinha não servem mais: você tocou ou uma gata passou com as patas cheias de barro."
+HINT_CAT_RUINED_footprint,"Una gata usó el arenero. La pisada quedó tapada. Para siempre.","A cat used the litter tray. The footprint is covered. Forever.","Uma gata usou a caixa de areia. A pegada ficou coberta. Para sempre."
+HINT_CAT_RUINED_hair,"Te sentaste en el sillón de la Duquesa. El pelo que había ya no está.","You sat in Duquesa's armchair. The hair on it is gone.","Você sentou na poltrona da Duquesa. O fio de cabelo sumiu."
+HINT_CAT_RUINED_bite,"Te comiste la galleta mordida. Era una pista.","You ate the bitten biscuit. It was a clue.","Você comeu o biscoito mordido. Era uma pista."
+HINT_CAT_RUINED_necklace,"La señora se puso el collar. La sangre del broche quedó bajo sus perlas.","The señora put the necklace on. The blood on the clasp is under her pearls now.","A senhora colocou o colar. O sangue do fecho ficou sob as pérolas."
+HINT_CAT_RUINED_witness,"Asustaste a Don Plumas. Ya no dice nada útil.","You scared Don Plumas. He won't say anything useful now.","Você assustou o Don Plumas. Ele não diz mais nada útil."
+PROMPT_EMPTY_CAT_FLAP,E: tocar la puerta para gatos,E: touch the cat flap,E: tocar a portinha dos gatos
+HINT_CAT_FLAP_TOUCHED,"¡La tocaste! Tus huellas quedaron encima.","You touched it! Your prints are on top now.","Você tocou! Suas digitais ficaram por cima."
+HINT_CAT_FLAP_EMPTY,"Una puerta para gatos con marco dorado. Claro.","A cat flap with a gilt frame. Of course.","Uma portinha de gatos com moldura dourada. Claro."
+PRINTS_CAT_FLAP,"¡Huellas humanas en la puerta para gatos! Alguien metió la mano.","Human prints on the cat flap! Someone put a hand through.","Digitais humanas na portinha dos gatos! Alguém enfiou a mão."
+PRINTS_CAT_FLAP_SMUDGED,"Hay huellas en la puerta para gatos, pero están tapadas.","There are prints on the cat flap, but they're covered.","Tem digitais na portinha, mas estão cobertas."
+HINT_CLUE_EATEN_bite_mansion,"¡Sabe a pescado! Era una galleta para gatos. Y estaba mordida.","Tastes like fish! It was a cat biscuit. And it was bitten.","Tem gosto de peixe! Era um biscoito de gato. E estava mordido."
+PROMPT_NECKLACE_LOOK,E: mirar el broche del collar,E: look at the necklace's clasp,E: olhar o fecho do colar
+HINT_NECKLACE_BLOOD_left,"Hay sangre en el broche, del lado izquierdo. La Duquesa arañó una mano izquierda.","There's blood on the clasp, on the left side. Duquesa scratched a left hand.","Tem sangue no fecho, do lado esquerdo. A Duquesa arranhou uma mão esquerda."
+HINT_NECKLACE_BLOOD_right,"Hay sangre en el broche, del lado derecho. La Duquesa arañó una mano derecha.","There's blood on the clasp, on the right side. Duquesa scratched a right hand.","Tem sangue no fecho, do lado direito. A Duquesa arranhou uma mão direita."
+HINT_NECKLACE_CLEAN,"Diamantes de verdad. Brillan. Nada más.","Real diamonds. They shine. Nothing else.","Diamantes de verdade. Brilham. Nada mais."
+HINT_NECKLACE_OUT,"¡El collar de diamantes de la Duquesa! Míralo bien antes de devolverlo.","Duquesa's diamond necklace! Look at it closely before giving it back.","O colar de diamantes da Duquesa! Olhe bem antes de devolver."
+MANSION_LADY_NECKLACE,"¡El collar de mi bebé! Me lo pongo yo, que me queda divino.","My baby's necklace! I'll wear it, it suits me divinely.","O colar do meu bebê! Vou usar eu, que fica divino em mim."
+HUD_CAT_PATIENCE,Paciencia de la señora Ofelia,Señora Ofelia's patience,Paciência da senhora Ofelia
+MANSION_LADY_ANNOYED_vase,"¡Mi jarrón! ¡Era de la dinastía Ming! O de la feria. ¡Igual!","My vase! It was Ming dynasty! Or from the fair. Same thing!","Meu vaso! Era da dinastia Ming! Ou da feira. Tanto faz!"
+MANSION_LADY_ANNOYED_wrong_cat,"Y encima no conocen a mi bebé.","And on top of that you don't know my baby.","E ainda por cima não conhecem meu bebê."
+MANSION_LADY_ANNOYED_wrong_cuff,"¡Suelten a mi sobrino! Bueno, ese no es el preferido, pero igual.","Let go of my nephew! Well, he's not my favorite, but still.","Soltem meu sobrinho! Bom, não é o preferido, mas mesmo assim."
+MANSION_LADY_ANNOYED_armchair,"¡Ese es el sillón de la Duquesa! ¡Fuera de ahí!","That's Duquesa's armchair! Get out of it!","Essa é a poltrona da Duquesa! Saia daí!"
+MANSION_LADY_ANNOYED_shout,"¡Shhh! En esta casa no se grita.","Shhh! No shouting in this house.","Shhh! Nesta casa não se grita."
+MANSION_LADY_OUT,"¡Fuera de mi casa! ¡Todos! ¡Y no vuelvan!","Out of my house! All of you! And don't come back!","Fora da minha casa! Todos! E não voltem!"
+CAT_COMISARIO_CALL_1,"(Por la radio) ¡Me llamó la señora Monedero! ¡¿Qué le hicieron?! ¡Me va a sacar la máquina de café! Se les descuenta del sueldo.","(On the radio) Señora Monedero called me! What did you do to her?! She'll take away my coffee machine! It comes off your salary.","(No rádio) A senhora Monedero me ligou! O que vocês fizeram?! Ela vai tirar minha máquina de café! Vai sair do salário de vocês."
+CAT_COMISARIO_CALL_2,"(Por la radio) ¡Otra vez la señora! Dice que son unos brutos. Yo le dije que no, que son novatos. Se les descuenta.","(On the radio) The señora again! She says you're brutes. I told her no, you're rookies. It comes off your salary.","(No rádio) A senhora de novo! Diz que vocês são uns brutos. Eu disse que não, que são novatos. Vai sair do salário."
+CAT_COMISARIO_CALL_3,"(Por la radio, susurrando) Es la última vez que me llama. La próxima, me tomo el café en la plaza. Se les descuenta.","(On the radio, whispering) That's the last time she calls me. Next time I'm having my coffee in the square. It comes off your salary.","(No rádio, sussurrando) É a última vez que ela me liga. Na próxima, eu tomo café na praça. Vai sair do salário."
+CAT_COMISARIO_THROWN_OUT,"(Por la radio) ¡Los echó! ¿Cómo que los echó? Bueno... acusen con lo que tienen, y no vuelvan a esa casa.","(On the radio) She threw you out! What do you mean, threw you out? Well... accuse with what you have, and don't go back to that house.","(No rádio) Ela expulsou vocês! Como assim expulsou? Bom... acusem com o que têm, e não voltem àquela casa."
+PROMPT_PARROT_CRACKERS,E: darle una galleta a Don Plumas,E: give Don Plumas a cracker,E: dar um biscoito ao Don Plumas
+PARROT_CRACKER,"¡Galletita! ¡Crac, crac!","Cracker! Crunch, crunch!","Biscoitinho! Crec, crec!"
+PARROT_NOTHING,"¡Lorito come galletita! ¡Lorito no vio nada!","Polly eats crackers! Polly saw nothing!","Louro come biscoito! Louro não viu nada!"
+PARROT_SCARED,"¡Lorito bonito! ¡Lorito bonito! (Tiembla y esconde la cabeza.)","Pretty parrot! Pretty parrot! (He shakes and hides his head.)","Louro bonito! Louro bonito! (Treme e esconde a cabeça.)"
+HINT_VASE_BROKEN,"¡CRASH! Un jarrón de la señora menos. Se descuenta del sueldo.","CRASH! One less vase of the señora's. It comes off your salary.","CRASH! Um vaso da senhora a menos. Vai sair do salário."
+PROMPT_TEAPOT,E: servir una taza de té,E: pour a cup of tea,E: servir uma xícara de chá
+HINT_TEA_POURED,"Ya hay una taza servida. Llévasela a la señora.","There's a cup poured already. Take it to the señora.","Já tem uma xícara servida. Leve para a senhora."
+PROMPT_HOLDING_TEA,Llévale el té a la señora Ofelia,Take the tea to Señora Ofelia,Leve o chá para a senhora Ofelia
+MANSION_LADY_TEA,"Ay, un tecito. Bueno, tan brutos no son.","Oh, a little tea. Well, you're not such brutes.","Ai, um chazinho. Bom, vocês não são tão brutos."
+MANSION_LADY_TEA_AGAIN,"Otro té no, querido. Tráeme a mi gata.","No more tea, dear. Bring me my cat.","Outro chá não, querido. Traga a minha gata."
+HINT_ESCAPE_nephew,"¡%s se subió a la limusina dorada de la tía y se escapa! ¡Al patrullero, y cuidado con los ovillos!","%s jumped into his aunt's golden limousine and is getting away! To the patrol car, and mind the balls of yarn!","%s subiu na limusine dourada da tia e está fugindo! Para a viatura, e cuidado com os novelos!"
+PROMPT_PICK_YARN,"E: juntar el ovillo","E: pick up the ball of yarn","E: pegar o novelo"
+HINT_YARN_PICKED,"Lo enrollaste y lo guardaste. Ahora tienes lana para una bufanda.","You wound it up and put it away. Now you have wool for a scarf.","Você enrolou e guardou. Agora tem lã para um cachecol."
+CRIME_owner_nephew,"¡Novatos! Ayer acusaron a un sobrino de la señora Monedero y sigue en la sala de interrogatorio con el suéter de la gatita. Dice que solo quería acariciar a la Duquesa. Que confiese.","Rookies! Yesterday you accused one of Señora Monedero's nephews and he's still in the interrogation room in the kitty sweater. He says he only wanted to pet Duquesa. Make him confess.","Novatos! Ontem acusaram um sobrinho da senhora Monedero e ele continua na sala de interrogatório com o suéter da gatinha. Diz que só queria fazer carinho na Duquesa. Que confesse."
+CONFESS_owner_nephew,"¡Está bien! ¡Fui yo! La herencia era para una gata... ¡una gata! Yo también sé ronronear, ¿eh?","Fine! It was me! The inheritance was going to a cat... a cat! I can purr too, you know?","Tá bom! Fui eu! A herança ia para uma gata... uma gata! Eu também sei ronronar, viu?"
