@@ -255,7 +255,45 @@ export function buildGreenInkTin() {
 	return b.build();
 }
 
+// The box of fake tickets, 0.4 x 0.25 x 0.3 m: a cardboard box, open, full of pink and yellow tickets with the
+// band's star. Origin at its middle.
+export function buildTicketBox() {
+	const b = new Builder('ticket_box');
+	const card = mat('ticket_card', 0xb08a5a), pink = mat('ticket_pink', 0xf07aa8), yellow = mat('ticket_yellow', 0xf2d040);
+	b.add('box', card, new THREE.BoxGeometry(0.4, 0.02, 0.3), { pos: V(0, -0.115, 0) });
+	for (const s of [-1, 1]) {
+		b.add('box', card, new THREE.BoxGeometry(0.02, 0.25, 0.3), { pos: V(s * 0.19, 0, 0) });
+		b.add('box', card, new THREE.BoxGeometry(0.4, 0.25, 0.02), { pos: V(0, 0, s * 0.14) });
+	}
+	for (let i = 0; i < 12; i++) {
+		b.add('tickets', i % 2 ? pink : yellow, new THREE.BoxGeometry(0.16, 0.005, 0.07),
+			{ pos: V(-0.09 + (i % 3) * 0.09, 0.06 + Math.floor(i / 3) * 0.012, -0.06 + (i % 2) * 0.12), rot: [0, i * 0.4, 0.1] });
+	}
+	return b.build();
+}
+
+// The concert poster, rolled: a 0.6 m tube of paper with a purple band and a red rubber band. Origin at its middle,
+// lying along X.
+export function buildConcertPoster() {
+	const b = new Builder('concert_poster');
+	b.add('roll', mat('poster_paper', 0xf4f2ea), new THREE.CylinderGeometry(0.04, 0.04, 0.6, 12), { pos: V(0, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('print', mat('poster_purple', 0x7a3ab0), new THREE.CylinderGeometry(0.041, 0.041, 0.25, 12), { pos: V(0.1, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('band', mat('poster_band', 0xd83a3a), new THREE.TorusGeometry(0.042, 0.006, 4, 12), { pos: V(-0.15, 0, 0), rot: [0, Math.PI / 2, 0] });
+	return b.build();
+}
+
+// The "VIP" rubber stamp, 0.1 x 0.12 x 0.06 m: a wooden handle on a red rubber base. Origin at its middle.
+export function buildVipStamp() {
+	const b = new Builder('vip_stamp');
+	b.add('base', mat('stamp_wood', 0x8a5a34), new THREE.BoxGeometry(0.1, 0.03, 0.06), { pos: V(0, -0.03, 0) });
+	b.add('rubber', mat('stamp_rubber', 0xd83a3a), new THREE.BoxGeometry(0.09, 0.012, 0.05), { pos: V(0, -0.052, 0) });
+	b.add('handle', mat('stamp_handle', 0x3a2618), new THREE.CylinderGeometry(0.018, 0.022, 0.07, 10), { pos: V(0, 0.02, 0) });
+	b.add('knob', mat('stamp_knob', 0xf2c63a), new THREE.SphereGeometry(0.028, 10, 6), { pos: V(0, 0.06, 0) });
+	return b.build();
+}
+
 export const models = {
+	ticket_box: buildTicketBox, concert_poster: buildConcertPoster, vip_stamp: buildVipStamp,
 	bills_plate: buildBillsPlate, bill_loupe: buildBillLoupe, green_ink_tin: buildGreenInkTin,
 	npc_don_renglon: buildDonRenglon, npc_tipito: buildTipito,
 	printing_press: buildPrintingPress, empty_ink_barrel: buildEmptyBarrel, type_case: buildTypeCase,
@@ -277,7 +315,8 @@ export const views = {
 			{ name: 'npc_don_renglon', pos: [6.2, 0, 1.8], rotY: -0.3 },
 			{ name: 'npc_tipito', pos: [7.3, 0, 2.0], rotY: -0.4 },
 			{ name: 'bills_plate', pos: [0.2, 0.04, 3.2] }, { name: 'bill_loupe', pos: [0.9, 0.01, 3.3] },
-			{ name: 'green_ink_tin', pos: [1.4, 0.07, 3.2] },
+			{ name: 'green_ink_tin', pos: [1.4, 0.07, 3.2] }, { name: 'ticket_box', pos: [2.1, 0.125, 3.2] },
+			{ name: 'concert_poster', pos: [2.9, 0.04, 3.3] }, { name: 'vip_stamp', pos: [3.5, 0.06, 3.3] },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},

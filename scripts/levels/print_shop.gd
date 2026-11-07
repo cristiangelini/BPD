@@ -40,6 +40,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BILL_LOUPE", "OBJ_EXTRA_GREEN_INK"],
 		"rig": preload("res://scripts/case/print_shop/fake_bills_rig.gd"),
 	},
+	"fake_tickets": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_TICKETS_B", "BRIEF_FAKE_TICKETS_C", "BRIEF_FAKE_TICKETS_D"],
+		"find": "OBJ_FIND_TICKET_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/ticket_box.tscn"), preload("res://scenes/props/concert_poster.tscn"),
+			preload("res://scenes/props/vip_stamp.tscn")],
+		"half_heights": [0.125, 0.04, 0.06],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_CONCERT_POSTER", "OBJ_EXTRA_VIP_STAMP"],
+		"rig": preload("res://scripts/case/print_shop/fake_tickets_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
 ## side and by the binding table.
