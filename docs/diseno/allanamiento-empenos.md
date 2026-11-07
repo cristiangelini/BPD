@@ -124,3 +124,12 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
 1. ¿Te gusta la casa de empeños, o prefieres otro lugar?
 2. ¿Está bien que Don Regateo compre la evidencia si la dejas en el mostrador, o es demasiado castigo?
 3. ¿Chicharra el loro como chismoso, o prefieres una persona?
+
+## Cómo quedó
+- Paso 1: la casa de empeños en la cuadra (0, 5) norte, verde, con el cartel "Empeños La Última Oferta", la etiqueta
+  de precio gigante en el techo y el lema "¡Todo tiene precio!". Adentro: el mostrador con reja junto a la puerta,
+  con la caja (la llave del depósito), el frasco de galletitas y la jaula del loro colgada al lado; 3 vitrinas en
+  fila (multa 20 cada una), 4 estantes de cosas empeñadas, la armadura (si algo le pega fuerte se desarma: multa 15),
+  el cocodrilo embalsamado, el televisor viejo y el estuche de la guitarra; y el depósito "Prohibido regatear" con
+  llave, sus estantes, cajas, la caja fuerte grande y el escritorio con el libro de empeños. 12 escondites (6
+  pesados). Capturas en `/mnt/project-files/allanamiento-empenos/paso1-*.png`.
