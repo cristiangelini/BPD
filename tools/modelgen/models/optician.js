@@ -187,11 +187,19 @@ export function buildGiantGlassesSign() {
 	return b.build();
 }
 
+// One loose pair of glasses 0.16 m wide, origin in its middle, lenses to +Z: what the turning stand throws and what a
+// cop wears while trying a pair on.
+export function buildLooseGlasses() {
+	const b = new Builder('loose_glasses');
+	glasses(b, 0, 0, 0, 0.16, FRAMES[0]);
+	return b.build();
+}
+
 export const models = {
 	glasses_display: buildGlassesDisplay, glasses_carousel: buildGlassesCarousel, display_case: buildDisplayCase,
 	try_mirror: buildTryMirror, exam_chair: buildExamChair, eye_chart: buildEyeChart, phoropter: buildPhoropter,
 	waiting_chair: buildWaitingChair, magazine_table: buildMagazineTable, lens_workbench: buildLensWorkbench,
-	case_box: buildCaseBox, giant_glasses_sign: buildGiantGlassesSign,
+	case_box: buildCaseBox, giant_glasses_sign: buildGiantGlassesSign, loose_glasses: buildLooseGlasses,
 };
 
 export const views = {
@@ -208,5 +216,9 @@ export const views = {
 	optician_big: {
 		items: [{ name: 'lens_workbench', pos: [0, 0, 0] }, { name: 'giant_glasses_sign', pos: [0, 3.0, -0.8] }],
 		cam: { pos: [0, 2.6, 5.0], target: [0, 1.6, 0], fov: 50 },
+	},
+	optician_small: {
+		items: [{ name: 'loose_glasses', pos: [0, 0.1, 0] }],
+		cam: { pos: [0.1, 0.25, 0.4], target: [0, 0.1, 0], fov: 50 },
 	},
 };

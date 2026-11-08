@@ -7,16 +7,17 @@ extends Node3D
 ## stand, the try-on mirror and the counter with the till between two glass display cases. At the back, from west to
 ## east: the exam room (the exam chair facing the eye chart, the eye machine and a high shelf), the open waiting room
 ## and the lens workshop, locked with the till's key. Something that hits a display case or the mirror fast breaks it,
-## a fine each. Every number here is (propuesta).
+## a fine each. Step 1b: E on a wall display tries a pair of glasses on (TriedGlasses), the turning stand throws
+## glasses when pushed (GlassesCarousel) and the exam chair goes up with its pedal (ExamChair). Every number here is
+## (propuesta).
 
 signal good_broken(index: int)
+signal glasses_tried(cop: Cop, look: String)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const DISPLAY_MODEL := preload("res://assets/models/glasses_display.glb")
-const CAROUSEL_MODEL := preload("res://assets/models/glasses_carousel.glb")
 const CASE_MODEL := preload("res://assets/models/display_case.glb")
 const MIRROR_MODEL := preload("res://assets/models/try_mirror.glb")
-const CHAIR_MODEL := preload("res://assets/models/exam_chair.glb")
 const CHART_MODEL := preload("res://assets/models/eye_chart.glb")
 const MACHINE_MODEL := preload("res://assets/models/phoropter.glb")
 const WAITING_CHAIR_MODEL := preload("res://assets/models/waiting_chair.glb")
@@ -107,8 +108,8 @@ var workshop_door: FrontDoor
 var till: Till
 ## The pieces: the wall displays in the order of DISPLAYS, the exam chair, and the fragile goods in the order of GOODS.
 var displays: Array[StaticBody3D] = []
-var carousel: StaticBody3D
-var exam_chair: StaticBody3D
+var carousel: GlassesCarousel
+var exam_chair: ExamChair
 var goods: Array[StaticBody3D] = []
 var broken: Array[int] = []
 var broken_goods := 0
@@ -117,6 +118,8 @@ var fines := 0
 ## Same seed, same shop (the stories and the hiding spots come from it, step 4).
 @export var case_seed := 0
 var _build: PlaceBuilder
+## Which pair a cop gets at a wall display: same seed, same pairs in the same order.
+var _glasses_rng := RandomNumberGenerator.new()
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -125,6 +128,7 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	_glasses_rng.seed = case_seed
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_salon()
@@ -173,17 +177,27 @@ func _build_shell() -> void:
 ## The salon: the three wall displays with their glasses and the turning stand in the middle.
 func _build_salon() -> void:
 	for spec: Dictionary in DISPLAYS:
+		var display := GlassesDisplay.new()
+		display.tried.connect(try_on)
 		displays.append(_piece(DISPLAY_MODEL, spec.at, spec.turn, [
 			[Vector3(0, 1.0, -0.155), Vector3(1.2, 2.0, 0.04)],
 			[Vector3(-0.58, 1.0, 0), Vector3(0.04, 2.0, 0.35)],
 			[Vector3(0.58, 1.0, 0), Vector3(0.04, 2.0, 0.35)],
 			[Vector3(0, 0.05, 0), Vector3(1.2, 0.1, 0.35)],
 			[Vector3(0, 1.96, 0), Vector3(1.2, 0.08, 0.35)],
-		]))
-	carousel = _piece(CAROUSEL_MODEL, CAROUSEL_AT, 0.0, [
-		[Vector3(0, 0.03, 0), Vector3(0.7, 0.06, 0.7)],
-		[Vector3(0, 0.85, 0), Vector3(0.12, 1.7, 0.12)],
-	])
+		], display))
+	carousel = GlassesCarousel.new()
+	carousel.name = "Carousel"
+	carousel.position = CAROUSEL_AT
+	add_child(carousel)
+
+
+## A cop tried a pair on at a wall display: a pair drawn with the seed, on its face for TriedGlasses.SECONDS, and on
+## its own PC the screen looks that way.
+func try_on(cop: Cop) -> void:
+	var look: String = TriedGlasses.LOOKS[_glasses_rng.randi_range(0, TriedGlasses.LOOKS.size() - 1)]
+	TriedGlasses.put_on(cop, look, cop.input_enabled)
+	glasses_tried.emit(cop, look)
 
 
 ## The counter with the till, open on the optician's side.
@@ -212,12 +226,11 @@ func _build_back_walls() -> void:
 func _build_exam_room() -> void:
 	_build.mesh_box(Vector3((-HALF_X + EXAM_X) / 2, FLOOR_TOP + 0.005, (-HALF_Z + BACK_Z) / 2),
 		Vector3(EXAM_X + HALF_X, 0.01, BACK_Z + HALF_Z), EXAM_FLOOR)
-	exam_chair = _piece(CHAIR_MODEL, EXAM_CHAIR_AT, -PI / 2, [
-		[Vector3(0, 0.03, 0), Vector3(0.5, 0.06, 0.5)],
-		[Vector3(0, 0.25, 0), Vector3(0.12, 0.4, 0.12)],
-		[Vector3(0, 0.53, 0), Vector3(0.6, 0.14, 0.6)],
-		[Vector3(0, 1.0, -0.28), Vector3(0.6, 0.8, 0.14)],
-	])
+	exam_chair = ExamChair.new()
+	exam_chair.name = "ExamChair"
+	exam_chair.position = EXAM_CHAIR_AT
+	exam_chair.rotation.y = -PI / 2
+	add_child(exam_chair)
 	var chart := _model(CHART_MODEL, CHART_AT, PI / 2)
 	chart.name = "EyeChart"
 	_piece(MACHINE_MODEL, MACHINE_AT, PI, [
@@ -298,9 +311,11 @@ func break_good(index: int) -> void:
 	good_broken.emit(index)
 
 
-## A piece of furniture: a body at `at` turned `turn`, with its model and one box shape per [center, size].
-func _piece(scene: PackedScene, at: Vector3, turn: float, shapes: Array) -> StaticBody3D:
-	var body := StaticBody3D.new()
+## A piece of furniture: a body at `at` turned `turn`, with its model and one box shape per [center, size]. `body`:
+## one that does something (a wall display), else a plain one.
+func _piece(scene: PackedScene, at: Vector3, turn: float, shapes: Array, body: StaticBody3D = null) -> StaticBody3D:
+	if not body:
+		body = StaticBody3D.new()
 	body.position = at
 	body.rotation.y = turn
 	for spec: Array in shapes:

@@ -1,3 +1,4 @@
+- Optician raid, step 1b: E on a wall display tries a pair of glasses on for 8 s (on the cop's face for everyone; on the wearer's screen everything looks blurry, double, zoomed in or green), the turning stand spins faster when pushed and throws glasses across the salon, and the exam chair's pedal raises the seat 1.5 m, high enough to reach the high shelf.
 - Optician raid, step 1a: the optician's shop "El Lente Borroso" on block (-1, 3) as a place to raid: the salon with three wall displays of glasses, the turning stand and the try-on mirror, the counter with the till between two glass display cases, the exam room, the waiting room, the lens workshop locked with the till's key, the display cases and the mirror that break when something hits them fast (a fine each) and 12 hiding spots. "Óptica (allanamiento) (prueba)" in the menu and --place=optician.
 # Changelog
 
