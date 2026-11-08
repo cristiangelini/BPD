@@ -181,6 +181,12 @@ los extras suman 500.
    maceta titila con 5 destellos esté donde esté (el agua llega por los caños, aunque esté bajo techo); un policía a
    menos de 4 m en ese momento la ve (pista). Cada vez que se prende el riego, 4 macetas del patio hacen "¡Clinc!".
    Captura: `/mnt/project-files/vivero/paso7c-diamantes.png`.
+   **Hecho así, las semillas del concurso** (`ContestSeedsRig`, `--story=contest_seeds`): la caja de semillas (1 kg,
+   1000), la cinta (0,1 kg, 300) y el frasco SuperBrote (0,5 kg, 200) van a cualquier escondite. En el invernadero,
+   pasando la punta este de las mesas del sur, hay una planta con tomates del tamaño de una pelota; el policía que
+   pasa a menos de 2 m la ve (pista). Cada vez que se apaga el riego, en la punta oeste del patio crece un zapallo
+   gigante (30 kg, hay que moverlo entre dos) que sale rodando hacia el este a 3 m/s; hay 3 como mucho y el más viejo
+   desaparece. Capturas: `/mnt/project-files/vivero/paso7d-*.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 
