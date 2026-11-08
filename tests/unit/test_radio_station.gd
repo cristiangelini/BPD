@@ -17,7 +17,7 @@ func _radio(case_seed := 5) -> RadioStation:
 
 
 func _prop(radio: RadioStation, at: Vector3, velocity: Vector3) -> Grabbable:
-	var prop := ClubEvidence.make_item("Thrown", RadioStation.PLAYER_MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
+	var prop := ClubEvidence.make_item("Thrown", RadioRecordPlayer.MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
 	radio.add_child(prop)
 	prop.position = at
 	prop.linear_velocity = velocity

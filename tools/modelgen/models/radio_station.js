@@ -1,7 +1,8 @@
 // Props of "Radio La Antena Loca" (docs/diseno/allanamiento-radio.md): the mixing console with its microphone, the
 // record player on its table, the record shelf and the antenna on the roof, with origins at the floor in the middle of
 // each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 // The studio's mixing console on its desk, 2.0 x 1.4 x 0.8 m, with the microphone on its arm and a pair of
 // headphones. The host sits on its -Z side, looking to +Z out of the studio's window.
@@ -69,9 +70,27 @@ export function buildRadioAntenna() {
 	return b.build();
 }
 
+// Don Volumen, the owner and announcer: big, a shiny gold jacket over a black shirt, a thin black mustache, slicked
+// black hair and big red headphones always on. The game scales him tall and wide.
+export function buildDonVolumen() {
+	const b = new Builder('npc_don_volumen');
+	const jacket = mat('volumen_jacket', 0xe0b030, { emissive: 0x2a1e04 });
+	pearBody(b, mat('skin_volumen', 0xd9a07a), { shirt: jacket, pants: M.black, shoes: M.black, belted: false });
+	b.add('shirt', M.black, new THREE.BoxGeometry(0.16, 0.36, 0.02), { pos: V(0, 0.88, 0.33), rot: [-0.2, 0, 0] });
+	eyes(b, 1.34, 0.18, 0.08, 0.05);
+	b.add('mustache', M.black, new THREE.BoxGeometry(0.16, 0.015, 0.02), { pos: V(0, 1.25, 0.2) });
+	b.add('hair', mat('volumen_hair', 0x1a1410), ellipsoid(0.205, 0.1, 0.2, 10, 5), { pos: V(0, 1.44, -0.01) });
+	const phones = mat('volumen_headphones', 0xd83020);
+	b.add('headphones', phones, new THREE.TorusGeometry(0.21, 0.02, 4, 14, Math.PI), { pos: V(0, 1.36, 0) });
+	for (const s of [-1, 1]) {
+		b.add('headphones', phones, new THREE.CylinderGeometry(0.07, 0.07, 0.06, 10), { pos: V(s * 0.21, 1.34, 0), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
 export const models = {
 	radio_console: buildRadioConsole, record_player: buildRecordPlayer, record_shelf: buildRecordShelf,
-	radio_antenna: buildRadioAntenna,
+	radio_antenna: buildRadioAntenna, npc_don_volumen: buildDonVolumen,
 };
 
 export const views = {
@@ -79,6 +98,7 @@ export const views = {
 		items: [
 			{ name: 'radio_console', pos: [-1.2, 0, 0.6] }, { name: 'record_player', pos: [0.6, 0, 1.0], rotY: -0.4 },
 			{ name: 'record_shelf', pos: [0, 0, -0.8] }, { name: 'radio_antenna', pos: [2.4, 0, -1.4] },
+			{ name: 'npc_don_volumen', pos: [1.2, 0, 1.6], rotY: -0.3 },
 		],
 		cam: { pos: [0, 2.6, 6.5], target: [0.3, 1.4, 0], fov: 50 },
 	},
