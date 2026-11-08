@@ -11,7 +11,8 @@ extends Node3D
 ## it (a fine), and at the castle knocks it down in pieces (another fine). Don Cucho works in his workshop and goes
 ## around the shelves now and then, filling the complaint and listening for the toys; E on the train's lever derails it
 ## and he puts it back on the track, his back to everything (step 3). Doña Ramona walks the front aisle buying gifts: a
-## toy off a shelf (E on it) handed to her buys what she saw (step 4). Every number here is (propuesta).
+## toy off a shelf (E on it) handed to her buys what she saw (step 4). The case is one of its stories (STORIES), drawn
+## with the seed, run by the same RaidCase as the other places (step 5). Every number here is (propuesta).
 
 signal case_cracked
 signal castle_fallen
@@ -25,6 +26,33 @@ const TEDDY_MODEL := preload("res://assets/models/giant_teddy.glb")
 const CASE_MODEL := preload("res://assets/models/collector_case.glb")
 const PIT_MODEL := preload("res://assets/models/ball_pit.glb")
 const CUCHO_SCENE := preload("res://scenes/npc/don_cucho.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the store can be suspected of (allanamiento-jugueteria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["fake_toys", "phone_plushies", "banned_tops", "impossible_sticker", "money_train",
+	"museum_horse"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_TOY_TIP_B", "BRIEF_TIP_C", "BRIEF_TOY_TIP_D",
+	"BRIEF_TOY_TIP_E"]
+## The stories the store can tell, like IceCreamShop.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. The first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"fake_toys": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_TOYS_B", "BRIEF_FAKE_TOYS_C", "BRIEF_FAKE_TOYS_D"],
+		"find": "OBJ_FIND_FAKE_DOLLS",
+		"hidden": [preload("res://scenes/props/fake_doll_box.tscn"), preload("res://scenes/props/original_stamp.tscn"),
+			preload("res://scenes/props/doll_invoice.tscn")],
+		"half_heights": [0.18, 0.07, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_ORIGINAL_STAMP", "OBJ_EXTRA_DOLL_INVOICE"],
+		"rig": preload("res://scripts/case/toy/fake_toys_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the salon's floor, by the counter, in the storeroom, the workshop and the yard.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(1.2, FLOOR_TOP, 7.8), Vector3(8.6, FLOOR_TOP, 5.4), Vector3(-6.5, FLOOR_TOP, 1.0),
+	Vector3(-0.5, FLOOR_TOP, -2.0), Vector3(4.5, FLOOR_TOP, -1.5), Vector3(-2.0, FLOOR_TOP, -7.0),
+]
 const TOP_MODEL := preload("res://assets/models/giant_top.glb")
 const VAN_MODEL := preload("res://assets/models/toy_van.glb")
 ## The lot; the building goes from BACK_WALL_Z to FRONT_WALL_Z, the yard behind it and the sidewalk strip in front.
@@ -145,9 +173,21 @@ var till: Till
 var case_broken := false
 var castle_down := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the collectors' glass case and the block castle.
-var fines := 0
-## Same seed, same store (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: ToyStoreRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+## Same seed, same store, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _top: Node3D
@@ -162,6 +202,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_salon()
@@ -182,6 +235,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "toy_store", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = cucho
+	raid.owner_id = "cucho"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The store's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_TOY",
+		"guess_key": "OBJ_GUESS_TOY",
+		"broken_key": "OBJ_BROKEN_TOY",
+		"complaint_key": "OBJ_COMPLAINT_TOY",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": cucho.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit). What lands in the
+## ball pit goes under the balls: only stirring it turns it up.
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+		if SPOTS[hidden_spots[i]].id == "in_toy_ball_pit" and pit.hidden == null:
+			pit.hide_item(item)
+	main = hidden[0]
+	extras.assign(hidden.slice(1))
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What don Cucho lets slip when asked (where the story's things are, in an order drawn from the seed), and what doña
+## Ramona saw: where he put one of them away.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		cucho.slips.append(tr("CUCHO_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	cucho.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	ramona.clue = tr("CLUE_RAMONA") % where
+	ramona.clue_speech = tr("RAMONA_CLUE_" + story_id) % where
+	ramona.told.connect(raid.add_clue)
 
 
 func _process(delta: float) -> void:
@@ -203,6 +337,7 @@ func _place_cucho() -> void:
 	add_child(cucho)
 	cucho.start_at(0)
 	store_door.broken.connect(cucho.door_broken)
+	cucho.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_TOY"))
 	till.opened.connect(func(at: Vector3) -> void: cucho.saw(at, FloorBoss.SAW_TILL))
 	case_cracked.connect(func() -> void: cucho.saw(CASE_AT + Vector3(-0.4, 1.0, 0), SAW_CASE, "CUCHO_CASE"))
 	wind_up.released.connect(func(_shelf: int, _at: Vector3) -> void: cucho.scold(HEARD, "CUCHO_HEARD"))
@@ -396,6 +531,7 @@ func crack_case() -> void:
 	case_broken = true
 	broken_goods += 1
 	fines += CASE_FINE
+	raid.float_label("-%d" % CASE_FINE, to_global(CASE_AT + Vector3(-0.6, 2.4, 0)), Color(1, 0.3, 0.25))
 	_build.mesh_box(CASE_AT + Vector3(-0.32, 1.2, 0.2), Vector3(0.01, 0.03, 1.6), DARK)
 	_build.mesh_box(CASE_AT + Vector3(-0.32, 1.0, -0.4), Vector3(0.01, 0.4, 0.03), DARK)
 	say(CASE_AT + Vector3(-0.6, 2.2, 0), "TOY_CASE_BROKEN")
@@ -409,6 +545,7 @@ func knock_castle() -> void:
 	castle_down = true
 	broken_goods += 1
 	fines += CASTLE_FINE
+	raid.float_label("-%d" % CASTLE_FINE, to_global(CASTLE_AT + Vector3.UP * 2.2), Color(1, 0.3, 0.25))
 	_castle.visible = false
 	_build.mesh_box(CASTLE_AT + Vector3(0, CASTLE_SIZE.y / 2, 0), CASTLE_SIZE, Color(0.96, 0.94, 0.89))
 	var rng := RandomNumberGenerator.new()
