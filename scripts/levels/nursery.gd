@@ -63,6 +63,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_STADIUM_TICKET", "OBJ_EXTRA_HAND_MOWER"],
 		"rig": preload("res://scripts/case/nursery/stadium_grass_rig.gd"),
 	},
+	"diamond_pots": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DIAMOND_POTS_B", "BRIEF_DIAMOND_POTS_C", "BRIEF_DIAMOND_POTS_D"],
+		"find": "OBJ_FIND_DIAMOND_POT",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/diamond_pot.tscn"), preload("res://scenes/props/jeweler_loupe.tscn"),
+			preload("res://scenes/props/empty_soil_bag.tscn")],
+		"half_heights": [0.25, 0.0225, 0.025],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_LOUPE", "OBJ_EXTRA_EMPTY_BAG"],
+		"rig": preload("res://scripts/case/nursery/diamond_pots_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the front, the yard, the back and the greenhouse's far end.
 const NOTE_PLACES: Array[Vector3] = [

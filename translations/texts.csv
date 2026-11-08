@@ -5693,3 +5693,13 @@ CLUE_STADIUM_LINES,"Un cantero del patio tiene pasto con líneas blancas pintada
 NURSERY_LINES,¿Líneas de cancha?,Pitch lines?,Linhas de campo?
 NURSERY_CHANT,"¡Oooh, oh, oh! ¡Dale campeón!","Ooooh, oh, oh! Come on, champion!","Ôôô, ô, ô! Vai, campeão!"
 BROTECITO_CLUE_stadium_grass,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y cuando se prende el riego, algo canta como la hinchada.","Thanks! I saw Doña Hortensia hide something %s. And when the sprinklers come on, something sings like a crowd.","Obrigado! Vi a Doña Hortensia esconder algo %s. E quando ligam os irrigadores, algo canta como a torcida."
+BRIEF_DIAMOND_POTS_B,"Doña Hortensia esconde los diamantes de un ladrón de joyas. Enterrados en una maceta.","Doña Hortensia is hiding a jewel thief's diamonds. Buried in a flowerpot.","A Doña Hortensia esconde os diamantes de um ladrão de joias. Enterrados num vaso."
+BRIEF_DIAMOND_POTS_C,"Traigan la maceta con los diamantes en el baúl del patrullero. Con planta y todo.","Bring the pot with the diamonds in the patrol car's trunk. Plant and all.","Tragam o vaso com os diamantes no porta-malas da viatura. Com planta e tudo."
+BRIEF_DIAMOND_POTS_D,"Si encuentran la lupa de joyero o la bolsa de tierra vacía, mejor: todo suma.","If you find the jeweler's loupe or the empty soil bag, even better: it all counts.","Se acharem a lupa de joalheiro ou o saco de terra vazio, melhor: tudo conta."
+OBJ_FIND_DIAMOND_POT,Llevarse la maceta con los diamantes,Take the pot with the diamonds,Levar o vaso com os diamantes
+OBJ_EXTRA_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
+OBJ_EXTRA_EMPTY_BAG,Extra: la bolsa de tierra vacía,Extra: the empty soil bag,Extra: o saco de terra vazio
+CLUE_DIAMOND_SHINE,"Con el riego prendido, una maceta brilla como si tuviera estrellas adentro.","With the sprinklers on, one pot sparkles as if it had stars inside.","Com os irrigadores ligados, um vaso brilha como se tivesse estrelas dentro."
+NURSERY_SPARKLE,¡Brilla!,It sparkles!,Brilha!
+NURSERY_CLINC,¡Clinc!,Clink!,Plim!
+BROTECITO_CLUE_diamond_pots,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y me dijo que a esa maceta no la riegue nunca, que se oxida.","Thanks! I saw Doña Hortensia hide something %s. And she told me never to water that pot, it rusts.","Obrigado! Vi a Doña Hortensia esconder algo %s. E ela me disse para nunca regar aquele vaso, que enferruja."
