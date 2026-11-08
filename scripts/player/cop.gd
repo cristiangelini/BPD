@@ -190,7 +190,8 @@ func current_prompt() -> String:
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
 				or aimed is BankVine \
 				or aimed is CellHeater \
-				or aimed is PizzaTito or (aimed is PushButton and aimed.get_parent() is PizzaOven) \
+				or aimed is PizzaTito \
+				or (aimed is PushButton and (aimed.get_parent() is PizzaOven or aimed.get_parent().name == &"OvenTunnel")) \
 				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
 				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)):
 			return aimed.prompt_key(self)

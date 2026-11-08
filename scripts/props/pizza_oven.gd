@@ -3,11 +3,14 @@ extends Area3D
 
 ## The mouth of Don Muzza's clay oven (docs/diseno/allanamiento-pizzeria.md, "El horno de barro"): what stays in it
 ## longer than BURN_TIME burns, once: evidence loses half its value, and paper (PAPER_KG or less) burns whole. A cop
-## who puts a hand in (E) lets go of what they held. Every number here is (propuesta).
+## who puts a hand in (E) lets go of what they held. Put out (the oven tunnel story), nothing burns and E crawls in
+## instead. Every number here is (propuesta).
 
 ## Something a cop just handled went in (Don Muzza minds it if he sees it).
 signal fed(item: Grabbable)
 signal burned(item: Grabbable)
+## A cop crawled into the oven once it was put out.
+signal crawled_in(cop: Cop)
 
 const MOUTH_SIZE := Vector3(0.9, 0.45, 0.6)
 const BURN_TIME := 3.0
@@ -18,6 +21,8 @@ const PUT_IN := 2.0
 const SMOKE := Color(0.3, 0.28, 0.27, 0.6)
 
 var button: PushButton
+## Burning; put out, it burns nothing and a cop can crawl in.
+var lit := true
 ## Shows while something is in the mouth, so the cops see it coming.
 var smoke: MeshInstance3D
 ## Grabbable -> seconds it has been in the mouth.
@@ -66,16 +71,19 @@ func _on_entered(body: Node3D) -> void:
 		fed.emit(item)
 
 
-## The hand in the oven: whatever the cop held drops, and it burns.
+## The hand in the oven (or, put out, the whole cop): whatever the cop held drops, and it burns.
 func _hand_in(cop: Cop) -> void:
+	if not lit:
+		crawled_in.emit(cop)
+		return
 	cop.get_node("Grabber").release()
 	cop.show_hint("HINT_OVEN_HOT")
 
 
 func _physics_process(delta: float) -> void:
-	smoke.visible = not _inside.is_empty()
+	smoke.visible = lit and not _inside.is_empty()
 	# The host burns things; PropSync shows the guests what is left.
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or not lit:
 		return
 	for item: Grabbable in _inside.keys():
 		if not is_instance_valid(item):
