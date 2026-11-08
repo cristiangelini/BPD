@@ -5683,3 +5683,13 @@ OBJ_EXTRA_GNOME_PAINT,Extra: el tarro de pintura de enano,Extra: the tin of gnom
 CLUE_FRESH_PAINT,"Uno de los enanos de la fila tiene la pintura fresca. Se descascara y abajo brilla algo dorado.","One of the gnomes in the row has fresh paint. It peels, and something golden shines underneath.","Um dos anões da fila está com a tinta fresca. Ela descasca e embaixo brilha algo dourado."
 NURSERY_GOLD_SHOWS,¡Oro!,Gold!,Ouro!
 BROTECITO_CLUE_gold_gnome,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Pesaba tanto que lo arrastraba. Y los enanos no paran de mirar para allá.","Thanks! I saw Doña Hortensia hide something %s. It was so heavy she dragged it. And the gnomes keep looking that way.","Obrigado! Vi a Doña Hortensia esconder algo %s. Era tão pesado que ela arrastava. E os anões não param de olhar para lá."
+BRIEF_STADIUM_GRASS_B,"Doña Hortensia se llevó el pasto del estadio. Enrollado, como una alfombra.","Doña Hortensia took the stadium's grass. Rolled up, like a carpet.","A Doña Hortensia levou a grama do estádio. Enrolada, como um tapete."
+BRIEF_STADIUM_GRASS_C,"Traigan el rollo de pasto en el baúl del patrullero. Pesa 12 kilos.","Bring the roll of grass in the patrol car's trunk. It weighs 12 kilos.","Tragam o rolo de grama no porta-malas da viatura. Pesa 12 quilos."
+BRIEF_STADIUM_GRASS_D,"Si encuentran la entrada de la cancha o la cortadora de pasto, mejor: todo suma.","If you find the stadium ticket or the lawn mower, even better: it all counts.","Se acharem o ingresso do estádio ou o cortador de grama, melhor: tudo conta."
+OBJ_FIND_GRASS_ROLL,Llevarse el rollo de pasto del estadio,Take the stadium's roll of grass,Levar o rolo de grama do estádio
+OBJ_EXTRA_STADIUM_TICKET,Extra: la entrada de la cancha,Extra: the stadium ticket,Extra: o ingresso do estádio
+OBJ_EXTRA_HAND_MOWER,Extra: la cortadora de pasto a mano,Extra: the push mower,Extra: o cortador de grama manual
+CLUE_STADIUM_LINES,"Un cantero del patio tiene pasto con líneas blancas pintadas. Como una cancha.","A patch of the yard has grass with white lines painted on it. Like a pitch.","Um canteiro do pátio tem grama com linhas brancas pintadas. Como um campo."
+NURSERY_LINES,¿Líneas de cancha?,Pitch lines?,Linhas de campo?
+NURSERY_CHANT,"¡Oooh, oh, oh! ¡Dale campeón!","Ooooh, oh, oh! Come on, champion!","Ôôô, ô, ô! Vai, campeão!"
+BROTECITO_CLUE_stadium_grass,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y cuando se prende el riego, algo canta como la hinchada.","Thanks! I saw Doña Hortensia hide something %s. And when the sprinklers come on, something sings like a crowd.","Obrigado! Vi a Doña Hortensia esconder algo %s. E quando ligam os irrigadores, algo canta como a torcida."

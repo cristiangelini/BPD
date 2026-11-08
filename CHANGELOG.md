@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Plant nursery raid, step 7: the stadium grass story: the stadium's 12 kg roll of grass, a ticket and a push mower are hidden, a patch of the yard has grass with white pitch lines (a clue near a cop), and the roll chants like the crowd every time the sprinklers come on.
 - Plant nursery raid, step 7: the golden gnome story: the mayor's 20 kg golden gnome, the photo of his garden and the tin of gnome paint are hidden, one gnome of the row has fresh paint that peels near a cop and shows gold (the clue), and the row of gnomes turns to look at the golden one.
 - Plant nursery raid, step 6: the nursery is a raid case with its first story, the stolen orchid: the botanic garden's blue orchid, its catalog and the pruning shears are hidden, a cloud of butterflies circles over the orchid wherever it is (a clue near a cop), the plants lean toward it, Doña Hortensia lets slip where things are, Brotecito tells where she hid one, and she can be brought to the interrogation room.
 - Plant nursery raid, step 5: Brotecito, the watering kid by the greenhouse door, and his watering can: the tap at the far end fills it, it spills if it tips, if its cop falls or if the Dentuda bites, and Brotecito tells what he saw to whoever brings it to him full, once per cop.
