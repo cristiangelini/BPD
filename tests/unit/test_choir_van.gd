@@ -52,6 +52,9 @@ func test_the_van_is_slower_than_the_patrol_car() -> void:
 
 
 func test_play_draws_the_choir_too() -> void:
+	# An owner left in custody or a campaign left by another test would make every pick an interrogation.
+	Campaign.current = null
+	PlaceDraw.custody = {}
 	var seen := {}
 	for i in 2000:
 		seen[PlaceDraw.pick(i + 1, [], 1)] = true

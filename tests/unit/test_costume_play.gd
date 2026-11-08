@@ -8,6 +8,9 @@ const SCENE := preload("res://scenes/levels/costume_shop.tscn")
 
 
 func test_play_draws_the_costume_shop() -> void:
+	# An owner left in custody or a campaign left by another test would make every pick an interrogation.
+	Campaign.current = null
+	PlaceDraw.custody = {}
 	assert_true(PlaceDraw.ORDER.has("costume_shop"))
 	assert_true(ResourceLoader.exists(PlaceDraw.PLACES["costume_shop"]))
 	var drawn := false
