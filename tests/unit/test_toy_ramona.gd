@@ -69,6 +69,8 @@ func test_a_toy_buys_what_she_saw_once_per_cop() -> void:
 func test_without_a_story_she_saw_nothing() -> void:
 	var store := _store()
 	await wait_physics_frames(2)
+	store.ramona.clue = ""
+	store.ramona.clue_speech = ""
 	var cop: Cop = store.get_node("Cop")
 	store.shelves[2].use(cop)
 	store.ramona.use(cop)

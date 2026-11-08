@@ -101,6 +101,13 @@ extras suman entre 400 y 600. El caballito es la cosa más pesada (8 kg): convie
    Sin juguete dice "Estoy ocupada, oficial, son 14"; con uno se lo queda y cuenta lo que vio (lo pone la historia, en
    el paso 5), una vez por policía.
 5. El caso (RaidCase) con la primera historia: los juguetes truchos.
+   **Hecho (paso 5):** la juguetería es un `RaidCase` como la heladería: 3 sospechas entre las 6 historias, la
+   denuncia vaga, lo escondido sorteado con la semilla (lo pesado solo en escondites pesados; lo que cae en el pelotero
+   queda debajo de las pelotas hasta revolverlo), lo que se le escapa a don Cucho y lo que vio doña Ramona (por un
+   juguete). Los juguetes truchos (`FakeToysRig`): la caja de muñecas "Barbi" (5 kg, 1000), el sello de "ORIGINAL" y la
+   factura de la fábrica de muñecas; la etiqueta "«TRANSFORMES» robot de colección" en el vidrio de la vitrina (con E es
+   la pista) y cada 35 s un muñeco de un estante dice "Soy el original". Si se escapa, huye en auto. Capturas
+   `jugueteria/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la juguetería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Cucho, doña Ramona, el tren, los juguetes disparados, el pelotero y lo frágil en todas las PC).
