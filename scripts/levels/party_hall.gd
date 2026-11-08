@@ -110,10 +110,7 @@ func _ready() -> void:
 	variant = "party"
 	take_seed()
 	_build = PlaceBuilder.new($Built)
-	_build_shell()
-	_build_hall()
-	_build_steps()
-	_build_rooms()
+	photo_spots = build_hall(_build, $Built)
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_Z)
 	add_child(office_door)
@@ -338,103 +335,115 @@ func in_restroom(at: Vector3) -> bool:
 	return local.x > RESTROOM_X and local.x < HALF_X and local.z > RESTROOM_Z and local.z < HALF_Z and local.y < ROOF
 
 
+## The hall itself, shared with the birthday party raid (allanamiento-cumple.md): the shell, the dance floor and the
+## food table, the photo steps with `banner_key` over them and the rooms. Returns the spots to pose on the steps.
+static func build_hall(builder: PlaceBuilder, built: Node3D, banner_key := "PARTY_BANNER") -> Array[Vector3]:
+	_build_shell(builder, built)
+	_build_dance_and_food(builder)
+	var spots := _build_steps(builder, built, banner_key)
+	_build_rooms(builder)
+	return spots
+
+
 ## Floor, outer walls with the entrance, the roof, the sign, balloons by the door and the lights.
-func _build_shell() -> void:
-	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
-	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
-	_build.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
-	_build.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
+static func _build_shell(builder: PlaceBuilder, built: Node3D) -> void:
+	builder.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	builder.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
+	builder.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
+	builder.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	builder.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	builder.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
 	var sign_label := Label3D.new()
 	sign_label.text = "PLACE_PARTY_HALL"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
 	sign_label.position = Vector3(0, ROOF + 0.6, HALF_Z + 0.1)
-	$Built.add_child(sign_label)
+	built.add_child(sign_label)
 	# A bunch of balloons on each side of the door, so it reads as a party from the street.
 	for side: float in [-1.0, 1.0]:
 		for i in 4:
 			var balloon := SphereMesh.new()
 			balloon.radius = 0.22
 			balloon.height = 0.5
-			_build.mesh(balloon, Vector3(side * (1.6 + (i % 2) * 0.35), 1.9 + floorf(i / 2.0) * 0.45, HALF_Z + 0.35),
+			builder.mesh(balloon, Vector3(side * (1.6 + (i % 2) * 0.35), 1.9 + floorf(i / 2.0) * 0.45, HALF_Z + 0.35),
 				BALLOONS[i])
 	for x: float in [-7.0, 0.0, 7.0]:
 		for z: float in [-8.0, -3.5, 1.0, 6.5]:
-			_build.light(Vector3(x, ROOF - 0.6, z))
+			builder.light(Vector3(x, ROOF - 0.6, z))
 
 
 ## The checkered dance floor with the mirror ball over it, and the long food table with its plates and the punch bowl.
-func _build_hall() -> void:
+static func _build_dance_and_food(builder: PlaceBuilder) -> void:
 	var columns := roundi(DANCE.size.x / TILE)
 	var rows := roundi(DANCE.size.y / TILE)
 	for i in columns:
 		for j in rows:
 			var at := Vector3(DANCE.position.x + (i + 0.5) * TILE, FLOOR_TOP + 0.005, DANCE.position.y + (j + 0.5) * TILE)
-			_build.mesh_box(at, Vector3(TILE, 0.01, TILE), TILE_A if (i + j) % 2 == 0 else TILE_B)
+			builder.mesh_box(at, Vector3(TILE, 0.01, TILE), TILE_A if (i + j) % 2 == 0 else TILE_B)
 	var middle := DANCE.get_center()
 	var ball := SphereMesh.new()
 	ball.radius = 0.3
 	ball.height = 0.6
-	_build.mesh(ball, Vector3(middle.x, ROOF - 0.6, middle.y), MIRROR)
-	_build.mesh_box(Vector3(middle.x, ROOF - 0.25, middle.y), Vector3(0.02, 0.3, 0.02), TILE_B)
-	_build.box(FOOD_TABLE_AT + Vector3(0, FLOOR_TOP + FOOD_TABLE_SIZE.y / 2, 0), FOOD_TABLE_SIZE, TABLECLOTH)
+	builder.mesh(ball, Vector3(middle.x, ROOF - 0.6, middle.y), MIRROR)
+	builder.mesh_box(Vector3(middle.x, ROOF - 0.25, middle.y), Vector3(0.02, 0.3, 0.02), TILE_B)
+	builder.box(FOOD_TABLE_AT + Vector3(0, FLOOR_TOP + FOOD_TABLE_SIZE.y / 2, 0), FOOD_TABLE_SIZE, TABLECLOTH)
 	var top := FLOOR_TOP + FOOD_TABLE_SIZE.y
 	for i in 6:
 		var plate := CylinderMesh.new()
 		plate.top_radius = 0.16
 		plate.bottom_radius = 0.12
 		plate.height = 0.04
-		_build.mesh(plate, FOOD_TABLE_AT + Vector3(0, top + 0.02, -2.5 + i), Color(0.9, 0.9, 0.95))
-		_build.mesh_box(FOOD_TABLE_AT + Vector3(0, top + 0.07, -2.5 + i), Vector3(0.14, 0.06, 0.14), BALLOONS[i % 4])
+		builder.mesh(plate, FOOD_TABLE_AT + Vector3(0, top + 0.02, -2.5 + i), Color(0.9, 0.9, 0.95))
+		builder.mesh_box(FOOD_TABLE_AT + Vector3(0, top + 0.07, -2.5 + i), Vector3(0.14, 0.06, 0.14), BALLOONS[i % 4])
 	var bowl := CylinderMesh.new()
 	bowl.top_radius = 0.25
 	bowl.bottom_radius = 0.15
 	bowl.height = 0.2
-	_build.mesh(bowl, FOOD_TABLE_AT + Vector3(0, top + 0.1, 2.6), Color(0.85, 0.2, 0.35))
+	builder.mesh(bowl, FOOD_TABLE_AT + Vector3(0, top + 0.1, 2.6), Color(0.85, 0.2, 0.35))
 
 
 ## The three photo steps against the back wall, a spot on each every SPOT_GAP m, and the banner over them.
-func _build_steps() -> void:
+static func _build_steps(builder: PlaceBuilder, built: Node3D, banner_key: String) -> Array[Vector3]:
+	var spots_on: Array[Vector3] = []
 	var width := STEPS_X1 - STEPS_X0
 	var middle_x := (STEPS_X0 + STEPS_X1) / 2
 	for k in STEPS:
 		var height := STEP_RISE * (k + 1)
 		var z := STEPS_FRONT_Z - (k + 0.5) * STEP_DEPTH
-		_build.box(Vector3(middle_x, FLOOR_TOP + height / 2, z), Vector3(width, height, STEP_DEPTH),
+		builder.box(Vector3(middle_x, FLOOR_TOP + height / 2, z), Vector3(width, height, STEP_DEPTH),
 			STEP_COLOR.darkened(k * 0.12))
 		var spots := floori(width / SPOT_GAP)
 		for i in spots:
-			photo_spots.append(Vector3(STEPS_X0 + (i + 0.5) * SPOT_GAP, FLOOR_TOP + height, z))
+			spots_on.append(Vector3(STEPS_X0 + (i + 0.5) * SPOT_GAP, FLOOR_TOP + height, z))
 	var banner := Label3D.new()
-	banner.text = "PARTY_BANNER"
+	banner.text = banner_key
 	banner.font_size = 48
 	banner.pixel_size = 0.01
 	banner.outline_size = 16
 	banner.modulate = Color(1, 0.85, 0.2)
 	banner.position = Vector3(middle_x, 2.3, -HALF_Z + 0.15)
-	$Built.add_child(banner)
-	_build.mesh_box(Vector3(middle_x, 2.3, -HALF_Z + 0.1), Vector3(width, 0.4, 0.02), Color(0.3, 0.1, 0.45))
+	built.add_child(banner)
+	builder.mesh_box(Vector3(middle_x, 2.3, -HALF_Z + 0.1), Vector3(width, 0.4, 0.02), Color(0.3, 0.1, 0.45))
+	return spots_on
 
 
 ## The coat check with its counter and coat rail, the restroom and the office.
-func _build_rooms() -> void:
+static func _build_rooms(builder: PlaceBuilder) -> void:
 	# Coat check: the counter across its front, a rail of coats along the west wall.
-	_build.box(Vector3(COAT_CHECK.position.x + COAT_CHECK.size.x / 2, FLOOR_TOP + 0.5, COAT_COUNTER_Z),
+	builder.box(Vector3(COAT_CHECK.position.x + COAT_CHECK.size.x / 2, FLOOR_TOP + 0.5, COAT_COUNTER_Z),
 		Vector3(COAT_CHECK.size.x, 1.0, 0.5), WOOD)
-	_build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.7, 8.3), Vector3(0.04, 0.04, 3.0), TILE_B)
+	builder.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.7, 8.3), Vector3(0.04, 0.04, 3.0), TILE_B)
 	for i in 7:
-		_build.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.15, 7.0 + i * 0.42), Vector3(0.5, 1.0, 0.12),
+		builder.mesh_box(Vector3(-11.6, FLOOR_TOP + 1.15, 7.0 + i * 0.42), Vector3(0.5, 1.0, 0.12),
 			BALLOONS[i % 4].darkened(0.4))
 	# Restroom: walls, a toilet and a sink.
-	_build.wall("z", RESTROOM_X, RESTROOM_Z, HALF_Z, 0, [RESTROOM_DOOR_Z], INSIDE)
-	_build.wall("x", RESTROOM_Z, RESTROOM_X, HALF_X, 0, [], INSIDE)
-	_build.box(Vector3(11.3, FLOOR_TOP + 0.22, 9.2), Vector3(0.5, 0.44, 0.7), TILE_A)
-	_build.box(Vector3(11.5, FLOOR_TOP + 0.45, 6.9), Vector3(0.6, 0.9, 0.5), TILE_A)
+	builder.wall("z", RESTROOM_X, RESTROOM_Z, HALF_Z, 0, [RESTROOM_DOOR_Z], INSIDE)
+	builder.wall("x", RESTROOM_Z, RESTROOM_X, HALF_X, 0, [], INSIDE)
+	builder.box(Vector3(11.3, FLOOR_TOP + 0.22, 9.2), Vector3(0.5, 0.44, 0.7), TILE_A)
+	builder.box(Vector3(11.5, FLOOR_TOP + 0.45, 6.9), Vector3(0.6, 0.9, 0.5), TILE_A)
 	# Office: walls, a desk and the safe.
-	_build.wall("x", OFFICE_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
-	_build.wall("z", OFFICE_X, -HALF_Z, OFFICE_Z, 0, [], INSIDE)
-	_build.box(Vector3(8.0, FLOOR_TOP + 0.4, -9.0), Vector3(2.0, 0.8, 0.9), WOOD)
-	_build.box(Vector3(11.3, FLOOR_TOP + 0.5, -9.3), Vector3(0.8, 1.0, 0.8), Color(0.3, 0.32, 0.35))
+	builder.wall("x", OFFICE_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
+	builder.wall("z", OFFICE_X, -HALF_Z, OFFICE_Z, 0, [], INSIDE)
+	builder.box(Vector3(8.0, FLOOR_TOP + 0.4, -9.0), Vector3(2.0, 0.8, 0.9), WOOD)
+	builder.box(Vector3(11.3, FLOOR_TOP + 0.5, -9.3), Vector3(0.8, 1.0, 0.8), Color(0.3, 0.32, 0.35))

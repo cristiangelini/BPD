@@ -88,7 +88,25 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
 1. El salón como lugar de allanamiento: el `PartyHall` sin la infiltración, decorado de cumpleaños (inflable, piñata,
    mesa de regalos, pastel, arco de globos), lo frágil, los escondites y los modelos nuevos (Chispita, Tomasito, los
    chicos).
+   - **Cómo quedó (propuesta):** `BirthdayRaid` arma el mismo salón que la infiltración (`PartyHall.build_hall`, ahora
+     compartido) en su lote, con el cartel "¡Feliz cumple, Tomasito!" sobre la escalerita. El inflable (4 x 4 m) está
+     del lado este, abierto hacia el salón: el policía que se para en su piso sale para arriba a 6 m/s, una y otra vez.
+     La piñata cuelga de la bola de espejos, la mesa de regalos está al lado del guardarropa con 6 regalos y el pastel
+     de tres pisos en la mesa larga: si se cae de la mesa, multa de 20 y "¡Se cayó el pastel!". El arco de globos de la
+     entrada tiene 13 globos a los costados y arriba de la puerta (se entra sin tocarlos); un policía o algo que los
+     toca los revienta ("¡PUM!"). La oficina está cerrada y la llave está en la valijita de trucos de Chispita, en el
+     mostrador del guardarropa. Tomasito y 7 chicos con gorrito están parados en lugares sorteados con la semilla (por
+     ahora contestan con E). 12 escondites, 6 para cosas pesadas. `--place=birthday_raid` y "Cumpleaños
+     (allanamiento) (prueba)" en el menú. Capturas `/mnt/project-files/cumple/paso1-*.png`.
 2. Chispita: la ronda, la denuncia y la hora del pastel.
+   - **Cómo quedó (propuesta):** Chispita camina su ronda de ida y vuelta alrededor de la pista (sin pasar por el
+     inflable ni las habitaciones) contando chistes malos cuando hay un policía cerca. La denuncia está arriba de la
+     pantalla: sube 2 por cada globo que ve reventar, 10 si ve caerse el pastel ("¡Hicieron llorar a los chicos!"), 5 por
+     la puerta de la oficina rota, 10 si ve abrir su valijita y 15 si lo empujan; con 100 llama a su abogado (que en el
+     paso 4 hace perder el caso). Al lado del pastel hay una caja de fósforos: E prende las velas, Chispita va a la
+     cabecera de la mesa, se apagan las luces (queda el brillo de las velas) y los 8 chicos se juntan alrededor a cantar
+     15 s. Mientras canta no ve nada. Durante la canción, E en los fósforos es cantar: le baja 5 la denuncia, una vez por
+     canción por policía. Después las velas descansan 45 s. Capturas `/mnt/project-files/cumple/paso2-*.png`.
 3. Los chicos que se cuelgan y agarran lo chico, y Tomasito con la piñata.
 4. El caso (`RaidCase`) con la primera historia: los globos de diamantes.
 5. Las otras 5 historias, una por PR.
