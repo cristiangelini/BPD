@@ -45,7 +45,7 @@ const STORIES := {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLD_GNOME_B", "BRIEF_GOLD_GNOME_C", "BRIEF_GOLD_GNOME_D"],
 		"find": "OBJ_FIND_GOLD_GNOME",
 		"main_hidden": true,
-		"hidden": [preload("res://scenes/props/gold_gnome.tscn"), preload("res://scenes/props/mayor_photo.tscn"),
+		"hidden": [preload("res://scenes/props/nursery_gold_gnome.tscn"), preload("res://scenes/props/mayor_photo.tscn"),
 			preload("res://scenes/props/gnome_paint.tscn")],
 		"half_heights": [0.46, 0.005, 0.085],
 		"heavy": [true, false, false],

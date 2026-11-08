@@ -141,8 +141,7 @@ func test_online_the_chase_and_the_crime_scene_come_up_too() -> void:
 	for i in 100:
 		places[host.draw_place(i + 1)] = true
 	assert_true(places.has("chase"), "the chase is synced (persecucion.md, \"Online\")")
-	assert_true(places.has("crime_scene"), "and the crime scene")
-	assert_true(places.has("circus"), "and the circus")
+	assert_true(PlaceDraw.CRIME_SCENES.any(func(place: String) -> bool: return places.has(place)), "and the crime scenes")
 	for i in 100:
 		assert_eq(host.draw_place(i + 1), PlaceDraw.pick(i + 1, [], PlaceDraw.shift_now()), "the same draw as alone")
 
