@@ -197,6 +197,22 @@ los extras suman 500.
    historias salen. Si Doña Hortensia ve que un policía levanta la prueba principal cerca de ella, se escapa en el auto,
    que espera adelante del patrullero, y arranca la persecución; al pararla, se baja ella y se queja de sus plantas.
 9. El online.
+   **Hecho así:**
+   - **El anfitrión manda:** mueve a Doña Hortensia (con lo que dice y su barra de quejas) y a la Dentuda, que muerde
+     solo en el anfitrión: lo que se traga se esconde en todas las PC y, si muerde o empuja al policía de un invitado,
+     a ese invitado le llega el empujón o se queda con las manos vacías. Decide los vidrios y las macetas rotos, si la
+     regadera está llena (solo se vuelca en el anfitrión) y lo que dice Brotecito.
+   - **Desde cualquier PC:** la válvula del riego, la bocina del camión de tierra y la canilla. El riego arranca con el
+     reloj del anfitrión y se apaga y se seca cuando se apaga y se seca en el anfitrión; los chorros empujan a cada
+     policía en su PC, y las cosas las mueve el anfitrión. El camión se va cuando ella termina de contar en el
+     anfitrión.
+   - **Las caídas:** el policía de un invitado que se cae (resbalón, empujón) le avisa al anfitrión, así su regadera se
+     vuelca y Doña Hortensia lo ve resbalar en el barro.
+   - **Las historias:** las pistas que se ven de cerca (mariposas, pintura que se pela, pasto pintado, brillo, tomates,
+     zumbido) las decide el anfitrión y se ven en todas las PC. El enjambre persigue y empuja en el anfitrión y en los
+     invitados vuela hacia donde está el del anfitrión. Los zapallos los hace crecer el anfitrión (GiantPumpkin) y a
+     los invitados les llega una copia con el mismo nombre. Los cantos del pasto y los "¡Clinc!" salen solos en cada
+     PC con el riego.
 
 ## Preguntas abiertas para Cristian
 1. ¿La Dentuda puede sacarle al policía lo que tiene en la mano, o solo muerde cosas sueltas? **Recomendado:** que se

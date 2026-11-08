@@ -30,7 +30,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_since = 0.0
 	_turn_gnomes()
-	if peeled:
+	if peeled or not multiplayer.is_server():
 		return
 	var gnome := nursery.gnomes[painted]
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
@@ -74,3 +74,13 @@ func _turn_gnomes() -> void:
 		to.y = 0.0
 		if to.length() > 0.1:
 			gnome.rotation.y = atan2(to.x, to.z)
+
+
+## Online the host sees the cops come close, and the guests' rig shows it when it says.
+func net_state() -> Array:
+	return [peeled]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not peeled:
+		peel()

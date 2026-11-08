@@ -290,6 +290,8 @@ var hidden: Array[Evidence] = []
 var hidden_spots: Array = []
 var extras: Array[Evidence] = []
 var _build: PlaceBuilder
+## Online, this PC's own cops that are down right now (the host was told once).
+var _fell := {}
 
 
 func _ready() -> void:
@@ -310,6 +312,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_lot()
@@ -370,6 +374,68 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": owner_npc.complaint,
 	}
+
+
+## Online, what the guests' nursery takes from the host's (RaidCase.snapshot): the broken panes and pots, the
+## watering, the Dentuda, the soil truck, what Brotecito said, whether the can is full and what the story's rig decides
+## on the host.
+func net_state() -> Dictionary:
+	return {"panes": cracked.duplicate(), "pots": broken_pots.duplicate(), "irrigation": irrigation.net_state(),
+		"dentuda": dentuda.net_state(), "horn": horn.net_state(), "kid": kid.net_state(), "can": can.full,
+		"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.panes:
+		break_pane(index)
+	for index: int in state.pots:
+		break_pot(index)
+	irrigation.apply_net_state(state.irrigation)
+	dentuda.apply_net_state(state.dentuda)
+	horn.apply_net_state(state.horn)
+	kid.apply_net_state(state.kid)
+	if state.can and not can.full:
+		can.fill()
+	elif not state.can and can.full:
+		can.pour()
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## Whether `cop` is the host's copy of another player's cop: what the host decides about it must reach its owner.
+static func is_copy(cop: Cop) -> bool:
+	return cop.sync != null and not cop.sync.is_multiplayer_authority() and cop.sync.multiplayer.is_server()
+
+
+## Shoves `cop` (the Dentuda, the bees); online, the host shoving another player's cop tells its owner.
+static func shove(cop: Cop, push: Vector3, seconds: float) -> void:
+	cop.knock_back(push, seconds)
+	if is_copy(cop):
+		cop.sync.tell_knock(push, seconds)
+
+
+## Takes what `cop` holds out of its hands; online, the host tells the owner its hands are empty.
+static func empty_hands(cop: Cop) -> void:
+	(cop.get_node("Grabber") as Grabber).release()
+	if is_copy(cop):
+		cop.sync.tell_held()
+
+
+## Online, a guest's own cop that falls (a slip, a push) tells the host, whose copy then spills the can it carries
+## and can be seen slipping.
+func _physics_process(_delta: float) -> void:
+	if multiplayer.is_server():
+		return
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop and cop.sync and cop.sync.is_multiplayer_authority():
+			var falling := cop.is_staggered()
+			if falling and not _fell.has(cop):
+				cop.sync.tell_staggered(0.5)
+			if falling:
+				_fell[cop] = true
+			else:
+				_fell.erase(cop)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -570,7 +636,8 @@ func _pane(axis: String, fixed: float, a: float, b: float) -> void:
 	panes.append(body)
 	var area := _area(center, size + (Vector3(0, 0, 0.8) if axis == "x" else Vector3(0.8, 0, 0)))
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
 			break_pane(index))
 
 
@@ -597,7 +664,8 @@ func _build_front() -> void:
 		pots.append(pot)
 		var area := _area(at + Vector3(0, 0.2, -0.1), Vector3(0.45, 0.45, 0.6))
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
 				break_pot(i))
 	for i in GNOMES:
 		var at := Vector3(GNOME_X0 + i * GNOME_STEP, FLOOR_TOP, GNOME_Z)
@@ -680,7 +748,9 @@ func _place_owner() -> void:
 	office_door.broken.connect(owner_npc.door_broken)
 	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_NURSERY"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
-	horn.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "HORTENSIA_CAUGHT_ON"))
+	horn.caught_on.connect(func() -> void:
+		if multiplayer.is_server():
+			owner_npc.scold(CAUGHT_ON, "HORTENSIA_CAUGHT_ON"))
 	irrigation.slipped.connect(_on_slipped)
 	dentuda.bitten.connect(func(target: Node3D) -> void:
 		owner_npc.saw(target.global_position + Vector3.UP * 0.5, SAW_BITE, "HORTENSIA_DENTUDA"))
@@ -740,7 +810,8 @@ func fill_at_tap(cop: Cop = null) -> void:
 
 ## A cop slipped in the mud: "¡No me pisen los canteros!", once per cop, if she sees it.
 func _on_slipped(cop: Cop) -> void:
-	if slip_seen.has(cop.get_instance_id()):
+	# Online she's the host's: only the host sees the slips.
+	if not multiplayer.is_server() or slip_seen.has(cop.get_instance_id()):
 		return
 	if owner_npc.saw(cop.global_position + Vector3.UP, SAW_SLIP, "HORTENSIA_FLOWERBEDS"):
 		slip_seen[cop.get_instance_id()] = true

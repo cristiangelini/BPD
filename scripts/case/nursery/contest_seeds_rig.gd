@@ -8,15 +8,14 @@ extends NurseryRig
 ## (propuesta).
 
 const TOMATO_MODEL := preload("res://assets/models/giant_tomato_plant.glb")
-const PUMPKIN_MODEL := preload("res://assets/models/giant_pumpkin.glb")
 const NOTICE_RANGE := 2.0
 const CHECK_EVERY := 0.5
 ## The tomato plant on the greenhouse floor, past the east end of the south tables, a little bigger than its model.
 const TOMATO_AT := Vector3(13.5, Nursery.FLOOR_TOP, -2.4)
 ## Where the pumpkins grow and how they roll off.
 const PUMPKIN_AT := Vector3(-18.0, Nursery.FLOOR_TOP + 0.5, 5.6)
-const PUMPKIN_KG := 30.0
-const PUMPKIN_RADIUS := 0.48
+const PUMPKIN_KG := GiantPumpkin.KG
+const PUMPKIN_RADIUS := GiantPumpkin.RADIUS
 const ROLL_SPEED := 3.0
 const PUMPKINS := 3
 
@@ -39,11 +38,12 @@ func setup(place: Nursery) -> void:
 
 func _physics_process(delta: float) -> void:
 	var running := nursery.irrigation.is_running()
-	if _was_running and not running:
+	# Online the host grows them, and the guests get copies (GiantPumpkin).
+	if _was_running and not running and multiplayer.is_server():
 		grow_pumpkin()
 	_was_running = running
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
@@ -68,21 +68,20 @@ func grow_pumpkin() -> void:
 	grown += 1
 	if pumpkins.size() >= PUMPKINS:
 		pumpkins.pop_front().queue_free()
-	var pumpkin := Grabbable.new()
+	var pumpkin := GiantPumpkin.new()
 	pumpkin.name = "Pumpkin%d" % grown
-	pumpkin.mass = PUMPKIN_KG
-	pumpkin.collision_layer = 4
-	pumpkin.collision_mask = 15
-	var shape := CollisionShape3D.new()
-	var ball := SphereShape3D.new()
-	ball.radius = PUMPKIN_RADIUS
-	shape.shape = ball
-	pumpkin.add_child(shape)
-	var look: Node3D = PUMPKIN_MODEL.instantiate()
-	look.position.y = -PUMPKIN_RADIUS
-	pumpkin.add_child(look)
 	nursery.add_child(pumpkin)
 	pumpkin.position = PUMPKIN_AT
 	pumpkin.linear_velocity = Vector3(ROLL_SPEED, 0, 0)
 	pumpkin.angular_velocity = Vector3(0, 0, -ROLL_SPEED / PUMPKIN_RADIUS)
 	pumpkins.append(pumpkin)
+
+
+## Online the host sees the cops come close, and the guests' rig shows it when it says.
+func net_state() -> Array:
+	return [noticed]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not noticed:
+		notice()

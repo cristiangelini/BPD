@@ -103,7 +103,8 @@ func tick(delta: float) -> void:
 				_mud(cop)
 		if not is_muddy():
 			_paint_yard()
-	if wait_left <= 0.0 and not is_running():
+	# Online the host's clock starts it; the guests' starts when the host's does (apply_net_state).
+	if wait_left <= 0.0 and not is_running() and multiplayer.is_server():
 		start()
 
 
@@ -122,7 +123,8 @@ func _water() -> void:
 			if body.freeze or not in_jet(head, body.global_position) or not _ready_to_hit(body, i):
 				continue
 			_soak(body)
-			if body.mass <= PUSH_KG:
+			# Online the host moves the things.
+			if body.mass <= PUSH_KG and multiplayer.is_server():
 				body.apply_central_impulse((_outward(head, body.global_position) + Vector3.UP * 0.5) * PUSH_SPEED
 					* body.mass)
 
@@ -140,7 +142,15 @@ func in_jet(head: Node3D, at: Vector3) -> bool:
 
 ## A cop running on the mud slips: it slides on and can't walk for a moment.
 func _mud(cop: Cop) -> void:
-	if not Nursery.in_yard(nursery.to_local(cop.global_position)) or not cop.is_running or cop.is_staggered():
+	if not Nursery.in_yard(nursery.to_local(cop.global_position)):
+		return
+	# Online another player's cop slips on its own PC, which tells the host it fell: the host sees the slip.
+	if Nursery.is_copy(cop):
+		if cop.is_staggered() and _ready_to_hit(cop, -1):
+			slips += 1
+			slipped.emit(cop)
+		return
+	if not cop.is_running or cop.is_staggered():
 		return
 	var speed := Vector3(cop.velocity.x, 0, cop.velocity.z)
 	if speed.length() < SLIP_SPEED or not _ready_to_hit(cop, -1):
@@ -149,6 +159,27 @@ func _mud(cop: Cop) -> void:
 	cop.knock_back(speed * SLIP_KEEP, SLIP_SECONDS)
 	cop.show_hint("HINT_NURSERY_MUD_SLIP")
 	slipped.emit(cop)
+
+
+## Online, what the guests' watering takes from the host's (Nursery.net_state): started there, it starts here too; it
+## stops when the host's does, and the mud dries with the host's.
+func net_state() -> Array:
+	return [runs, run_left, mud_left]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > runs:
+		start()
+		runs = state[0]
+	if is_running() and state[1] <= 0.0:
+		stop()
+	elif is_running():
+		run_left = state[1]
+	if not is_running():
+		var was_muddy := is_muddy()
+		mud_left = state[2]
+		if was_muddy != is_muddy():
+			_paint_yard()
 
 
 func _outward(head: Node3D, at: Vector3) -> Vector3:
