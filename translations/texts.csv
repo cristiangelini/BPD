@@ -5588,3 +5588,21 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_OPTICIAN,Óptica El Lente Borroso,The Blurry Lens Opticians,Ótica A Lente Embaçada
+MENU_OPTICIAN,Óptica (allanamiento) (prueba),Optician's (raid) (test),Ótica (batida) (teste)
+OPTICIAN_WINDOW_SIGN,¡Segundo par de regalo!,Second pair free!,Segundo par de brinde!
+HINT_TILL_KEY_OPTICIAN,¡Una llave! Abre el taller de lentes de la óptica.,A key! It opens the optician's lens workshop.,Uma chave! Abre a oficina de lentes da ótica.
+OPTICIAN_GOOD_BROKEN,"¡Eso es cristal de primera, oficial!","That's first-class glass, officer!","Isso é cristal de primeira, policial!"
+CASE_FAILED_LAWYER_OPTICIAN,Doña Visia llamó al abogado de la óptica. Caso perdido.,Doña Visia called the optician's lawyer. Case lost.,Dona Visia ligou para o advogado da ótica. Caso perdido.
+LOC_in_display_0,adentro del exhibidor de anteojos de la ventana,inside the glasses display by the window,dentro do expositor de óculos perto da vitrine
+LOC_in_display_1,adentro del exhibidor de anteojos de al lado,inside the next glasses display,dentro do expositor de óculos ao lado
+LOC_behind_optician_counter,detrás del mostrador de la óptica,behind the optician's counter,atrás do balcão da ótica
+LOC_in_workshop_corner,en un rincón del taller de lentes,in a corner of the lens workshop,num canto da oficina de lentes
+LOC_between_case_boxes,entre las cajas de estuches,between the boxes of glasses cases,entre as caixas de estojos
+LOC_in_display_2,adentro del exhibidor de anteojos de la pared del espejo,inside the glasses display on the mirror's wall,dentro do expositor de óculos na parede do espelho
+LOC_in_optician_counter,adentro del mostrador de la óptica,inside the optician's counter,dentro do balcão da ótica
+LOC_under_eye_chart,debajo de la tabla de letras,under the eye chart,embaixo da tabela de letras
+LOC_on_eye_machine,arriba del aparato de medir la vista,on top of the eye-test machine,em cima do aparelho de medir a vista
+LOC_under_exam_chair,debajo del sillón de examen,under the exam chair,embaixo da cadeira de exame
+LOC_in_magazines,entre las revistas viejas de la sala de espera,between the waiting room's old magazines,entre as revistas velhas da sala de espera
+LOC_on_high_shelf,en el estante alto del consultorio,on the exam room's high shelf,na prateleira alta do consultório

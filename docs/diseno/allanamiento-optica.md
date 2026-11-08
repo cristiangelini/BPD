@@ -124,3 +124,20 @@ pesada es la máquina de pulir (6 kg), que la lleva uno solo.
 3. ¿Va en la cuadra (-1, 3), lado norte? **Recomendado:** sí. La columna del oeste está vacía en todas las ramas.
 
 ## Hecho así
+- **Paso 1a** (`OpticianShop`, `--place=optician`, "Óptica (allanamiento) (prueba)" en el menú): el local mide
+  22 × 18 m, con la puerta abierta de 3 m en el medio del frente, una vidriera de vidrio a cada lado con el cartel
+  "¡Segundo par de regalo!" y los anteojos gigantes colgados sobre la puerta.
+  - El salón ocupa la mitad de adelante: 2 exhibidores de anteojos contra la pared oeste y 1 contra la pared este, el
+    exhibidor giratorio (por ahora quieto, gira en el paso 1b), el espejo de probarse en la pared este y el mostrador
+    con la caja entre las 2 vitrinas.
+  - Atrás, de oeste a este:
+    - el consultorio, con puerta sin hoja: el sillón de examen mirando la tabla de letras de la pared oeste, el aparato
+      de medir la vista delante del sillón y un estante a 2,6 m detrás del sillón;
+    - la sala de espera, abierta al salón, con 4 sillas contra la pared y la mesa de revistas;
+    - el taller de lentes, con la puerta cerrada con llave: la mesa de trabajo y 2 cajas de estuches.
+  - Lo frágil son las 2 vitrinas y el espejo (25 de multa, una vez cada uno); quedan rajados.
+  - Los 12 escondites, 5 para cosas pesadas: adentro de los 2 exhibidores de la pared oeste, detrás del mostrador, en
+    un rincón del taller y entre las cajas de estuches (pesados); adentro del exhibidor de la pared este, adentro del
+    mostrador, debajo de la tabla de letras, arriba del aparato de medir la vista, debajo del sillón, entre las revistas
+    y en el estante alto (livianos). La tabla va colgada de la pared, así que el escondite es debajo y no detrás.
+  - Capturas en la carpeta `optica/` del proyecto.

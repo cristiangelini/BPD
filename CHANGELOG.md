@@ -1,3 +1,4 @@
+- Optician raid, step 1a: the optician's shop "El Lente Borroso" on block (-1, 3) as a place to raid: the salon with three wall displays of glasses, the turning stand and the try-on mirror, the counter with the till between two glass display cases, the exam room, the waiting room, the lens workshop locked with the till's key, the display cases and the mirror that break when something hits them fast (a fine each) and 12 hiding spots. "Óptica (allanamiento) (prueba)" in the menu and --place=optician.
 # Changelog
 
 ## 0.1.0 (unreleased)
