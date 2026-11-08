@@ -86,7 +86,8 @@ func lure() -> FoodBucket:
 
 
 func _process(delta: float) -> void:
-	if state == "in":
+	# Online, a guest's animal is where the host's is (Zoo.apply_net_state).
+	if state == "in" or (zoo and zoo.case and zoo.case.follower):
 		return
 	var bucket := lure()
 	state = "following" if bucket else "loose"

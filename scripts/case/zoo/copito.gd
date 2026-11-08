@@ -29,6 +29,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	add_to_group("copitos")
 	_model = MODEL.instantiate()
 	add_child(_model)
 
@@ -43,6 +44,11 @@ func _physics_process(delta: float) -> void:
 	_model.rotation.z = 0.0
 	if zoo and zoo.call("on_floe", global_position):
 		zoo.call("copito_home")
+
+
+## Online (PropSync): the host makes him, and a guest gets a copy from this script that follows the host's.
+func net_setup() -> Dictionary:
+	return {}
 
 
 ## Home, he stays put.
