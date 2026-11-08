@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Plant nursery raid, step 8: Play's raid draw can now land on the plant nursery, and Doña Hortensia gets away in her car when she sees the main evidence picked up near her, like the other owners.
 - Plant nursery raid, step 7: the stolen bees story: the beekeeper's hive, the beekeeper suit and a jar of honey with someone else's label are hidden, a cop near the hive hears the buzz (the clue), and the swarm chases a cop who runs near the hive and gives it little harmless pushes until it walks or gets away. The nursery now tells its six stories.
 - Plant nursery raid, step 7: the contest seeds story: the champion tomato's seed box, the first prize ribbon and a jar of SuperBrote fertilizer are hidden, a plant with ball-sized tomatoes grows in the greenhouse (a clue near a cop), and after every watering a giant pumpkin grows at the west end of the yard and rolls across it.
 - Plant nursery raid, step 7: the diamond pots story: the pot with buried diamonds, a jeweler's loupe and an empty soil bag are hidden, the pot sparkles while the sprinklers run (a clue near a cop), and four yard pots go "clink" every time the sprinklers start.
