@@ -5606,3 +5606,7 @@ LOC_on_eye_machine,arriba del aparato de medir la vista,on top of the eye-test m
 LOC_under_exam_chair,debajo del sillón de examen,under the exam chair,embaixo da cadeira de exame
 LOC_in_magazines,entre las revistas viejas de la sala de espera,between the waiting room's old magazines,entre as revistas velhas da sala de espera
 LOC_on_high_shelf,en el estante alto del consultorio,on the exam room's high shelf,na prateleira alta do consultório
+PROMPT_TRY_GLASSES,E: probarte unos anteojos,E: try a pair of glasses on,E: experimentar um par de óculos
+PROMPT_SPIN_CAROUSEL,E: girar el exhibidor,E: spin the stand,E: girar o expositor
+PROMPT_EXAM_CHAIR_UP,E: subir el sillón,E: raise the chair,E: subir a cadeira
+PROMPT_EXAM_CHAIR_DOWN,E: bajar el sillón,E: lower the chair,E: baixar a cadeira

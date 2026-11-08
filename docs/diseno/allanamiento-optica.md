@@ -141,3 +141,19 @@ pesada es la máquina de pulir (6 kg), que la lleva uno solo.
     mostrador, debajo de la tabla de letras, arriba del aparato de medir la vista, debajo del sillón, entre las revistas
     y en el estante alto (livianos). La tabla va colgada de la pared, así que el escondite es debajo y no detrás.
   - Capturas en la carpeta `optica/` del proyecto.
+- **Paso 1b** (`TriedGlasses`, `GlassesCarousel`, `ExamChair`):
+  - **Probarse anteojos:** E en un exhibidor de pared ("E: probarte unos anteojos") le pone al policía un par sorteado
+    con la semilla por 8 s. Todos ven los anteojos en su cara. En la PC de ese jugador la pantalla se ve:
+    - borrosa;
+    - doble, corrida a los costados;
+    - con un aumento de 3 veces al centro;
+    - verde.
+    Probarse otro par cambia el efecto y vuelve a contar los 8 s.
+  - **El exhibidor giratorio:** gira solo, despacio (0,4 rad/s). Un policía que se lo choca, algo que le tiran o E
+    ("E: girar el exhibidor") lo empujan: +3,5 rad/s, hasta 12. Pasados los 6 rad/s tira un par cada 0,35 s, que sale
+    volando por el salón (puede rajar una vitrina). Tiene 12 pares y frena solo (1,5 rad/s por segundo). Los pares que
+    tiró no lo empujan.
+  - **El sillón de examen:** E en el pedal de su pie ("E: subir el sillón" / "bajar") lo sube 1,5 m en 2,5 s, o lo
+    baja. Lo que está parado en el asiento sube con él. Arriba del sillón, el estante alto queda al alcance; desde el
+    piso el estante tapa lo que tiene encima. El asiento queda libre para sentarse (el examen de Doña Visia, paso 2).
+  - Capturas `1b_*.png` en la carpeta `optica/` del proyecto.
