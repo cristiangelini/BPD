@@ -21,7 +21,7 @@ func test_the_golden_gnome_solves_the_case() -> void:
 	var nursery := _nursery()
 	await wait_physics_frames(10)
 	assert_has(nursery.raid.suspicions, "gold_gnome")
-	assert_eq(nursery.main.scene_file_path, "res://scenes/props/gold_gnome.tscn")
+	assert_eq(nursery.main.scene_file_path, "res://scenes/props/nursery_gold_gnome.tscn")
 	assert_true(Nursery.SPOTS[nursery.hidden_spots[0]].heavy, "it's in a spot for heavy things")
 	assert_eq(nursery.main.mass, 20.0)
 	assert_eq(nursery.extras.size(), 2, "the photo and the paint")
