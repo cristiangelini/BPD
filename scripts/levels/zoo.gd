@@ -98,6 +98,66 @@ const PATIENCE_DOWN := 20
 ## With no patience left, Doña Jaula puts the nearest cop to work feeding the penguins for this long; then she has half
 ## her patience back. A cop the elephant soaks slips for WET_SECONDS (propuesta).
 const PUNISH_SECONDS := 10.0
+## What a guest's zoo follows (online.md): each keeper's cap, hands and gloves; feeding time, the gates, the animals
+## and Doña Jaula's patience; the little train; Copito out and home; and the clues that changed.
+func net_state() -> Dictionary:
+	var state := {
+		"keepers": keepers.map(func(k: ZooKeeper) -> Array: return [k.cap_on, k.showed_hands, k.gloves_on, k.talked]),
+		"feeding": feeding, "feedings": feedings, "patience": patience, "train": train.along,
+		"gates": ANIMALS.map(func(kind: String) -> bool: return (gates[kind] as ZooGate).open),
+		"penguins": (gates.penguins as ZooGate).open,
+		"animals": ANIMALS.map(func(kind: String) -> Array:
+			var animal := animals[kind] as ZooAnimal
+			return [animal.state, animal.position, animal.rotation.y]),
+	}
+	if copito:
+		state.copito = copito.home
+	if clues:
+		state.glass = [clues.glass.touched, clues.glass_cleaned]
+		state.blanket = clues.blanket.wet
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for keeper in keepers:
+		var look: Array = state.keepers[keeper.index]
+		if not look[0] and keeper.cap_on:
+			keeper.cap_on = false
+			keeper.part("cap").visible = false
+		keeper.showed_hands = look[1]
+		if look[2] != keeper.gloves_on:
+			keeper.wear_gloves(look[2])
+		keeper.talked = look[3]
+	feeding = state.feeding
+	feedings = state.feedings
+	patience = state.patience
+	train.along = state.train
+	for i in ANIMALS.size():
+		(gates[ANIMALS[i]] as ZooGate).set_open(state.gates[i])
+		var animal := animals[ANIMALS[i]] as ZooAnimal
+		var seen: Array = state.animals[i]
+		animal.state = seen[0]
+		animal.position = seen[1]
+		animal.rotation.y = seen[2]
+	(gates.penguins as ZooGate).set_open(state.penguins)
+	if state.has("copito"):
+		_guest_copito()
+	if clues and state.has("glass"):
+		clues.glass.touched = state.glass[0]
+		clues.glass_cleaned = state.glass[1]
+		if state.blanket and not clues.blanket.wet:
+			clues.blanket.soak()
+	if not case:
+		return
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item._eaten_part.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
+
+
 ## The zoo's van waits on the sidewalk by the entrance, facing the street (the culprit's getaway, step 7).
 const GETAWAY_AT := Vector3(9, 0, 28.5)
 const WET_SECONDS := 3.0
@@ -305,7 +365,8 @@ func search(spot: String, cop: Cop) -> void:
 
 ## Copito comes out of his hiding spot, in front of it, to be carried.
 func bring_out() -> void:
-	if copito:
+	# Online, a guest's Copito is PropSync's copy of the host's (_guest_copito).
+	if copito or (case and case.follower):
 		return
 	copito = Copito.new()
 	copito.name = "Copito"
@@ -322,7 +383,7 @@ func on_floe(world: Vector3) -> bool:
 
 ## Copito is back on his floe: he stays and the case notes it (+100).
 func copito_home() -> void:
-	if loot_found:
+	if loot_found or not copito:
 		return
 	loot_found = true
 	copito.settle(to_global(ICE_AT + Vector3(0, 0.6, 0)))
@@ -332,12 +393,28 @@ func copito_home() -> void:
 
 ## The case says he's home (online, a guest): out of hiding and onto the floe.
 func reveal_loot() -> void:
+	if case and case.follower:
+		_guest_copito()
+		loot_found = true
+		if copito:
+			copito.home = true
+		case.found_loot()
+		return
 	bring_out()
 	copito_home()
 
 
+## A guest's Copito: PropSync's copy of the host's, once it's made.
+func _guest_copito() -> void:
+	if copito and not is_instance_valid(copito):
+		copito = null
+	if not copito:
+		copito = get_tree().get_first_node_in_group("copitos") as Copito
+
+
 func _process(delta: float) -> void:
-	if case:
+	# Online, a guest's zoo follows the host's feeding times (apply_net_state).
+	if case and not case.follower:
 		feed_clock += delta
 		if not feeding and feed_clock >= FEEDING_EVERY:
 			start_feeding()

@@ -190,3 +190,7 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   policía a pie que la pisa se resbala 1,5 s y suelta lo que lleva. Los cuidadores cansados "se van a darle de comer a
   las jirafas". El culpable se interroga como cuidador (`owner_keeper`). El sueldo y la cuota son los de las otras
   escenas del crimen (+100 si Copito vuelve).
+- **Paso 8:** online, el anfitrión decide todo y los invitados siguen su zoológico (`Zoo.net_state`): la gorra, las
+  manos y los guantes de cada cuidador; la hora de comer, las rejas, dónde está cada animal y la paciencia de Doña
+  Jaula; el trencito; el vidrio y la manta. Copito lo hace el anfitrión y `PropSync` les da a los invitados una copia
+  que lo sigue. El zoológico entra en el sorteo de escenas del crimen de "Jugar" (un quinto de ellas).
