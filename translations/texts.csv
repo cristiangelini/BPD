@@ -5282,7 +5282,6 @@ BRIEF_JEWELS_B,"Don Muzza esconde joyas robadas adentro de pizzas congeladas y l
 BRIEF_JEWELS_C,"Traigan la caja de pizzas congeladas con las joyas en el baúl del patrullero. Pesa 5 kilos y vale una fortuna.","Bring the box of frozen pizzas with the jewels in the patrol car's trunk. It weighs 5 kilos and is worth a fortune.","Tragam a caixa de pizzas congeladas com as joias no porta-malas da viatura. Pesa 5 quilos e vale uma fortuna."
 BRIEF_JEWELS_D,"Si encuentran la lupa de joyero o la lista de «clientes especiales», mejor: todo suma. Y no la metan al horno.","If you find the jeweler's loupe or the «special customers» list, even better: it all counts. And don't put it in the oven.","Se acharem a lupa de joalheiro ou a lista de «clientes especiais», melhor: tudo soma. E não coloquem no forno."
 OBJ_FIND_FROZEN_JEWELS,Llevarse la caja de pizzas congeladas con las joyas,Take the box of frozen pizzas with the jewels,Levar a caixa de pizzas congeladas com as joias
-OBJ_EXTRA_JEWELER_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
 OBJ_EXTRA_SPECIAL_CLIENTS,Extra: la lista de «clientes especiales»,Extra: the «special customers» list,Extra: a lista de «clientes especiais»
 SUSPECT_jewels,Las joyas en la muzza,The jewels in the cheese,As joias na muçarela
 SUSPECT_crazy_yeast,La levadura loca,The crazy yeast,O fermento maluco
